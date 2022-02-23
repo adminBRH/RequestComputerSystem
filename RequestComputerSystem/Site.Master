@@ -319,6 +319,21 @@ input[type=radio] {
           </div>
         </div>
       </li>
+        
+        <li class="nav-item active">
+        <a class="nav-link" href="#" data-toggle="collapse" data-target="#collapsePages_Acusair" aria-expanded="true" aria-controls="collapsePages_Acusair">
+          <i class="fas fa-fw fa-folder"></i>
+          <span>Acus Air</span>
+        </a>
+        <div id="collapsePages_Acusair" class="collapse hide" aria-labelledby="headingPages" data-parent="#accordionSidebar">
+          <div class="bg-white py-2 collapse-inner rounded">
+            <h6 class="collapse-header">For Users:</h6>
+            <a class="collapse-item" target="_blank" href="https://arcusair.bdms.co.th"> <i class="fas fa-rainbow"></i> Arcusair</a>
+            <a class="collapse-item" href="../ArcusAir/GenerateBarcode"> <i class="fas fa-barcode"></i> Create Barcode</a>
+                <hr class="sidebar-divider alert-dark">
+          </div>
+        </div>
+      </li>
 
       <!-- Nav Item - Charts -->
         <!--

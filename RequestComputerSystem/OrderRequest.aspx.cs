@@ -19,6 +19,11 @@ namespace RequestComputerSystem
 
         protected void Page_Load(object sender, EventArgs e)
         {
+            if (Session["UserLogin"] == null)
+            {
+                Response.Redirect("Default");
+            }
+
             if (!IsPostBack)
             {
                 department();
@@ -162,6 +167,8 @@ namespace RequestComputerSystem
         {
             Boolean result = false;
 
+            string UpdatePrice = "yes";
+
             string objects = check_object();
             string other = txt_other.Value.ToString().Trim();
             string detail = check_detail();
@@ -172,8 +179,14 @@ namespace RequestComputerSystem
             string level = "1";
             if (Approvelevel1 == "-")
             {
-                Approvelevel2 = "150216"; // <---------------------- คณะกรรมการ Costing
-                level = "2";
+                if (UpdatePrice == "yes") // ขอปรับราคา
+                {
+                    Approvelevel2 = "100384"; // <----------------- ผู้จัดการฝ่ายบัญชี
+                    level = "3";
+                } else {
+                    Approvelevel2 = "150216"; // <---------------------- คณะกรรมการ Costing
+                    level = "2";
+                }
                 AppIDmail = Approvelevel2;
             }
 

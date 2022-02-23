@@ -51,6 +51,15 @@ namespace RequestComputerSystem
         protected global::System.Web.UI.WebControls.Label lbl_detail;
 
         /// <summary>
+        /// txtH_detailOrder control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlInputText txtH_detailOrder;
+
+        /// <summary>
         /// txt_details control.
         /// </summary>
         /// <remarks>
@@ -301,6 +310,15 @@ namespace RequestComputerSystem
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlAnchor btn_apy2;
+
+        /// <summary>
+        /// lbl_3 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lbl_3;
 
         /// <summary>
         /// div_apy3 control.

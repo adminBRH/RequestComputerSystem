@@ -154,7 +154,7 @@
     <div class="input-group">
         <label id="lblCb_Bconnect" for="cb_Bconnect" style="color:red" runat="server" visible="false">*</label>
         <asp:CheckBox ID="Cb_Bconnect" CssClass="btn btn-circle" runat="server" />
-        <label for="cb_Bconnect" class="badge badge-secondary form-control" style="font-size:medium">B-Connect</label>
+        <label for="cb_Bconnect" class="badge badge-secondary form-control" style="font-size:medium">Arcus Air</label>
     </div>
     <div class="input-group">
         <label id="lblCb_VPN" for="Cb_VPN" style="color:red" runat="server" visible="false">*</label>
@@ -165,6 +165,21 @@
         <label id="lblCb_MS" for="Cb_MS" style="color:red" runat="server" visible="false">*</label>
         <asp:CheckBox ID="Cb_MS" CssClass="btn btn-circle" runat="server" />
         <label for="Cb_MS" class="badge badge-secondary form-control" style="font-size:medium">Microsoft Office</label>
+    </div>
+    <div class="input-group">
+        <label id="lblCb_SwL" for="Cb_SwL" style="color:red" runat="server" visible="false">*</label>
+        <asp:CheckBox ID="Cb_SwL" CssClass="btn btn-circle" runat="server" />
+        <label for="Cb_SwL" class="badge badge-secondary form-control" style="font-size:medium">Software License</label>
+    </div>
+    <div class="input-group">
+        <label id="lblCb_IPP" for="Cb_IPP" style="color:red" runat="server" visible="false">*</label>
+        <asp:CheckBox ID="Cb_IPP" CssClass="btn btn-circle" runat="server" />
+        <label for="Cb_IPP" class="badge badge-secondary form-control" style="font-size:medium">IP Phone</label>
+    </div>
+    <div class="input-group">
+        <label id="lblCb_Com" for="Cb_Com" style="color:red" runat="server" visible="false">*</label>
+        <asp:CheckBox ID="Cb_Com" CssClass="btn btn-circle" runat="server" />
+        <label for="Cb_Com" class="badge badge-secondary form-control" style="font-size:medium">Computer</label>
     </div>
 </div>
 <div>

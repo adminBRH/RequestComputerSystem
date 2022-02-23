@@ -24,6 +24,11 @@ namespace RequestComputerSystem
 
         protected void Page_Load(object sender, EventArgs e)
         {
+            if (Session["UserLogin"] == null)
+            {
+                Response.Redirect("Default");
+            }
+
             if (Request.QueryString["id"] != null)
             {
                 ptid = Request.QueryString["id"].ToString();
@@ -37,8 +42,6 @@ namespace RequestComputerSystem
             {
                 Response.Redirect("PayOvertimeList.aspx");
             }
-           
-            
         }
 
         public string SelectRemark(string id)

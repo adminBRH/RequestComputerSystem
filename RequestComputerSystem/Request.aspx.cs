@@ -31,6 +31,11 @@ namespace RequestComputerSystem
 
         protected void Page_Load(object sender, EventArgs e)
         {
+            if (Session["UserLogin"] == null)
+            {
+                Response.Redirect("Default");
+            }
+
             if (!IsPostBack)
             {
                 userid = Session["UserLogin"].ToString();
@@ -151,12 +156,16 @@ namespace RequestComputerSystem
             Page.ClientScript.RegisterStartupScript(typeof(Page), "a key", "<script type=\"text/javascript\">" + jquery + "</script>");
 
             string Ctn = "n";
-                if (Cb_Bconnect.Checked == true || Cb_Email.Checked == true || Cb_VPN.Checked == true || Cb_MS.Checked == true)
+                if (Cb_Bconnect.Checked == true || Cb_Email.Checked == true || Cb_VPN.Checked == true || Cb_MS.Checked == true
+                    || Cb_SwL.Checked == true || Cb_IPP.Checked == true || Cb_Com.Checked == true)
                 {
                     lblCb_Bconnect.Visible = false;
                     lblCb_Email.Visible = false;
                     lblCb_VPN.Visible = false;
                     lblCb_MS.Visible = false;
+                    lblCb_SwL.Visible = false;
+                    lblCb_IPP.Visible = false;
+                    lblCb_Com.Visible = false;
 
                     Ctn = "y";
                     if (Cb_Email.Checked)
@@ -218,7 +227,10 @@ namespace RequestComputerSystem
                     lblCb_Email.Visible = true;
                     lblCb_VPN.Visible = true;
                     lblCb_MS.Visible = true;
-                    Ctn = "n";
+                    lblCb_SwL.Visible = true;
+                    lblCb_IPP.Visible = true;
+                    lblCb_Com.Visible = true;
+                Ctn = "n";
                 }
 
                 if (Ctn == "n")
@@ -284,9 +296,11 @@ namespace RequestComputerSystem
 
                     if (Cb_Bconnect.Checked == true)
                     {
+                    // 1 = B-Connect
+                    // 6 = Arcus Air
                         sql = "INSERT INTO requestsystems" +
-                            "(rqid, sysid, rqsflag)" +
-                            "VALUES("+ LastID + ", 1, NULL)";
+                            "(rqid, sysid, rqsflag) " +
+                            "VALUES("+ LastID + ", 6, NULL);";
                         bl = cl_Sql.Modify(sql);
                         if (bl == true)
                         {
@@ -356,6 +370,69 @@ namespace RequestComputerSystem
                         sql = "INSERT INTO requestsystems" +
                             "(rqid, sysid, rqsemail, rqsquota, rqsgroupmail_hod, rqsgroupmail_staff, rqsgroupmail_committeeother, rqsflag)" +
                             "VALUES(" + LastID + ", 2, '" + rqsemail + "', '"+ rqsquota + "', '"+ HOD + "', '" + Staff + "', '" + Committee + "', NULL)";
+                        bl = cl_Sql.Modify(sql);
+                        if (bl == true)
+                        {
+                            LastID2 = cl_Sql.LastID("rqsid", "requestsystems"); //id , table
+
+                            sql = "INSERT INTO approve " +
+                                "(rqsid, aplevel, userid, aprequestuser, apstatus, apuserapprove1, apdate) " +
+                                "VALUES(" + LastID2 + ", 1, '" + userid + "', '" + rqrequestuser + "', 'Approved', 0, '" + rqdateadd + "')";
+                            bl = cl_Sql.Modify(sql);
+
+                            sql = "INSERT INTO approve " +
+                                "(rqsid, aplevel, userid, aprequestuser, apstatus, apuserapprove1, apuserapprove2, apdate) " +
+                                "VALUES(" + LastID2 + ", 2, '0', '" + rqrequestuser + "', 'Wait', '" + Approve1 + "', '" + Approve2 + "', '" + rqdateadd + "')";
+                            bl = cl_Sql.Modify(sql);
+                        }
+                    }
+                    if (Cb_SwL.Checked == true)
+                    {
+                        sql = "INSERT INTO requestsystems" +
+                            "(rqid, sysid, rqsemail, rqsquota, rqsgroupmail_hod, rqsgroupmail_staff, rqsgroupmail_committeeother, rqsflag)" +
+                            "VALUES(" + LastID + ", 7, '" + rqsemail + "', '"+ rqsquota + "', '"+ HOD + "', '" + Staff + "', '" + Committee + "', NULL)";
+                        bl = cl_Sql.Modify(sql);
+                        if (bl == true)
+                        {
+                            LastID2 = cl_Sql.LastID("rqsid", "requestsystems"); //id , table
+
+                            sql = "INSERT INTO approve " +
+                                "(rqsid, aplevel, userid, aprequestuser, apstatus, apuserapprove1, apdate) " +
+                                "VALUES(" + LastID2 + ", 1, '" + userid + "', '" + rqrequestuser + "', 'Approved', 0, '" + rqdateadd + "')";
+                            bl = cl_Sql.Modify(sql);
+
+                            sql = "INSERT INTO approve " +
+                                "(rqsid, aplevel, userid, aprequestuser, apstatus, apuserapprove1, apuserapprove2, apdate) " +
+                                "VALUES(" + LastID2 + ", 2, '0', '" + rqrequestuser + "', 'Wait', '" + Approve1 + "', '" + Approve2 + "', '" + rqdateadd + "')";
+                            bl = cl_Sql.Modify(sql);
+                        }
+                    }
+                    if (Cb_IPP.Checked == true)
+                    {
+                        sql = "INSERT INTO requestsystems" +
+                            "(rqid, sysid, rqsemail, rqsquota, rqsgroupmail_hod, rqsgroupmail_staff, rqsgroupmail_committeeother, rqsflag)" +
+                            "VALUES(" + LastID + ", 8, '" + rqsemail + "', '"+ rqsquota + "', '"+ HOD + "', '" + Staff + "', '" + Committee + "', NULL)";
+                        bl = cl_Sql.Modify(sql);
+                        if (bl == true)
+                        {
+                            LastID2 = cl_Sql.LastID("rqsid", "requestsystems"); //id , table
+
+                            sql = "INSERT INTO approve " +
+                                "(rqsid, aplevel, userid, aprequestuser, apstatus, apuserapprove1, apdate) " +
+                                "VALUES(" + LastID2 + ", 1, '" + userid + "', '" + rqrequestuser + "', 'Approved', 0, '" + rqdateadd + "')";
+                            bl = cl_Sql.Modify(sql);
+
+                            sql = "INSERT INTO approve " +
+                                "(rqsid, aplevel, userid, aprequestuser, apstatus, apuserapprove1, apuserapprove2, apdate) " +
+                                "VALUES(" + LastID2 + ", 2, '0', '" + rqrequestuser + "', 'Wait', '" + Approve1 + "', '" + Approve2 + "', '" + rqdateadd + "')";
+                            bl = cl_Sql.Modify(sql);
+                        }
+                    }
+                    if (Cb_Com.Checked == true)
+                    {
+                        sql = "INSERT INTO requestsystems" +
+                            "(rqid, sysid, rqsemail, rqsquota, rqsgroupmail_hod, rqsgroupmail_staff, rqsgroupmail_committeeother, rqsflag)" +
+                            "VALUES(" + LastID + ", 9, '" + rqsemail + "', '"+ rqsquota + "', '"+ HOD + "', '" + Staff + "', '" + Committee + "', NULL)";
                         bl = cl_Sql.Modify(sql);
                         if (bl == true)
                         {

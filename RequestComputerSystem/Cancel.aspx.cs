@@ -29,15 +29,19 @@ namespace RequestComputerSystem
             {
                 string status = Session["UserStatus"].ToString();
 
-                if (status == "admin" || status == "test" || status == "hr" || status == "hod")
+                if (status == "admin" || status == "test" || status == "hr")
                 { }
                 else
                 {
-                    Response.Write("<script>alert('หน้าการยกเลิกใช้งานระบบคอมพิวเตอร์ ให้สิทธิเฉพาะระดับหัวหน้าแผนกขึ้นไปเท่านั้น !!'); setTimeout(function(){window.location.href='Default.aspx'}, 100);</script>");
+                    Response.Write("<script>alert('หน้านี้ให้สิทธิเฉพาะ Admin และ HR เท่านั้น !!'); setTimeout(function(){window.location.href='Default.aspx'}, 100);</script>");
                 }
 
                 userlogin = Session["UserLogin"].ToString();
                 userFullname = Session["UserFullName"].ToString();
+            }
+            else
+            {
+                Response.Redirect("Default");
             }
         }
 
@@ -130,7 +134,7 @@ namespace RequestComputerSystem
                     LastID = InsertCancelSystem(ccid, Bconnect, userlogin);
                     if (LastID != "")
                     {
-                        HTMLRequest(ccid, LastID, "B-Connect", Datetimes, emailTo, emailFrom);
+                        HTMLRequest(ccid, LastID, "Arcus Air", Datetimes, emailTo, emailFrom);
                     }
                 }
                 if (VPN != "")

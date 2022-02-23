@@ -47,6 +47,10 @@ namespace RequestComputerSystem
                     Response.Write("<script>alert('คุณไม่มีสิทธิใช้งานหน้านี้ !!'); setTimeout(function(){window.location.href='Default.aspx'}, 100);</script>");
                 }
             }
+            else
+            {
+                Response.Redirect("Default");
+            }
 
             if (!IsPostBack)
             {

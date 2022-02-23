@@ -20,6 +20,11 @@ namespace RequestComputerSystem
 
         protected void Page_Load(object sender, EventArgs e)
         {
+            if (Session["UserLogin"] == null)
+            {
+                Response.Redirect("Default");
+            }
+
             string id = Request.QueryString["id"];
             if (Permission(id))
             {

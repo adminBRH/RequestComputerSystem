@@ -77,6 +77,9 @@
     <Reference Include="Google.Protobuf, Version=3.6.1.0, Culture=neutral, PublicKeyToken=a7d26565bac4d604, processorArchitecture=MSIL">
       <HintPath>..\packages\Google.Protobuf.3.6.1\lib\net45\Google.Protobuf.dll</HintPath>
     </Reference>
+    <Reference Include="IronBarCode, Version=2021.9.0.0, Culture=neutral, PublicKeyToken=b971bb3971bdf306, processorArchitecture=MSIL">
+      <HintPath>..\packages\BarCode.2021.9.0\lib\net40\IronBarCode.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Microsoft.ReportViewer.Common, Version=15.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.ReportingServices.ReportViewerControl.WebForms.150.1358.0\lib\net40\Microsoft.ReportViewer.Common.dll</HintPath>
@@ -170,6 +173,8 @@
     <Content Include="API\user.aspx" />
     <Content Include="ApproveEvent.aspx" />
     <Content Include="ApproveList.aspx" />
+    <Content Include="ArcusAir\Default.aspx" />
+    <Content Include="ArcusAir\GenerateBarcode.aspx" />
     <Content Include="Cancel.aspx" />
     <Content Include="CancelList.aspx" />
     <Content Include="Connected Services\BRH_SendMail\RequestComputerSystem.BRH_SendMail.MailSendListResponse.datasource">
@@ -206,6 +211,7 @@
     <Content Include="image\slide\img5.jpg" />
     <Content Include="Innovation.aspx" />
     <Content Include="InnovationScore.aspx" />
+    <Content Include="ITjob\Default.aspx" />
     <Content Include="js\ajax\jquery-2.1.3.min.js" />
     <Content Include="LineNotify.aspx" />
     <Content Include="ManageHOD.aspx" />
@@ -216,6 +222,10 @@
     <Content Include="PayOvertimeDefault.aspx" />
     <Content Include="PayOvertimeDetail.aspx" />
     <Content Include="PayOvertimeList.aspx" />
+    <Content Include="StrategyService\Default.aspx" />
+    <Content Include="StrategyService\Received.aspx" />
+    <Content Include="StrategyService\ReceiveList.aspx" />
+    <Content Include="Strategy\Default.aspx" />
     <Content Include="TEST.aspx" />
     <Content Include="Textfile_Bconnect\Default.aspx" />
     <Content Include="Textfile_Bconnect\DoctorLocation.aspx" />
@@ -2102,6 +2112,20 @@
       <DependentUpon>About.aspx</DependentUpon>
     </Compile>
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="ArcusAir\Default.aspx.cs">
+      <DependentUpon>Default.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ArcusAir\Default.aspx.designer.cs">
+      <DependentUpon>Default.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="ArcusAir\GenerateBarcode.aspx.cs">
+      <DependentUpon>GenerateBarcode.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ArcusAir\GenerateBarcode.aspx.designer.cs">
+      <DependentUpon>GenerateBarcode.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Cancel.aspx.cs">
       <DependentUpon>Cancel.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -2204,6 +2228,13 @@
     </Compile>
     <Compile Include="InnovationSummary.aspx.designer.cs">
       <DependentUpon>InnovationSummary.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="ITjob\Default.aspx.cs">
+      <DependentUpon>Default.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ITjob\Default.aspx.designer.cs">
+      <DependentUpon>Default.aspx</DependentUpon>
     </Compile>
     <Compile Include="LineNotify.aspx.cs">
       <DependentUpon>LineNotify.aspx</DependentUpon>
@@ -2358,6 +2389,34 @@
       <DependentUpon>Site.Mobile.Master</DependentUpon>
     </Compile>
     <Compile Include="SqlServerTypes\Loader.cs" />
+    <Compile Include="StrategyService\Default.aspx.cs">
+      <DependentUpon>Default.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="StrategyService\Default.aspx.designer.cs">
+      <DependentUpon>Default.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="StrategyService\Received.aspx.cs">
+      <DependentUpon>Received.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="StrategyService\Received.aspx.designer.cs">
+      <DependentUpon>Received.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="StrategyService\ReceiveList.aspx.cs">
+      <DependentUpon>ReceiveList.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="StrategyService\ReceiveList.aspx.designer.cs">
+      <DependentUpon>ReceiveList.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Strategy\Default.aspx.cs">
+      <DependentUpon>Default.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Strategy\Default.aspx.designer.cs">
+      <DependentUpon>Default.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Textfile_Bconnect\Default.aspx.cs">
       <DependentUpon>Default.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -2424,6 +2483,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="ArcusAir\images\barcodeArcusAir\" />
     <Folder Include="Disbursement\FileUpload\" />
     <Folder Include="FileUploadPay\FilePayOvertime\" />
     <Folder Include="FileUpload\OrderRequest\" />

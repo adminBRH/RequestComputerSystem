@@ -51,12 +51,16 @@ namespace RequestComputerSystem
                 }
                 else
                 {
-                    string page = "";
-                    if (Request.QueryString["goto"] != null)
+                    string URLpath = Request.Path.ToLower();
+                    if (URLpath != "/arcusair/generatebarcode")
                     {
-                        page = "?goto=" + Request.QueryString["goto"].ToString();
+                        string page = "";
+                        if (Request.QueryString["goto"] != null)
+                        {
+                            page = "?goto=" + Request.QueryString["goto"].ToString();
+                        }
+                        Response.Redirect("~/Login.aspx" + page);
                     }
-                    Response.Redirect("~/Login.aspx" + page);
                 }
             }
 

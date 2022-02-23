@@ -231,6 +231,60 @@ namespace RequestComputerSystem
         protected global::System.Web.UI.WebControls.CheckBox Cb_MS;
 
         /// <summary>
+        /// lblCb_SwL control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl lblCb_SwL;
+
+        /// <summary>
+        /// Cb_SwL control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.CheckBox Cb_SwL;
+
+        /// <summary>
+        /// lblCb_IPP control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl lblCb_IPP;
+
+        /// <summary>
+        /// Cb_IPP control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.CheckBox Cb_IPP;
+
+        /// <summary>
+        /// lblCb_Com control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl lblCb_Com;
+
+        /// <summary>
+        /// Cb_Com control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.CheckBox Cb_Com;
+
+        /// <summary>
         /// lblCb_Email control.
         /// </summary>
         /// <remarks>

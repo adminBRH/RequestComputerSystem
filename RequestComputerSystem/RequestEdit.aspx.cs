@@ -45,6 +45,10 @@ namespace RequestComputerSystem
                     Validation();
                 }
             }
+            else
+            {
+                Response.Redirect("Default");
+            }
         }
 
         public Boolean Data(string id)

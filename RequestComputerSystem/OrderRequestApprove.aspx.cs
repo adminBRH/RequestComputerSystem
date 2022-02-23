@@ -25,15 +25,13 @@ namespace RequestComputerSystem
         {
             if (Session["UserLogin"] == null)
             {
-                Response.Redirect("OrderRequestList.aspx");
+                Response.Redirect("Default");
             }
             else
             {
                 status = Session["UserStatus"].ToString();
-                if (status == "admin" || status == "it")
-                {
-
-                }
+                if (status == "admin" || status == "it" || status == "test")
+                { }
                 else
                 {
                     string id = Request.QueryString["id"].ToString();
@@ -76,7 +74,7 @@ namespace RequestComputerSystem
             return bl;
         }
 
-        public Boolean select_data() //Select ดาต้ามาแสดงนะ
+        public Boolean select_data() //Select ข้อมูลมาแสดง
         {
             Boolean result = false;
 
@@ -98,7 +96,16 @@ namespace RequestComputerSystem
                 {
                     lbl_Other.Text = " (" + dt.Rows[0]["Other"].ToString() + ")";
                 }
-                lbl_detail.Text = dt.Rows[0]["detailorder"].ToString();
+                string detailorder = dt.Rows[0]["detailorder"].ToString();
+                lbl_detail.Text = detailorder;
+                string costingType = "yes";
+                //if (detailorder == "ปรับเพิ่มราคา Order Items" || detailorder == "ปรับลดราคา Order Items")
+                //{
+                //    lbl_3.Text = "ความเห็นของผู้จัดการฝ่ายการตลาด";
+                //    costingType = "yes";
+                //}
+                lbl_3.Text = "ความเห็นของผู้จัดการฝ่ายการตลาด";
+                txtH_detailOrder.Value = costingType;
                 txt_details.Value = dt.Rows[0]["Details"].ToString();
 
                 // --------------------------------------------- Show File Upload --------------------
@@ -305,7 +312,8 @@ namespace RequestComputerSystem
             {
                 string next = "";
 
-                if (Session["UserStatus"].ToString() == "admin")
+                string status = Session["UserStatus"].ToString();
+                if (status == "admin" || status == "test")
                 {
                     next = "yes";
                 }
@@ -363,13 +371,22 @@ namespace RequestComputerSystem
                 int lv = int.Parse(level);
 
                 if (lv == 2) { empid = "'150216'"; } // <---------------------- คณะกรรมการ Costing
-                else if (lv == 3) { empid = "'100384'"; } // <----------------- ผู้จัดการฝ่ายบัญชี
+                else if (lv == 3) { empid = "'100384'"; } // <----------------- ผู้จัดการฝ่าย บัญชี
                 else if (lv == 4) { empid = "'151579'"; } // <----------------- รองผู้อำนวยการโรงพยาบาล
                 else if (lv == 5) { empid = "'151588'"; } // <----------------- ฝ่ายกลยุทธ์และสารสนเทศ
                 else if (lv == 6) { empid = "'brh_it'"; } // <----------------- IT
                 else { }
 
-                if (lv > 6) { status = "Finish"; level = (lv - 1).ToString(); empid = "Approvelevel" + level; }
+                if(txtH_detailOrder.Value == "yes") // flow Costing Only
+                {
+                    if (lv == 2){ empid = "'100384'"; } // <---------------------- คณะกรรมการ Costing
+                    else if (lv == 3) { empid = "'151579'"; level = "4"; } // <----------------- รองผู้อำนวยการโรงพยาบาล
+                    else if (lv == 5) { empid = "'150831'"; level = "3"; } // <----------------- ผู้จัดการฝ่าย การตลาด
+                    else if (lv == 4) { empid = "'brh_it'"; level = "6"; } // <----------------- IT
+                    else { }
+                }
+
+                if (lv > 6) { status = "Finish"; level = (lv - 1).ToString(); empid = "'brh_it'"; }
             }
             else
             {
@@ -416,8 +433,11 @@ namespace RequestComputerSystem
 
                         SendMail(id, empid, YN);
 
-                        if (status == "Reject") 
+                        if (int.Parse(level) == 6 || status == "Reject") 
                         {
+                            YN = "Finish";
+                            if (status == "Reject") { YN = status; }
+
                             sql = "select * from changeorder where rqid='" + id + "' ";
                             dt = new DataTable();
                             dt = CL_Sql.select(sql);
@@ -467,27 +487,41 @@ namespace RequestComputerSystem
 
                 string sj = "";
                 string htmlBody = "";
+                string htmlFooter = "";
 
                 if (YN == "Yes")
                 {
                     sj = "Change Order Items (Awaiting approval)";
                     htmlBody = "<h1 style='color: #4485b8;'>Change Order Items (Awaiting approval).</h1>" +
                                 "<p><strong style='color: #000;'> ID:</strong> &nbsp; " + id + " </p>" +
-                                "<p><strong style='color: #000;'> Waiting you approve</strong></p>" +
-                                "<p><a href='http://10.121.10.212:4001/?usermail=" + apvid + "'>Link : Access to the system.</a></p>" +
-                                "<p></p><p></p><p>Please do not reply to this email because this address is not monitored.</p>" +
-                                "<p>Automatic send by Request Systems.</p>";
+                                "<p><strong style='color: #000;'> Waiting you approve</strong></p>";
                 }
-                else
+                else if (YN == "Reject")
                 {
                     sj = "Change Order Items (Rejected)";
                     htmlBody = "<h1 style='color: #4485b8;'>Change Order Items (Rejected).</h1>" +
                                 "<p><strong style='color: #000;'> ID:</strong> &nbsp; " + id + " </p>" +
-                                "<p><strong style='color: #000;'> Rejected</strong></p>" +
-                                "<p><a href='http://10.121.10.212:4001/?usermail=" + apvid + "'>Link : Access to the system.</a></p>" +
-                                "<p></p><p></p><p>Please do not reply to this email because this address is not monitored.</p>" +
-                                "<p>Automatic send by Request Systems.</p>";
+                                "<p><strong style='color: #000;'> Rejected</strong></p>";
                 }
+                else if (YN == "Finish")
+                {
+                    sj = "Change Order Items (Finish)";
+                    htmlBody = "<h1 style='color: green;'>Change Order Items (Finish).</h1>" +
+                                "<p><strong style='color: #000;'> ID:</strong> &nbsp; " + id + " </p>" +
+                                "<p><strong style='color: #000;'> Your request finish.</strong></p>";
+                }
+                else
+                {
+                    sj = "Change Order Items (ID:" + id + ") ERROR not have Status";
+                    htmlBody = "<h1 style='color: green;'>Change Order Items (ERROR).</h1>";
+
+                    emailTo = "brh.hito@brh.co.th";
+                }
+
+                htmlFooter = "<p><a href='http://10.121.10.212:4001/?usermail=" + apvid + "'>Link : Access to the system.</a></p>" +
+                            "<p></p><p></p><p>Please do not reply to this email because this address is not monitored.</p>" +
+                            "<p>Automatic send by Request Systems.</p>";
+
 
                 if (Session["Test"] != null)
                 {
@@ -497,7 +531,7 @@ namespace RequestComputerSystem
                 if (emailTo != "")
                 {
                     BRH_SendMail.ServiceSoapClient BRHmail = new BRH_SendMail.ServiceSoapClient();
-                    BRHmail.MailSend(emailTo, sj, htmlBody, emailFrom, "Systems Request", "", "", "", false);
+                    BRHmail.MailSend(emailTo, sj, htmlBody + htmlFooter, emailFrom, "Systems Request", "", "", "", false);
                 }
 
                 sql = "update changeorder set emailTo = '" + emailTo + "', emailDate = CURRENT_TIMESTAMP where rqid = '" + id + "' ";

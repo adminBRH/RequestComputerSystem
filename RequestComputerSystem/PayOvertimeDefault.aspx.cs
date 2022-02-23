@@ -22,6 +22,10 @@ namespace RequestComputerSystem
 
         protected void Page_Load(object sender, EventArgs e)
         {
+            if (Session["UserLogin"] == null)
+            {
+                Response.Redirect("Default");
+            }
 
             string status = Session["UserStatus"].ToString();
 

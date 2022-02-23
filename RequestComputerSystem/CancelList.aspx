@@ -19,7 +19,7 @@
                     <asp:BoundField DataField="cancelID" HeaderText="Cancel ID">
                         <HeaderStyle HorizontalAlign="Center" VerticalAlign="Middle"></HeaderStyle>
                     </asp:BoundField>
-                    <asp:BoundField DataField="ccsdate" HeaderText="Date">
+                    <asp:BoundField DataField="ccsdate" DataFormatString="{0:dd/MMM/yyyy}" HeaderText="Date">
                         <HeaderStyle HorizontalAlign="Center" VerticalAlign="Middle"></HeaderStyle>
                     </asp:BoundField>
                     <asp:BoundField DataField="sysname" HeaderText="Systems">

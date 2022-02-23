@@ -24,6 +24,11 @@ namespace RequestComputerSystem
 
         protected void Page_Load(object sender, EventArgs e)
         {
+            if (Session["UserLogin"] == null)
+            {
+                Response.Redirect("Default");
+            }
+
             cb_request.Enabled = false;
             cb_cancel.Enabled = false;
 

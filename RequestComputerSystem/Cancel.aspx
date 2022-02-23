@@ -20,7 +20,7 @@
                     <div class="input-group">
                         <div class="custom-control custom-switch">
                           <input type="checkbox" class="custom-control-input" id="cb_bconnect" required>
-                          <label class="custom-control-label" for="cb_bconnect">B-Connect</label>
+                          <label class="custom-control-label" for="cb_bconnect">Arcus Air</label>
                         </div>
                     </div>
                     <div class="input-group">
@@ -57,7 +57,10 @@
 
             <hr />
             <div class="col-2 mx-auto mb-2">
-                <button id="btn_submit" type="submit" class="btn btn-outline-primary" onmouseover="ValidateInput()" onserverclick="btn_submit_ServerClick" runat="server" >Submit</button>
+                <a class="btn btn-outline-primary" onclick="ValidateInput()">Submit</a>
+            </div>
+            <div hidden="hidden">
+                <button id="btn_submit" onserverclick="btn_submit_ServerClick" runat="server"></button>
             </div>
         </div>
 
@@ -102,7 +105,7 @@
             BID.removeAttribute("required", "")
             VID.removeAttribute("required", "")
             EID.removeAttribute("required", "")
-            if (BID.checked == true) { txthBconnect.value = "1"; }
+            if (BID.checked == true) { txthBconnect.value = "6"; }
             if (VID.checked == true) { txthVPN.value = "3"; }
             if (MS.checked == true) { txthMS.value = "4"; }
             if (EID.checked == true) { txthEmail.value = "2"; }
@@ -160,6 +163,8 @@
 
         if (al == "Y") {
             alert("กรุณากรอกข้อมูลให้ครบถ้วน !!");
+        }else {
+            __doPostBack('<%= btn_submit.UniqueID %>', '');
         }
 
     }

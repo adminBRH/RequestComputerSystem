@@ -25,7 +25,7 @@
                    <input id="re_newpro" value="New Product" type="radio" name="objective" runat="server"/>&nbsp;&nbsp;New Product
                </div>
                <div class="col-3">
-                   <input id="re_newwork" value="New Wrok Flow" type="radio" name="objective" runat="server"/>&nbsp;&nbsp;New Wrok Flow
+                   <input id="re_newwork" value="New Wrok Flow" type="radio" name="objective" runat="server"/>&nbsp;&nbsp;New Work Flow
                </div>
                <div class="col-6">
                    <input id="re_other" value="Other" type="radio" name="objective" runat="server"/>&nbsp;&nbsp;Other

@@ -24,7 +24,7 @@ namespace RequestComputerSystem.Disbursement
         {
             if (Session["UserID"] == null)
             {
-                Response.Redirect("login.aspx");
+                Response.Redirect("../login.aspx");
             }
             else
             {

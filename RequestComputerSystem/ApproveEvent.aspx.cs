@@ -32,6 +32,11 @@ namespace RequestComputerSystem
 
         protected void Page_Load(object sender, EventArgs e)
         {
+            if (Session["UserLogin"] == null)
+            {
+                Response.Redirect("Default");
+            }
+
             try
             {
                 UserStatus = Session["UserStatus"].ToString();
@@ -56,7 +61,7 @@ namespace RequestComputerSystem
                 if (dt.Rows.Count > 0)
                 {
                     rqid = dt.Rows[0]["rqid"].ToString();
-                    lb0_0.Text = "[" + rqid + "](" + rqsid + "..)";
+                    lb0_0.Text = "[" + rqid + "](" + rqsid + ")";
                     lb0_1.Text = dt.Rows[0]["sysname"].ToString();
                     lb0_2.Text = dt.Rows[0]["UserReqName"].ToString();
                     lb0_3.Text = dt.Rows[0]["rqpost"].ToString();
@@ -74,14 +79,14 @@ namespace RequestComputerSystem
                     apLevelMax = dt.Rows[0]["apLevelMax"].ToString();
 
                     // แจ้งผู้ขอใช้
-                    if (apLevelMax == "6")
-                    {
-                        div8.Attributes.Add("class", "card border-left-success shadow h-100 py-2s");
-                        i8.Attributes.Add("class", "fas fa-check fa-2x text-success");
-                        lb8_1.Text = dt.Rows[0]["userFullName"].ToString();
-                        lb8_2.Text = dt.Rows[0]["userposition"].ToString();
-                        lb8_3.Text = dt.Rows[0]["apdate"].ToString();
-                    }
+                    //if (apLevelMax == "6")
+                    //{
+                    //    div8.Attributes.Add("class", "card border-left-success shadow h-100 py-2s");
+                    //    i8.Attributes.Add("class", "fas fa-check fa-2x text-success");
+                    //    lb8_1.Text = dt.Rows[0]["userFullName"].ToString();
+                    //    lb8_2.Text = dt.Rows[0]["userposition"].ToString();
+                    //    lb8_3.Text = dt.Rows[0]["apdate"].ToString();
+                    //}
 
                     Block2();
                     Block3();
@@ -671,34 +676,23 @@ namespace RequestComputerSystem
                         //ผู้ทบทวน เห็นชอบ
                         apuserapprove1 = "151588";
                     }
-                    else if (level == "4")
+                    else if (level == "4" || level == "5")
                     {
-                        if (sysid == "1")
-                        {
-                            // B-connect || VPN ไม่ต้องรอ รอง และ ผอ. อนุมัติ
-                            finish = "y"; level = "6";
-                            apuserapprove1 = Session["UserLogin"].ToString();
-                        }
-                        else
-                        {
-                            // Deputy Hospital Director
-                            apuserapprove1 = "151579";
-                        }
-                    }
-                    else if (level == "5")
-                    {
-                        if (sysid == "2" || sysid == "3" || sysid == "4")
-                        {
-                            // Email || VPN ไม่ต้องรอ ผอ. อนุมัติ
-                            finish = "y"; level = "6";
-                            apuserapprove1 = Session["UserLogin"].ToString();
-                        }
-                        else
-                        {
-                            // Hospital Director (BRH)
-                            apuserapprove1 = "040010";
-                            apuserapprove2 = "548962";
-                        }
+                        // ยกเลิกลำดับ ผู้บริหาร ไม่ต้องอนุมัติใด นอกจาก สายงานของ ผู้บริหาร เอง
+                        finish = "y"; level = "6";
+                        apuserapprove1 = Session["UserLogin"].ToString();
+
+                        //if (sysid == "1" || sysid == "6")
+                        //{
+                        //    // ส่งต่อให้ ผอ. อนุมัติ เฉพาะร้องขอระบบ B-Connect และ Arcus Air (อ.จา)
+                        //    apuserapprove1 = "040010";
+                        //    apuserapprove2 = "548962";
+                        //}
+                        //else
+                        //{
+                        //    finish = "y"; level = "6";
+                        //    apuserapprove1 = Session["UserLogin"].ToString();
+                        //}
                     }
                     else if (level == "6")
                     {

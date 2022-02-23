@@ -57,6 +57,19 @@ public class SQLclass
         SLQConn.Close();
         return dt;
     }
+    
+    public DataTable selectStrategy(string sql)
+    {
+        //SqlConnection conn = new ConnectDB().SqlStrCon();
+        SqlConnection SLQConn = new SqlConnection("Data Source=BRH-DBS01.BDMS.CO.TH;Initial Catalog=BRH_IT_REQUEST" +
+            ";Persist Security Info=True;User ID=sa;Password=P@ssw0rd");
+        SLQConn.Open();
+        SqlDataAdapter da = new SqlDataAdapter(sql, SLQConn);
+        DataTable dt = new DataTable();
+        da.Fill(dt);
+        SLQConn.Close();
+        return dt;
+    }
 
     public string ToJSON(string sql)
     {

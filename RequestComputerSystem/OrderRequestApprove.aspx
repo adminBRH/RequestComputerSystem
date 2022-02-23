@@ -22,6 +22,7 @@
                 <div class="row col-12">
                     <div class="col-3 text-right">รายละเอียด : </div>
                     <div class="col-9"><asp:Label ID="lbl_detail" Text="" runat="server"></asp:Label></div>
+                    <input type="text" id="txtH_detailOrder" value="" runat="server"  hidden="hidden"/>
                 </div>
             </div>
             <div class="col-10 mb-3">
@@ -92,7 +93,7 @@
             
             <div class="col-5 mr-3 mb-3">
                 <div class="card card-header bg-gradient-primary" style="color:white">
-                    ความเห็นของผู้จัดการฝ่ายบัญชี
+                    <asp:Label ID="lbl_3" Text="ความเห็นของผู้จัดการฝ่ายบัญชี" runat="server"></asp:Label>
                 </div>
                 <div class="card-body bg-gradient-light">
                     <div id="div_apy3" class="col-12" runat="server" visible="false" style="color:green;"><i id="apy3" class="fas fa-check fa-sm" runat="server"></i> อนุมัติ <asp:Label ID="lbl_apy3" Text=".............................." runat="server"></asp:Label></div>
