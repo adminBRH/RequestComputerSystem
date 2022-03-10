@@ -263,7 +263,9 @@ namespace RequestComputerSystem.Disbursement
                 }
 
                 DataTable DT_emp = new DataTable();
-                DT_emp = cl_pv.SelectMailUser(aj);
+                //DT_emp = cl_pv.SelectMailUser(aj);
+                sql = "select *,CONCAT(u.userpname,' ',u.userfname,' ',u.userlname) as 'fullName'  from `user` as u where u.username = '" + aj + "'; ";
+                DT_emp = cl_Sql.select(sql);
                 if (DT_emp.Rows.Count > 0)
                 {
                     emailTo = DT_emp.Rows[0]["useremail"].ToString();

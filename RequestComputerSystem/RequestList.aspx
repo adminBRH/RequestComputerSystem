@@ -15,6 +15,11 @@
                 </asp:DropDownList>
             </div>
             <div class="col-3">
+                <asp:DropDownList ID="ddl_system" CssClass="btn btn-outline-primary mb2" runat="server">
+                    <asp:ListItem Text="" Value=""></asp:ListItem>
+                </asp:DropDownList>
+            </div>
+            <div class="col-3">
                 <input type="text" id="txtdate" class="form-control" placeholder="yyyy-mm-dd" runat="server" />
             </div>
             <div class="col-3">

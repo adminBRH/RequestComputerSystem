@@ -116,6 +116,7 @@ namespace RequestComputerSystem
                         Session["UserLogin"] = dt.Rows[0]["username"].ToString();
                         Session["UserStatus"] = dt.Rows[0]["userstatus"].ToString();
                         Session["UserFullName"] = dt.Rows[0]["UserFullName"].ToString();
+                        Session["UserDeptid"] = dt.Rows[0]["userdeptcode"].ToString();
 
                         if (dt.Rows[0]["userdateedit"].ToString() == null)
                         {
@@ -150,6 +151,7 @@ namespace RequestComputerSystem
                             Cook["UserStatus"] = Session["UserStatus"].ToString();
                             Cook["HOD"] = Session["HOD"].ToString();
                             Cook.Values.Add("UserFullName", Server.UrlEncode(Session["UserFullName"].ToString()));
+                            Cook["UserDeptid"] = Session["UserDeptid"].ToString();
                             Cook.Expires = DateTime.Now.AddDays(7);
                             
                             Response.Cookies.Add(Cook);

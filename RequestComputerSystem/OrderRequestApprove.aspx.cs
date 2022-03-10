@@ -382,7 +382,8 @@ namespace RequestComputerSystem
                     if (lv == 2){ empid = "'100384'"; } // <---------------------- คณะกรรมการ Costing
                     else if (lv == 3) { empid = "'151579'"; level = "4"; } // <----------------- รองผู้อำนวยการโรงพยาบาล
                     else if (lv == 5) { empid = "'150831'"; level = "3"; } // <----------------- ผู้จัดการฝ่าย การตลาด
-                    else if (lv == 4) { empid = "'brh_it'"; level = "6"; } // <----------------- IT
+                    else if (lv == 4) { empid = "'151588'"; level = "5"; } // <----------------- ฝ่ายกลยุทธ์และสารสนเทศ
+                    else if (lv == 6) { empid = "'brh_it'"; } // <----------------- IT
                     else { }
                 }
 
@@ -461,6 +462,7 @@ namespace RequestComputerSystem
                     if (dt.Rows.Count > 0)
                     {
                         empid = "'" + dt.Rows[0]["empid"].ToString() + "'";
+                        YN = "Reject";
                         SendMail(id, empid, YN);
                     }
 

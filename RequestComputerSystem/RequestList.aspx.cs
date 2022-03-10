@@ -30,9 +30,11 @@ namespace RequestComputerSystem
 
                 if (!IsPostBack)
                 {
+                    Systems();
                     string sr = ddl_status.SelectedValue.Trim();
+                    string sy = ddl_system.SelectedValue.Trim();
                     string date = "";
-                    Grid1(sr, date);
+                    Grid1(sr, sy, date);
                 }
                 else
                 {
@@ -53,11 +55,30 @@ namespace RequestComputerSystem
         //    Grid1(sr, date);
         //}
 
-        public Boolean Grid1(string sr, string da)
+        protected void Systems()
+        {
+            sql = "select * from systems where sysactive='Y' order by sysname; ";
+            dt = new DataTable();
+            dt = cl_Sql.select(sql);
+            if (dt.Rows.Count > 0)
+            {}
+            ddl_system.DataSource = dt;
+            ddl_system.DataTextField = "sysname";
+            ddl_system.DataValueField = "sysid";
+            ddl_system.DataBind();
+            ddl_system.Items.Insert(0, new ListItem("All Systems", ""));
+        }
+
+        public Boolean Grid1(string sr, string sy, string da)
         {
             Boolean bl = false;
             
             string apStatus = sr;
+            string apSystem = "= '" + sy + "' ";
+            if (sy == "")
+            {
+                apSystem = "like '%%' ";
+            }
             string date = da;
 
             sql = "select r.rqid, rs.rqsid, a.apid, CONCAT('[',r.rqid,'.',rs.rqsid,']') as 'ReqID', r.rqdateadd, CONCAT(r.rqpname,' ',r.rqfname,' ',r.rqlname) as 'UserReqName' " +
@@ -75,6 +96,7 @@ namespace RequestComputerSystem
                 "    where a2.LastStatus = 'Y' " +
                 ") a on a.rqsid = rs.rqsid " +
                 "where apstatus like '%" + apStatus + "%' " +
+                "and rs.sysid " + apSystem +
                 "and r.rqdateadd like '%" + date + "%' ";
 
                 if (UserStatus == "admin" || UserStatus == "it")
@@ -185,15 +207,17 @@ namespace RequestComputerSystem
         {
             GridView1.PageIndex = e.NewPageIndex;
             string sr = ddl_status.SelectedValue.Trim();
+            string sy = ddl_system.SelectedValue.Trim();
             string date = txtdate.Value.ToString().Trim();
-            Grid1(sr, date);
+            Grid1(sr, sy, date);
         }
 
         protected void bt_search_Click(object sender, EventArgs e)
         {
             string sr = ddl_status.SelectedValue.Trim();
+            string sy = ddl_system.SelectedValue.Trim();
             string date = txtdate.Value.ToString().Trim();
-            Grid1(sr, date);
+            Grid1(sr, sy, date);
         }
     }
 }

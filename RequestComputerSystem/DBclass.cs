@@ -71,7 +71,33 @@ public class SQLclass
         return dt;
     }
 
-    public string ToJSON(string sql)
+    public string dtToJson(DataTable dt)
+    {
+        string json = "[";
+        if (dt.Rows.Count > 0)
+        {
+            foreach (DataRow dr in dt.Rows)
+            {
+                if (dt.Rows.IndexOf(dr) > 0) { json = json + ","; }
+                json = json + "{";
+                string comma = "";
+                foreach (DataColumn dc in dr.Table.Columns)
+                {
+                    json = json + comma;
+                    comma = ",";
+                    json = json + "\"" + dc.ColumnName + "\"";
+                    json = json + ":";
+                    json = json + "\"" + dr[dc.ColumnName].ToString() + "\"";
+                }
+                json = json + "}";
+            }
+        }
+        json = json + "]";
+
+        return json;
+    }
+
+    public string brh_hospital(string sql)
     {
         string json = string.Empty;
 
@@ -80,6 +106,7 @@ public class SQLclass
         MySqlDataAdapter da = new MySqlDataAdapter(sql, conn);
         DataTable dt = new DataTable();
         da.Fill(dt);
+        conn.Close();
 
         //var ls = new List<mytable>();
         json = "[";
@@ -104,6 +131,18 @@ public class SQLclass
         json = json + "]";
 
         return json;
+    }
+
+    public DataTable OnlineDB(string sql)
+    {
+        MySqlConnection conn = new MySqlConnection(connection2);
+        conn.Open();
+        MySqlDataAdapter da = new MySqlDataAdapter(sql, conn);
+        DataTable dt = new DataTable();
+        da.Fill(dt);
+        conn.Close();
+
+        return dt;
     }
 
     public Boolean Modify(string sql)

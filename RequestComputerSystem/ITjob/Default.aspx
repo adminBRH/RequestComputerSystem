@@ -6,10 +6,11 @@
         </div>
         <div class="card col-12 mx-auto my-5">
             <div class="row col-12 mx-auto">
-                <div class="col-12 mx-auto my-3">
-                    <asp:Label ID="lbl_requester" Text="ร้องขอโดย..." runat="server" Font-Size="X-Large"></asp:Label>
+                <div class="col-12 mx-auto my-3 h5 text-right">
+                    ร้องขอโดย: 
+                    <asp:Label ID="lbl_requester" Text="ร้องขอโดย..." runat="server"></asp:Label>
                 </div>
-                <div class="col-6 mx-auto my-3" style="border: solid; border-radius: 20px;">
+                <div class="col-lg-6 col-sm-12 mx-auto my-3" style="border: solid; border-radius: 20px;">
                     <div class="alert alert-info col-12 h5">
                         Select category.
                     </div>
@@ -26,7 +27,7 @@
                         <asp:FileUpload ID="File_attach" AllowMultiple="true" CssClass="form-control" runat="server" Visible="false" />
                     </div>
                 </div>
-                <div class="col-6 mx-auto my-3" style="border: solid; border-radius: 20px;">
+                <div class="col-lg-6 col-sm-12 mx-auto my-3" style="border: solid; border-radius: 20px;">
                     <div class="alert alert-info col-12 h5">
                         Details for request.
                     </div>
@@ -42,7 +43,7 @@
                 </div>
             </div>
             <div class="col-12 mx-auto my-5 text-center">
-                <button id="btn_submit" class="btn btn-primary" style="font-size: x-large;"> บันทึก </button>
+                <button id="btn_submit" class="btn btn-primary" style="font-size: x-large;" onserverclick="btn_submit_ServerClick" runat="server"> บันทึก </button>
             </div>
         </div>
     </form>

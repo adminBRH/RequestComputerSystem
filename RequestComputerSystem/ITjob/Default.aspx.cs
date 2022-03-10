@@ -34,7 +34,8 @@ namespace RequestComputerSystem.ITjob
                 if (!IsPostBack)
                 {
                     lbl_requester.Text = Session["UserFullName"].ToString();
-                    Approval();
+                    string deptid = Session["UserDeptid"].ToString();
+                    Approval(deptid);
                     Category();
                 }
             }
@@ -67,28 +68,49 @@ namespace RequestComputerSystem.ITjob
             RB_subcate.DataBind();
         }
 
-        private string Approval()
+        private string Approval(string deptid)
         {
             string result = "";
+            string approval = "";
+            int i = 1;
 
-            sql = "select a.*,u.username,u.userpname,u.userfname,u.userlname,u.userdeptcode " +
-                "\nfrom it_approval as a " +
-                "\nleft join `user as u on u.username = a.ita_empid " +
-                "\nwhere ita_active = 'yes' order by ita_level ; ";
+            lbl_approval.Text = "ผู้อนุมัติ...";
+
+            sql = "select d.*,concat(u1.userpname,' ',u1.userfname,' ',u1.userlname) as username1 " +
+                ",concat(u2.userpname,' ',u2.userfname,' ',u2.userlname) as username2 " +
+                "\nfrom department as d " +
+                "\nleft join `user` as u1 on u1.username = d.depthod1 " +
+                "\nleft join `user` as u2 on u2.username = d.depthod2 " +
+                "\nwhere deptid = '" + deptid + "'; ";
+            dt = new DataTable();
+            dt = cl_Sql.select(sql);
+            if (dt.Rows.Count > 0)
+            {
+                string username1 = dt.Rows[0]["username1"].ToString();
+                string username2 = dt.Rows[0]["username2"].ToString();
+
+                approval = "ผู้อนุมัติลำดับที่<br />" + i + ". " + username1;
+                if (username2 != "") 
+                {
+                    i++;
+                    approval += "<br />" + i + ". " + username2;
+                }
+                i++;
+            }
+
+            sql = "select ia.*,concat(u.userpname,' ',u.userfname,' ',u.userlname) as username " +
+                "\nfrom itjob_approval as ia " +
+                "\nleft join `user` as u on u.username = ia.ita_empid " +
+                "\nwhere ia.ita_empid <> '' order by ia.ita_level; ";
             dt = new DataTable(); ;
             dt = cl_Sql.select(sql);
             if (dt.Rows.Count > 0)
             {
-                string approval = "";
-                int i = 1;
                 foreach (DataRow dr in dt.Rows)
                 {
-                    if (i == 1)
-                    {
-                        result = dr["username"].ToString();
-                    }
                     if (approval != "") { approval += "<br />"; }
-                    approval = "ผู้อนุมัติลำดับที่ " + i + " " + dr["userpname"].ToString() + " " + dr["userfname"].ToString() + " " + dr["userlname"].ToString();
+                    approval += i + ". " + dr["username"].ToString();
+                    i++;
                 }
                 lbl_approval.Text = approval;
             }
@@ -106,8 +128,61 @@ namespace RequestComputerSystem.ITjob
             {
                 File_attach.Visible = true;
             }
-
+            
             Subcate(cateID);
+        }
+
+        public Boolean checkFile()
+        {
+            Boolean bl = true;
+
+            string FileName = "";
+            string FileType = "";
+
+            if (File_attach.HasFile)
+            {
+                foreach (HttpPostedFile uploadFile in File_attach.PostedFiles)
+                {
+                    FileName = uploadFile.FileName;
+                    string[] exts = FileName.ToString().Split('.');
+                    int maxIndex = exts.Length - 1;
+                    FileName = exts[0].ToString();
+                    FileType = exts[maxIndex].ToString().ToLower();
+
+                    if (FileType == "exe" || FileType == "dll" || FileType == "bat")
+                    {
+                        bl = false;
+                    }
+                }
+            }
+
+            return bl;
+        }
+
+        public Boolean UploadFile(string id)
+        {
+            Boolean bl = false;
+
+            if (File_attach.HasFile)
+            {
+                string Path = "/file/";
+                string FileName = "";
+                foreach (HttpPostedFile uploadFile in File_attach.PostedFiles)
+                {
+                    FileName = uploadFile.FileName;
+                    string[] exts = FileName.ToString().Split('.');
+                    int maxIndex = exts.Length - 1;
+                    FileName = exts[0].ToString() + ",id" + id + "." + exts[maxIndex].ToString();
+                    uploadFile.SaveAs(System.IO.Path.Combine(Server.MapPath(Path), FileName));
+                    bl = true;
+                }
+            }
+            return bl;
+        }
+
+        protected void btn_submit_ServerClick(object sender, EventArgs e)
+        {
+            // ทำถึงการ เช็ค และ อัพโหลด ไฟล์ ตอนกดบันทึก
         }
     }
 }

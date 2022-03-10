@@ -26,6 +26,7 @@ namespace RequestComputerSystem
                 Session["UserLogin"] = Request.Cookies["myCookie"]["UserLogin"];
                 Session["HOD"] = Request.Cookies["myCookie"]["HOD"];
                 Session["UserFullName"] = Server.UrlDecode(Request.Cookies["myCookie"]["UserFullName"]);
+                Session["UserDeptid"] = Request.Cookies["myCookie"]["userdeptcode"];
             }
 
             //Session.Clear();
