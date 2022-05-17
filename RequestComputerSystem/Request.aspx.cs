@@ -21,13 +21,6 @@ namespace RequestComputerSystem
         string Staff = "";
         string Committee = "";
         string userid = "";
-        string RequestID = "";
-
-        string LastID = "";
-
-        string jquery1 = "";
-        string jquery2 = "";
-        string jquery = "";
 
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -54,20 +47,6 @@ namespace RequestComputerSystem
                 Pname();
                 Department();
                 ApproveName();
-            }
-            else
-            {
-                if (CL_validate().ToString() == "y")
-                {
-                    if (CL_Insert() == true)
-                    {
-                        Response.Write("<script>alert('บันทึกข้อมูลเรียบร้อยแล้ว !!'); setTimeout(function(){window.location.href='RequestList.aspx'}, 10);</script>");
-                    }
-                    else
-                    {
-                        Response.Write("<script>alert('ล้มเหลว ไม่สามารถบันทึกข้อมูลได้ !!');</script>");
-                    }
-                }
             }
 
         } // else PostBack
@@ -111,24 +90,26 @@ namespace RequestComputerSystem
             string dept = "";
             dept = InDept.SelectedValue.ToString();
 
-            sql = "select d.*, concat(u.userpname,' ',u.userfname,' ',u.userlname) as 'name', concat(u2.userpname,' ',u2.userfname,' ',u2.userlname) as 'name2' " +
-                "from department as d " +
-                "left join `user` as u on u.username = d.depthod1 " +
-                "left join `user` as u2 on u2.username = d.depthod2 " +
-                "where d.deptid = '" + dept + "'";
+            sql = "select d.*, " +
+                "\nconcat(u.userpname,' ',u.userfname,' ',u.userlname) as 'name', u.userposition as 'userposition1', " +
+                "\nconcat(u2.userpname,' ',u2.userfname,' ',u2.userlname) as 'name2', u2.userposition as 'userposition2' " +
+                "\nfrom department as d " +
+                "\nleft join `user` as u on u.username = d.depthod1 " +
+                "\nleft join `user` as u2 on u2.username = d.depthod2 " +
+                "\nwhere d.deptid = '" + dept + "'";
             dt = new DataTable();
             dt = cl_Sql.select(sql);
             if (dt.Rows.Count > 0)
             {
                 lbl_approval.Visible = true;
                 string Approval = "";
-                Approval = "หัวหน้าแผนก: " + dt.Rows[0]["name"].ToString();
+                Approval = dt.Rows[0]["name"].ToString() + "<br />[" + dt.Rows[0]["userposition1"] + "]";
                 lbl_approval.Text = Approval;
 
                 if (dt.Rows[0]["name2"].ToString() != "")
                 {
                     lbl_approval2.Visible = true;
-                    Approval = "ผจก.สายงาน: " + dt.Rows[0]["name2"].ToString();
+                    Approval = dt.Rows[0]["name2"].ToString() + "<br />[" + dt.Rows[0]["userposition2"] + "]";
                     lbl_approval2.Text = Approval;
                 }
                 else
@@ -148,109 +129,169 @@ namespace RequestComputerSystem
 
         public string CL_validate()
         {
-            // Page Load -----------------------------------------------------------------------------
-            jquery1 = "$(document).ready(function () { $(\"#form1\").on(\"submit\", function () { ";
-            jquery = "$(\"#pageloader\").fadeIn();";
-            jquery2 = " }); });";
-            jquery = jquery1 + jquery + jquery2;
-            Page.ClientScript.RegisterStartupScript(typeof(Page), "a key", "<script type=\"text/javascript\">" + jquery + "</script>");
+            //string jquery1 = "";
+            //string jquery2 = "";
+            //string jquery = "";
 
-            string Ctn = "n";
-                if (Cb_Bconnect.Checked == true || Cb_Email.Checked == true || Cb_VPN.Checked == true || Cb_MS.Checked == true
-                    || Cb_SwL.Checked == true || Cb_IPP.Checked == true || Cb_Com.Checked == true)
+            //// Page Load -----------------------------------------------------------------------------
+            //jquery1 = "$(document).ready(function () { $(\"#form1\").on(\"submit\", function () { ";
+            //jquery = "$(\"#pageloader\").fadeIn();";
+            //jquery2 = " }); });";
+            //jquery = jquery1 + jquery + jquery2;
+            //Page.ClientScript.RegisterStartupScript(typeof(Page), "a key", "<script type=\"text/javascript\">" + jquery + "</script>");
+
+            string Ctn = "y";
+
+            InUsername.Attributes.Add("class", "form-control");
+            if (InUsername.Value.Trim() == "")
+            {
+                InUsername.Attributes.Add("class", "form-control redBox");
+                Ctn = "n";
+            }
+            InFName.Attributes.Add("class", "form-control");
+            if (InFName.Value.Trim() == "")
+            {
+                InFName.Attributes.Add("class", "form-control redBox");
+                Ctn = "n";
+            }
+            InLName.Attributes.Add("class", "form-control");
+            if (InLName.Value.Trim() == "")
+            {
+                InLName.Attributes.Add("class", "form-control redBox");
+                Ctn = "n";
+            }
+            InPost.Attributes.Add("class", "form-control");
+            if (InPost.Value.Trim() == "")
+            {
+                InPost.Attributes.Add("class", "form-control redBox");
+                Ctn = "n";
+            }
+            Specailty.Attributes.Add("class", "form-control");
+            if (Specailty.Value.Trim() == "")
+            {
+                Specailty.Attributes.Add("class", "form-control redBox");
+                Ctn = "n";
+            }
+            CodeCare.Attributes.Add("class", "form-control");
+            if (CodeCare.Value.Trim() == "")
+            {
+                CodeCare.Attributes.Add("class", "form-control redBox");
+                Ctn = "n";
+            }
+            Location.Attributes.Add("class", "form-control");
+            if (Location.Value.Trim() == "")
+            {
+                Location.Attributes.Add("class", "form-control redBox");
+                Ctn = "n";
+            }
+
+            dd_Quota.CssClass = "";
+            txt_commmitee.CssClass = "";
+
+            if (Cb_Bconnect.Checked == true || CbEmail.Checked == true || Cb_VPN.Checked == true || Cb_MS.Checked == true
+                || Cb_SwL.Checked == true || Cb_IPP.Checked == true || Cb_Com.Checked == true)
+            {
+                lblCb_Bconnect.Visible = false;
+                lblCb_Email.Visible = false;
+                lblCb_VPN.Visible = false;
+                lblCb_MS.Visible = false;
+                lblCb_SwL.Visible = false;
+                lblCb_IPP.Visible = false;
+                lblCb_Com.Visible = false;
+
+                if (CbEmail.Checked)
                 {
-                    lblCb_Bconnect.Visible = false;
-                    lblCb_Email.Visible = false;
-                    lblCb_VPN.Visible = false;
-                    lblCb_MS.Visible = false;
-                    lblCb_SwL.Visible = false;
-                    lblCb_IPP.Visible = false;
-                    lblCb_Com.Visible = false;
-
-                    Ctn = "y";
-                    if (Cb_Email.Checked)
+                    txt_Email.Attributes.Remove("style");
+                    if (txt_Email.Value.Trim() == "")
                     {
-                        if (txtEmail.Text == "")
-                        {
-                            txtEmailValidator.Enabled = true;
-                            Ctn = "n";
-                        }
-                        else
-                        {
-                            txtEmailValidator.Enabled = false;
-                        }
+                        txt_Email.Attributes.Add("style", "border: solid; border-color: red;");
+                        //txtEmailValidator.Enabled = true;
+                        Ctn = "n";
+                    }
+                    else
+                    {
+                        txt_Email.Attributes.Add("style", "border: solid; border-color: green;");
+                        //txtEmailValidator.Enabled = false;
+                    }
 
-                        if (dd_Quota.SelectedValue == "")
-                        {
-                            dd_QuotaValidator.Enabled = true;
-                            Ctn = "n";
-                        }
-                        else
-                        {
-                            dd_QuotaValidator.Enabled = false;
-                        } 
+                    if (dd_Quota.SelectedValue == "")
+                    {
+                        dd_Quota.CssClass = "redBox";
+                        //dd_QuotaValidator.Enabled = true;
+                        Ctn = "n";
+                    }
+                    else
+                    {
+                        dd_Quota.CssClass = "greenBox";
+                        //dd_QuotaValidator.Enabled = false;
+                    }
 
-                        if (cb_hod.Checked || cb_staff.Checked || cb_committee.Checked)
-                        {
-                            if (cb_hod.Checked) { HOD = cb_hod.Value.ToString(); }
-                            if (cb_staff.Checked) { Staff = cb_staff.Value.ToString(); }
+                    if (cb_hod.Checked || cb_staff.Checked || cb_committee.Checked)
+                    {
+                        if (cb_hod.Checked) { HOD = cb_hod.Value.ToString(); }
+                        if (cb_staff.Checked) { Staff = cb_staff.Value.ToString(); }
 
                         lblcb_groupmail.Visible = false;
-                            if (cb_committee.Checked)
+                        if (cb_committee.Checked)
+                        {
+                            if (txt_commmitee.Text == "")
                             {
-                                if (txt_commmitee.Text == "")
-                                {
-                                    txt_commmiteeValidator.Enabled = true;
-                                    Ctn = "n";
-                                }
-                                else
-                                {
-                                    txt_commmiteeValidator.Enabled = false;
-                                    Committee = txt_commmitee.Text.Trim();
-                                }
+                                txt_commmitee.CssClass = "redBox";
+                                //txt_commmiteeValidator.Enabled = true;
+                                Ctn = "n";
                             }
                             else
                             {
-                                txt_commmiteeValidator.Enabled = false;
+                                txt_commmitee.CssClass = "greenBox";
+                                //txt_commmiteeValidator.Enabled = false;
+                                Committee = txt_commmitee.Text.Trim();
                             }
                         }
                         else
                         {
-                            lblcb_groupmail.Visible = true;
-                            Ctn = "n";
+                            //txt_commmiteeValidator.Enabled = false;
                         }
                     }
+                    else
+                    {
+                        lblcb_groupmail.Visible = true;
+                        Ctn = "n";
+                    }
                 }
-                else
-                {
-                    lblCb_Bconnect.Visible = true;
-                    lblCb_Email.Visible = true;
-                    lblCb_VPN.Visible = true;
-                    lblCb_MS.Visible = true;
-                    lblCb_SwL.Visible = true;
-                    lblCb_IPP.Visible = true;
-                    lblCb_Com.Visible = true;
+            }
+            else
+            {
+                lblCb_Bconnect.Visible = true;
+                lblCb_Email.Visible = true;
+                lblCb_VPN.Visible = true;
+                lblCb_MS.Visible = true;
+                lblCb_SwL.Visible = true;
+                lblCb_IPP.Visible = true;
+                lblCb_Com.Visible = true;
                 Ctn = "n";
-                }
+            }
 
-                if (Ctn == "n")
-                {
-                    lblAlert.ForeColor = System.Drawing.Color.Red;
-                    //lblAlert.Text = "กรุณากรอกให้ครบถ้วน !!";
-                }
-                else
-                {
-                    lblAlert.ForeColor = System.Drawing.Color.Green;
-                    //lblAlert.Text = "Success !!";
-                }
+            if (Ctn == "n")
+            {
+                lblAlert.ForeColor = System.Drawing.Color.Red;
+                //lblAlert.Text = "กรุณากรอกให้ครบถ้วน !!";
+            }
+            else
+            {
+                lblAlert.ForeColor = System.Drawing.Color.Green;
+                //lblAlert.Text = "Success !!";
+            }
             return Ctn;
         }
 
-        public Boolean CL_Insert()
+        public string CL_Insert()
         {
+            string RequestID = "";
+            string LastID = "";
+
             //try
             //{
-                Boolean bl;
+            Boolean bl;
 
                 userid = Session["UserLogin"].ToString();
                 string rqtype = "Request";
@@ -291,7 +332,7 @@ namespace RequestComputerSystem
 
                     string LastID2 = "";
 
-                    string rqsemail = txtEmail.Text.Trim();
+                    string rqsemail = txt_Email.Value.Trim();
                     string rqsquota = dd_Quota.SelectedValue.ToString();
 
                     if (Cb_Bconnect.Checked == true)
@@ -365,7 +406,7 @@ namespace RequestComputerSystem
                             bl = cl_Sql.Modify(sql);
                         }
                     }
-                    if (Cb_Email.Checked == true)
+                    if (CbEmail.Checked == true)
                     {
                         sql = "INSERT INTO requestsystems" +
                             "(rqid, sysid, rqsemail, rqsquota, rqsgroupmail_hod, rqsgroupmail_staff, rqsgroupmail_committeeother, rqsflag)" +
@@ -458,15 +499,17 @@ namespace RequestComputerSystem
                         cl_Sql.Modify(sql);
                         sql = "Delete from request where rqid = " + LastID;
                         cl_Sql.Modify(sql);
+
+                    RequestID = "";
                     }
                 }
 
                 if (bl == true)
                 {
-                    SendMail();
+                    SendMail(RequestID);
                 }
 
-                return bl;
+                return RequestID;
             //}
             //catch (Exception ex)
             //{
@@ -475,7 +518,7 @@ namespace RequestComputerSystem
             //}
         }
 
-        public string SendMail()
+        public string SendMail(string RequestID)
         {
             string rt = "";
 
@@ -508,6 +551,8 @@ namespace RequestComputerSystem
                             "<p></p><p></p><p>Please do not reply to this email because this address is not monitored.</p>" +
                             "<p>Automatic send by Request Systems.</p>";
 
+                //emailTo = "brh.hito@brh.co.th"; // --------------------- For test ----------------------
+
                 BRH_SendMail.ServiceSoapClient BRHmail = new BRH_SendMail.ServiceSoapClient();
                 BRHmail.MailSend(emailTo, "Your Systems request", htmlBody, emailFrom, "Systems Request", "", "", "", false);
 
@@ -520,6 +565,25 @@ namespace RequestComputerSystem
         protected void Unnamed_Click(object sender, EventArgs e)
         {
 
+        }
+
+        protected void btn_submit_ServerClick(object sender, EventArgs e)
+        {
+            if (CL_validate().ToString() == "y")
+            {
+                string rqid = CL_Insert();
+                if (rqid != "")
+                {
+                    Response.Redirect("RequestList?qid=" + rqid);
+                    //lblAlert.Text = "บันทึกข้อมูลเรียบร้อยแล้ว !!";
+                    //Response.Write("<script>alert('บันทึกข้อมูลเรียบร้อยแล้ว !!'); setTimeout(function(){window.location.href='RequestList.aspx'}, 10);</script>");
+                }
+                else
+                {
+                    lblAlert.Text = "ล้มเหลว ไม่สามารถบันทึกข้อมูลได้ !!";
+                    //Response.Write("<script>alert('ล้มเหลว ไม่สามารถบันทึกข้อมูลได้ !!');</script>");
+                }
+            }
         }
 
         //protected void a_hod_ServerClick(object sender, EventArgs e)

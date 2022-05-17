@@ -36,6 +36,18 @@
                         <div class="col-12 text-left btn btn-success">
                             <asp:FileUpload ID="FileUpload1" CssClass="btn btn-light" AllowMultiple="true" runat="server" />
                         </div>
+                        <div class="row col-12 mx-auto my-2">
+                            <div class="col-2 mx-auto text-right my-auto">ผู้รับเงิน</div>
+                            <div class="col-2 mx-auto">
+                                <input type="text" id="txt_forpName" value="" class="form-control" placeholder="คำนำหน้า" runat="server" />
+                            </div>
+                            <div class="col-4 mx-auto">
+                                <input type="text" id="txt_forfName" value="" class="form-control" placeholder="ชื่อ" runat="server" />
+                            </div>
+                            <div class="col-4 mx-auto">
+                                <input type="text" id="txt_forlName" value="" class="form-control" placeholder="นามสกุล" runat="server" />
+                            </div>
+                        </div>
                     </div>
 
                     <br />

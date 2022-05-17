@@ -27,13 +27,14 @@
                     <asp:BoundField DataField="dr_datetime" HeaderText="Create date" DataFormatString="{0: dd/MM/yyyy HH:mm}"></asp:BoundField>
                     <asp:BoundField DataField="fullname" HeaderText="Create by"></asp:BoundField>
                     <asp:BoundField DataField="deptname" HeaderText="From department"></asp:BoundField>
-                    <asp:BoundField DataField="df_name" HeaderText="Document name"></asp:BoundField> 
+                    <asp:BoundField DataField="df_name" HeaderText="Document name"></asp:BoundField>
+                    <asp:BoundField DataField="dr_forname" HeaderText="For"></asp:BoundField>
                     <asp:BoundField DataField="dr_status" HeaderText="Status"></asp:BoundField>
                     <asp:TemplateField HeaderText="" HeaderStyle-CssClass="title_bg" ItemStyle-HorizontalAlign="Left">
                         <ItemTemplate>
                             <div class="mx-auto my-auto">
                                 <a class="btn btn-outline-dark" onmouseover="GetID('<%# Eval("dr_id") %>','<%# Eval("fullname") %>','<%# Eval("dr_datetime") %>','<%# Eval("deptname") %>','<%# Eval("df_name") %>','<%# Eval("dr_status") %>')" data-toggle="modal" data-target="#exampleModal">Detail</a>
-                            </div> 
+                            </div>
                         </ItemTemplate>
                     </asp:TemplateField>
                     <asp:TemplateField HeaderText="" HeaderStyle-CssClass="title_bg" ItemStyle-HorizontalAlign="Left">
@@ -42,7 +43,7 @@
                                 <a class="btn btn-outline-dark" href="Approve.aspx?id=<%# Eval("dr_id") %>&type=<%# Eval("dr_type") %>">Approve</a>
                             </div>
                         </ItemTemplate>
-                    </asp:TemplateField>                  
+                    </asp:TemplateField>
                 </Columns>
 
                 <FooterStyle BackColor="#CCCCCC" ForeColor="Black"></FooterStyle>

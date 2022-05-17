@@ -82,22 +82,33 @@ namespace RequestComputerSystem
             string date = da;
 
             sql = "select r.rqid, rs.rqsid, a.apid, CONCAT('[',r.rqid,'.',rs.rqsid,']') as 'ReqID', r.rqdateadd, CONCAT(r.rqpname,' ',r.rqfname,' ',r.rqlname) as 'UserReqName' " +
-                ", r.rqpost, r.rqdepartment as 'UserReqDept', d.deptname as 'UserReqDeptName' " +
-                ", s.sysname, a.apstatus, a.aplevel, a.aplname, r.userid ,a.userid as 'apuserapprove', a.apuserapprove1, a.apuserapprove2, a.apdate " +
-                "from brh_it_request.requestsystems as rs " +
-                "left join brh_it_request.request as r on r.rqid = rs.rqid " +
-                "left join brh_it_request.systems as s on s.sysid = rs.sysid " +
-                "left join brh_it_request.department as d on d.deptid = r.rqdepartment " +
-                "left join( " +
-                "    select a.*,al.aplname from brh_it_request.approve as a " +
-                "    left join(select rqsid, MAX(aplevel) as 'aplevelMAX','Y' as 'LastStatus' from brh_it_request.approve group by rqsid) as a2 " +
-                "        on a2.rqsid = a.rqsid and a2.aplevelMAX = a.aplevel " +
-                "    left join brh_it_request.approvelevel as al on al.apllevel=a.aplevel " +
-                "    where a2.LastStatus = 'Y' " +
-                ") a on a.rqsid = rs.rqsid " +
-                "where apstatus like '%" + apStatus + "%' " +
-                "and rs.sysid " + apSystem +
-                "and r.rqdateadd like '%" + date + "%' ";
+                "\n, r.rqpost, r.rqdepartment as 'UserReqDept', d.deptname as 'UserReqDeptName' " +
+                "\n, s.sysname, a.apstatus, a.aplevel, a.aplname, r.userid ,a.userid as 'apuserapprove', a.apuserapprove1, a.apuserapprove2, a.apdate " +
+                "\nfrom brh_it_request.requestsystems as rs " +
+                "\nleft join brh_it_request.request as r on r.rqid = rs.rqid " +
+                "\nleft join brh_it_request.systems as s on s.sysid = rs.sysid " +
+                "\nleft join brh_it_request.department as d on d.deptid = r.rqdepartment " +
+                "\nleft join( " +
+                "\n    select a.*,al.aplname from brh_it_request.approve as a " +
+                "\n    left join(select rqsid, MAX(aplevel) as 'aplevelMAX','Y' as 'LastStatus' from brh_it_request.approve group by rqsid) as a2 " +
+                "\n        on a2.rqsid = a.rqsid and a2.aplevelMAX = a.aplevel " +
+                "\n    left join brh_it_request.approvelevel as al on al.apllevel=a.aplevel " +
+                "\n    where a2.LastStatus = 'Y' " +
+                "\n) a on a.rqsid = rs.rqsid " +
+                "\nwhere r.rqtype <> 'Reject' " +
+                "\nand apstatus like '%" + apStatus + "%' " +
+                "\nand rs.sysid " + apSystem +
+                "\nand r.rqdateadd like '%" + date + "%' ";
+
+            if (Request.QueryString["qid"] != null)
+            {
+                string rqid = Request.QueryString["qid"].ToString();
+                if (rqid != "")
+                {
+                    sql += "\nand r.rqid='" + rqid + "' ";
+                }
+
+            }
 
                 if (UserStatus == "admin" || UserStatus == "it")
                 {

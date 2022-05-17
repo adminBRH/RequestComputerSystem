@@ -195,29 +195,19 @@ public class DisbursementClass
     public string CRID(string empid, string status)
     {
         string result = "";
-        sql = "select * from disbursement_approve where " +
-            "(da_level1 = '" + empid + "' " +
-            "or da_level2 = '" + empid + "' " +
-            "or da_level3 = '" + empid + "' " +
-            "or da_level4 = '" + empid + "' " +
-            "or da_level5 = '" + empid + "' " +
-            "or da_level6 = '" + empid + "' " +
-            "or da_level7 = '" + empid + "') ";
-        if (status == "waiting")
+
+        sql = "select da_crid from disbursement_approve where " +
+            "\n(da_level1 = '" + empid + "' and da_status1 like '%" + status + "%' " +
+            "\nor da_level2 = '" + empid + "' and da_status2 like '%" + status + "%' " +
+            "\nor da_level3 = '" + empid + "' and da_status3 like '%" + status + "%' " +
+            "\nor da_level4 = '" + empid + "' and da_status4 like '%" + status + "%' " +
+            "\nor da_level5 = '" + empid + "' and da_status5 like '%" + status + "%' " +
+            "\nor da_level6 = '" + empid + "' and da_status6 like '%" + status + "%' " +
+            "\nor da_level7 = '" + empid + "' and da_status7 like '%" + status + "%' ) ";
+
+        if (status != "waiting") // != Wait me
         {
-            sql = "select * from disbursement_approve where da_level1 = '" + empid + "' and da_status1 = '" + status + "' " +
-                "    union " +
-                "select* from disbursement_approve where da_level2 = '" + empid + "' and da_status2 = '" + status + "' " +
-                "    union " +
-                "select* from disbursement_approve where da_level3 = '" + empid + "' and da_status3 = '" + status + "' " +
-                "    union " +
-                "select* from disbursement_approve where da_level4 = '" + empid + "' and da_status4 = '" + status + "' " +
-                "    union " +
-                "select* from disbursement_approve where da_level5 = '" + empid + "' and da_status5 = '" + status + "' " +
-                "    union " +
-                "select* from disbursement_approve where da_level6 = '" + empid + "' and da_status6 = '" + status + "' " +
-                "    union " +
-                "select* from disbursement_approve where da_level7 = '" + empid + "' and da_status7 = '" + status + "'";
+            sql += "\nunion select dr_id as 'da_crid' from disbursement_request where dr_empid = '" + empid + "' and dr_status like '%" + status + "%' ";
         }
         dt = new DataTable();
         dt = cl_Sql.select(sql);

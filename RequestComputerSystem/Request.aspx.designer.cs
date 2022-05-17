@@ -33,6 +33,15 @@ namespace RequestComputerSystem
         protected global::System.Web.UI.ScriptManager ScriptManager1;
 
         /// <summary>
+        /// UpdatePanel_input control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.UpdatePanel UpdatePanel_input;
+
+        /// <summary>
         /// InUsername control.
         /// </summary>
         /// <remarks>
@@ -94,15 +103,6 @@ namespace RequestComputerSystem
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlInputText InPost;
-
-        /// <summary>
-        /// UpdatePanel1 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.UpdatePanel UpdatePanel1;
 
         /// <summary>
         /// InDept control.
@@ -294,31 +294,22 @@ namespace RequestComputerSystem
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl lblCb_Email;
 
         /// <summary>
-        /// Cb_Email control.
+        /// CbEmail control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.CheckBox Cb_Email;
+        protected global::System.Web.UI.HtmlControls.HtmlInputCheckBox CbEmail;
 
         /// <summary>
-        /// txtEmail control.
+        /// txt_Email control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtEmail;
-
-        /// <summary>
-        /// txtEmailValidator control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.RequiredFieldValidator txtEmailValidator;
+        protected global::System.Web.UI.HtmlControls.HtmlInputText txt_Email;
 
         /// <summary>
         /// dd_Quota control.
@@ -328,15 +319,6 @@ namespace RequestComputerSystem
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.DropDownList dd_Quota;
-
-        /// <summary>
-        /// dd_QuotaValidator control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.RequiredFieldValidator dd_QuotaValidator;
 
         /// <summary>
         /// lblcb_groupmail control.
@@ -384,15 +366,6 @@ namespace RequestComputerSystem
         protected global::System.Web.UI.WebControls.TextBox txt_commmitee;
 
         /// <summary>
-        /// txt_commmiteeValidator control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.RequiredFieldValidator txt_commmiteeValidator;
-
-        /// <summary>
         /// Label1 control.
         /// </summary>
         /// <remarks>
@@ -402,13 +375,13 @@ namespace RequestComputerSystem
         protected global::System.Web.UI.WebControls.Label Label1;
 
         /// <summary>
-        /// Submit1 control.
+        /// btn_submit control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlButton Submit1;
+        protected global::System.Web.UI.HtmlControls.HtmlAnchor btn_submit;
 
         /// <summary>
         /// lblAlert control.
@@ -418,6 +391,15 @@ namespace RequestComputerSystem
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label lblAlert;
+
+        /// <summary>
+        /// lbl_script control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lbl_script;
 
         /// <summary>
         /// lbl_hod_dept control.

@@ -47,22 +47,40 @@ namespace RequestComputerSystem.Disbursement
             string crid = cl_pv.CRID(empid, status);
 
             sql = "SELECT f.df_name, dr.*,CONCAT(userpname,' ',userfname,' ',userlname) as 'fullname',d.deptname " +
+                "\n,CONCAT(dr_forpname,' ',dr_forfname,' ',dr_forlname) as dr_forname " +
                 "\nFROM disbursement_request as dr " +
                 "\nleft join `user` as u on u.username = dr.dr_empid " +
                 "\nleft join department as d on d.deptid = dr.dr_dept " +
                 "\nleft join disbursement_form as f on f.df_id = dr.dr_formid " +
-                "\nwhere dr_status like '%" + status + "%' ";
-                if (UserStatus == "admin" || UserStatus == "test")
+                //"\nwhere dr_status like '%" + status + "%' ";
+                "\nwhere dr_status <> 'cancel' ";
+            if (UserStatus == "admin" || UserStatus == "test")
+            { }
+            else
+            {
+                if (status == "waiting")
                 {
-
+                    sql += "\nand dr_id in (" + crid + ") ";
                 }
                 else
                 {
-                    sql = sql + "\nand dr_id in (" + crid + ") ";
+                    if (UserStatus == "finance" && status == "")
+                    { }
+                    else
+                    {
+                        sql += "\nand dr_status like '%" + status + "%' ";
+                        if (UserStatus != "finance")
+                        {
+                            sql += "\nand dr_empid = '" + empid + "' ";
+                        }
+                    }
                 }
-                if (dateFrom != "") {
-                    sql = sql + "\nand (CONVERT(dr_datetime,date) between '" + dateFrom + "' and '" + dateTo + "') ";
-                }
+            }
+
+            if (dateFrom != "") {
+                sql = sql + "\nand (CONVERT(dr_datetime,date) between '" + dateFrom + "' and '" + dateTo + "') ";
+            }
+
             sql = sql + "\nORDER BY dr_id DESC ";
 
             dt = new DataTable();
@@ -152,7 +170,7 @@ namespace RequestComputerSystem.Disbursement
             string username = Session["UserLogin"].ToString();
             if (e.Row.RowType == DataControlRowType.DataRow)
             {
-                TableCell dr_status = e.Row.Cells[5];
+                TableCell dr_status = e.Row.Cells[6];
                 string DrStatus = dr_status.Text.Trim();
 
                 if (DrStatus == "waiting")

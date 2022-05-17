@@ -100,9 +100,15 @@ namespace RequestComputerSystem.Disbursement
             string ddldept = ddl_department.SelectedValue.ToString();
             string status = "";
 
+            string forfname = txt_forfName.Value.ToString().Trim();
+            string forlname = txt_forlName.Value.ToString().Trim();
+            string forpname = txt_forpName.Value.ToString().Trim();
+            string forName = forfname + " " + forlname;
+
             string type = SelectType(ddlform);
 
-            sql = "INSERT INTO disbursement_request (dr_datetime, dr_empid, dr_formid, dr_status, dr_type, dr_dept) VALUES(CURRENT_TIMESTAMP, '" + empid + "', '"+ ddlform + "', 'waiting', '"+ type + "', '"+ ddldept +"'); ";
+            sql = "INSERT INTO disbursement_request (dr_datetime, dr_empid, dr_formid, dr_status, dr_type, dr_dept, dr_forfname, dr_forlname, dr_forpname) " +
+                "\nVALUES(CURRENT_TIMESTAMP, '" + empid + "', '"+ ddlform + "', 'waiting', '"+ type + "', '"+ ddldept +"', '" + forfname + "', '" + forlname + "', '" + forpname + "'); ";
             if (CL_Sql.Modify(sql))
             {
                 string drid = CL_Sql.LastID("dr_id", "disbursement_request");
