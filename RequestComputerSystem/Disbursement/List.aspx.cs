@@ -54,7 +54,7 @@ namespace RequestComputerSystem.Disbursement
                 "\nleft join disbursement_form as f on f.df_id = dr.dr_formid " +
                 //"\nwhere dr_status like '%" + status + "%' ";
                 "\nwhere dr_status <> 'cancel' ";
-            if (UserStatus == "admin" || UserStatus == "test")
+            if (UserStatus == "admin" || UserStatus == "test" || UserStatus == "superuser")
             { }
             else
             {
@@ -131,7 +131,7 @@ namespace RequestComputerSystem.Disbursement
         protected void btn_file_Click(object sender, EventArgs e)
         {
             string txth_id = txtH_id.Value.ToString();
-            string file = cl_file.Show("FileUpload/", txth_id);
+            string file = cl_file.Show("FileUpload/", "id" + txth_id + ",*");
 
             div_file.Visible = true;
 

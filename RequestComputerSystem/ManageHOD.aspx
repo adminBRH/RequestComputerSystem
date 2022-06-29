@@ -17,7 +17,7 @@
                 <asp:BoundField DataField="HOD2" HeaderText="ชื่อฟัวหน้าฝ่าย"></asp:BoundField>
                 <asp:TemplateField HeaderText="" HeaderStyle-CssClass="title_bg" ItemStyle-HorizontalAlign="Left">
                     <ItemTemplate>
-                        <a href="#" class="btn btn-outline-danger" onmouseover="FixID('<%# Eval("deptid") %>')" data-toggle="modal" data-target="#alertModal">edit</a>
+                        <a href="#" class="btn btn-outline-danger" onmouseover="FixID('<%# Eval("deptid") %>','<%# Eval("deptname") %>')" data-toggle="modal" data-target="#alertModal">edit</a>
                     </ItemTemplate>
                 </asp:TemplateField>
             </Columns>
@@ -54,7 +54,10 @@
           <div class="modal-body">
 
               <div class="row col-12">
-                  คุณต้องการแก้ไขข้อมูลแผนกรหัส&nbsp;&nbsp;(<asp:Label ID="lbl_deptid" Text="" runat="server"></asp:Label>)&nbsp;&nbsp;?
+                  <asp:Label ID="lbl_dept" Text="" runat="server"></asp:Label>
+              </div>
+              <div hidden="hidden">
+                  <asp:Label ID="lbl_deptid" Text="" runat="server"></asp:Label>
               </div>
 
           </div>
@@ -66,6 +69,12 @@
       </div>
     </div>
 
+        <script>
+            function fn_modalEdit() {
+                $('#editModal').modal('show');
+            }
+        </script>
+
 
         <div hidden="hidden">
                 <input type="text" id="txtH_ID" value="" runat="server" />
@@ -75,16 +84,16 @@
         <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModalTitle" aria-hidden="true">
       <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
         <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="editModalTitle">แก้ไขลำดับ HOD</h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div>
-          <div class="modal-body">
-
-              <asp:UpdatePanel ID="UpdatePanel_edit" runat="server">
+            <asp:UpdatePanel ID="UpdatePanel_edit" runat="server">
                 <ContentTemplate>
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="editModalTitle">แก้ไขลำดับ HOD</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                  <div class="modal-body">
+
                     <div id="div_edit" class="row col-12" runat="server" visible="false">
                         <div class="col-4 text-right">แผนก : </div>
                         <div class="col-8 text-left"><asp:Label ID="lbl_deptname" Text="" runat="server"></asp:Label></div>
@@ -97,17 +106,20 @@
                         <div class="col-4 text-right">ชื่อหัวหน้าฝ่าย : </div>
                         <div class="col-8 text-left"><input id="txt_hod2name" class="col-8 form-control" value="" runat="server" disabled="disabled" /></div>
                     </div>
+                    <div class="col-12 mx-auto">
+                        <asp:Label ID="lbl_edit_alert" Text="" ForeColor="Red" Font-Size="Large" runat="server"></asp:Label>
+                    </div>
+
+                  </div>
+                  <div id="div_edit_btn" class="modal-footer" runat="server">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" id="btn_update" onserverclick="btn_update_ServerClick" class="btn btn-primary" runat="server">Save changes</button>
+                  </div>
                 </ContentTemplate>
                 <Triggers>
                     <asp:AsyncPostBackTrigger ControlID="btn_edit" EventName="serverclick" />
                 </Triggers>
             </asp:UpdatePanel>
-
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-            <button type="button" id="Button1" class="btn btn-primary" runat="server">Save changes</button>
-          </div>
         </div>
       </div>
     </div>
@@ -115,7 +127,9 @@
     </form>
 
     <script>
-        function FixID(x) {
+        function FixID(x, name) {
+            var lbldept = document.getElementById("<%= lbl_dept.ClientID %>");
+            lbldept.innerHTML = "คุณต้องการแก้ไขข้อมูลแผนก&nbsp;&nbsp;" + name + "&nbsp;&nbsp;ใช่หรือไม่";
             var id = document.getElementById("<%= txtH_ID.ClientID %>");
             var lblid = document.getElementById("<%= lbl_deptid.ClientID %>");
             id.value = x;

@@ -488,6 +488,15 @@ namespace RequestComputerSystem
                     lb7_4.Text = "หมายเหตุ : " + dt.Rows[0]["apremark"].ToString();
                 }
                 else { }
+
+                sql = "select * from `user` where username = '" + dt.Rows[0]["userid"].ToString() + "'; ";
+                dt = new DataTable();
+                dt = cl_Sql.select(sql);
+                if (dt.Rows.Count > 0)
+                {
+                    string fullname = dt.Rows[0]["userpname"].ToString() + " " + dt.Rows[0]["userfname"].ToString() + " " + dt.Rows[0]["userlname"].ToString();
+                    lb7_1.Text = "<b>" + fullname + "</b>";
+                }
             }
 
             return apstatus;

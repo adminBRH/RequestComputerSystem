@@ -37,6 +37,7 @@
                                            <br /><asp:Label ID="lbl_HOD2" Text="" runat="server"></asp:Label>
                                            <br />
                                            <asp:FileUpload ID="FileUpload1" AllowMultiple="true" runat="server" />
+                                           <asp:Label ID="lbl_fileAlert" Text="" runat="server"></asp:Label>
                                         </ContentTemplate>
                                        <Triggers>
                                            <asp:AsyncPostBackTrigger ControlID="dd_department" EventName="selectedindexchanged" />

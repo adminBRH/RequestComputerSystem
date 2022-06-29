@@ -190,30 +190,21 @@ public class SQLclass
 
 public class Files
 {
-    public string Show(string path, string id)
+    public string Show(string path, string findID)
     {
+        string deleteTxt = findID.Replace("*","");
         string result = "";
         string FileLink = "";
         string FileName = "";
         DirectoryInfo myDirInfo;
         myDirInfo = new DirectoryInfo(HttpContext.Current.Server.MapPath(path));
-        FileInfo[] arrFileInfo = myDirInfo.GetFiles("id" + id + ",*");
+        FileInfo[] arrFileInfo = myDirInfo.GetFiles(findID);
         if (arrFileInfo.Length > 0) {
             foreach (FileInfo myFileInfo in arrFileInfo)
             {
-                string[] FNs = myFileInfo.Name.Split(',');
-                int ml = FNs.Length;
-                string name = "";
-                for (int i = 1; i < ml; i++)
-                {
-                    if (name != "")
-                    {
-                        name = name + ",";
-                    }
-                    name = name + FNs[i].ToString();
-                }
-                FileName = "- " + name;
-                FileLink = FileLink + ("<a target='_blank' href='" + path + myFileInfo.Name + "' >" + FileName + "</a><br />");
+                string LinkName = myFileInfo.Name.ToString();
+                FileName = "- " + LinkName.Replace(deleteTxt, "");
+                FileLink = FileLink + "<a target='_blank' href='" + path + LinkName + "' >" + FileName + "</a><br />";
             }
         }
         else
@@ -222,6 +213,21 @@ public class Files
         }
         result = FileLink;
 
+        return result;
+    }
+
+    public string FileNameNotUse(string name)
+    {
+        string result = "";
+        string[] arNotUse = "&,+,#,$,฿,^,*,%,/,\\,?,!,:,;,\",'".Split(',');
+        for (int i = 0; i < arNotUse.Length; i++)
+        {
+            if (name.Contains(arNotUse[i]))
+            {
+                result = "ชื่อไฟล์มีอักษรพิเศษ ที่ห้ามใช้งาน (& + # $ ฿ ^ * % / \\ ? ! : ; \" ')";
+                break;
+            }
+        }
         return result;
     }
 }

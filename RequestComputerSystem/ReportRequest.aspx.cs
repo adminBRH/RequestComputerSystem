@@ -170,8 +170,10 @@ namespace RequestComputerSystem
                     }
                     if (dtr["aplevel"].ToString() == "7")
                     {
-                        lb_lv7.Text = "BRH IT GROUP";
-                        lb_pos7.Text = "IT GLS";
+                        //lb_lv7.Text = "BRH IT GROUP";
+                        lb_lv7.Text = dtr["UserLevel"].ToString();
+                        //lb_pos7.Text = "IT GLS";
+                        lb_pos7.Text = dtr["userposition"].ToString();
                         lb_date7.Text = DateTime.Parse(dtr["apdate"].ToString()).ToString(formatdate);
                     }
                     if (dtr["aplevel"].ToString() == "8")

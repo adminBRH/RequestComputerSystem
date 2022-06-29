@@ -17,6 +17,8 @@ namespace RequestComputerSystem
         DataTable dt;
         SQLclass CL_Sql = new SQLclass();
 
+        Files CL_Files = new Files();
+
         protected void Page_Load(object sender, EventArgs e)
         {
             if (Session["UserLogin"] == null)
@@ -30,6 +32,7 @@ namespace RequestComputerSystem
                 Searchhod2();
             }
         }
+
 
         public Boolean department()
         {
@@ -159,7 +162,10 @@ namespace RequestComputerSystem
             }
             else
             {
-                Response.Write("<script>alert('ไม่สามารถบันทึกได้กรุณาติดต่อ Admin');</script>");
+                if (lbl_fileAlert.Text == "")
+                {
+                    Response.Write("<script>alert('ไม่สามารถบันทึกได้กรุณาติดต่อ Admin');</script>");
+                }
             }
         }
 
@@ -192,21 +198,39 @@ namespace RequestComputerSystem
 
             string Dept = dl_department.SelectedValue.ToString();
 
-            sql = "INSERT INTO changeorder" +
-            "(`date`, deptid, status, empid, Approvelevel1, Approvelevel2, Approvelevel3, Approvelevel4, Approvelevel5, Approvelevel6, detailorder, objective, Approvelv, Other, Details)" +
-            "VALUES(CURRENT_TIMESTAMP, '" + Dept + "', 'Waiting', '" + Session["UserLogin"].ToString() + "', '" + Approvelevel1 + "', '" + Approvelevel2 + "', '', '', '', '', '" + detail + "' , '" + objects + "', '" + level + "', '" + other + "', '" + details + "');";
-            if (CL_Sql.Modify(sql))
+            string checkFile = "";
+            string FileName = FileUpload1.FileName;
+            if (FileName != "")
             {
-                string rqid = CL_Sql.LastID("rqid", "changeorder");
-                if (rqid != "")
+                checkFile = CL_Files.FileNameNotUse(FileName);
+            }
+
+            lbl_fileAlert.Text = "";
+
+            if (checkFile == "")
+            {
+                sql = "INSERT INTO changeorder" +
+                "(`date`, deptid, status, empid, Approvelevel1, Approvelevel2, Approvelevel3, Approvelevel4, Approvelevel5, Approvelevel6, detailorder, objective, Approvelv, Other, Details)" +
+                "VALUES(CURRENT_TIMESTAMP, '" + Dept + "', 'Waiting', '" + Session["UserLogin"].ToString() + "', '" + Approvelevel1 + "', '" + Approvelevel2 + "', '', '', '', '', '" + detail + "' , '" + objects + "', '" + level + "', '" + other + "', '" + details + "');";
+                if (CL_Sql.Modify(sql))
                 {
-                    UploadFile(rqid);
-                    if (SendMail(rqid, AppIDmail))
+                    string rqid = CL_Sql.LastID("rqid", "changeorder");
+                    if (rqid != "")
                     {
-                        result = true;
+                        UploadFile(rqid);
+                        if (SendMail(rqid, AppIDmail))
+                        {
+                            result = true;
+                        }
                     }
                 }
             }
+            else
+            {
+                lbl_fileAlert.Text = "<br />" + checkFile;
+                lbl_fileAlert.ForeColor = System.Drawing.Color.Red;
+            }
+
             return result;
         }
 
@@ -230,7 +254,8 @@ namespace RequestComputerSystem
                         {
                             name = name + ".";
                         }
-                        name = name + exts[i].ToString().Replace("&", "And");
+                        name = name + exts[i].ToString();
+                        name.Replace("&", "_and_");
                     }
                     FileName = name + ",id" + id + "." + exts[ml-1].ToString();
                     uploadFile.SaveAs(System.IO.Path.Combine(Server.MapPath(Path), FileName));

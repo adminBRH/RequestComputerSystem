@@ -19,6 +19,8 @@ namespace RequestComputerSystem
         DataTable dt2;
         SQLclass CL_Sql = new SQLclass();
 
+        Files CL_File = new Files();
+
         string status = "";
 
         protected void Page_Load(object sender, EventArgs e)
@@ -110,17 +112,22 @@ namespace RequestComputerSystem
 
                 // --------------------------------------------- Show File Upload --------------------
                 string Path = "FileUpload/OrderRequest/";
-                string FileLink = "";
-                string FileName = "";
-                DirectoryInfo myDirInfo;
-                myDirInfo = new DirectoryInfo(Server.MapPath(Path));
-                FileInfo[] arrFileInfo = myDirInfo.GetFiles("*,id" + id +".*");
-                foreach (FileInfo myFileInfo in arrFileInfo)
-                {
-                    FileName = "- " + myFileInfo.Name.Replace(",id" + id, "");
-                    FileLink = FileLink + ("<a href='" + Path + myFileInfo.Name + "' >" + FileName + "</a><br>");
-                }
-                lbl_file.Text = FileLink;
+                //string FileLink = "";
+                //string FileName = "";
+                //DirectoryInfo myDirInfo;
+                //myDirInfo = new DirectoryInfo(Server.MapPath(Path));
+                //FileInfo[] arrFileInfo = myDirInfo.GetFiles("*,id" + id +".*");
+                //foreach (FileInfo myFileInfo in arrFileInfo)
+                //{
+                //    FileName = "- " + myFileInfo.Name.Replace(",id" + id, "");
+                //    string LinkName = myFileInfo.Name.ToString();
+                //    LinkName = LinkName.Replace("&", "%26");
+                //    LinkName = LinkName.Replace("+", "%2B");
+                //    LinkName = LinkName.Replace("#", "%23");
+                //    FileLink = FileLink + ("<a href='" + Path + myFileInfo.Name + "' >" + FileName + "</a><br>");
+                //}
+                //lbl_file.Text = FileLink;
+                lbl_file.Text = CL_File.Show(Path, "*,id" + id + ".*");
                 // --------------------------------------------- Show File Upload --------------------
 
                 empid = dt.Rows[0]["empid"].ToString();

@@ -78,6 +78,7 @@
            </div>
            <div class="col-10">
                <asp:FileUpload ID="FileUpload1" AllowMultiple="true" CssClass="btn btn-outline-primary" runat="server" />
+               <asp:Label ID="lbl_fileAlert" Text="" runat="server"></asp:Label>
            </div>
         </div>
        <div class="btn btn-outline-primary col-5 mb-2">

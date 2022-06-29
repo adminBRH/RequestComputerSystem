@@ -213,6 +213,8 @@
     <Content Include="InnovationScore.aspx" />
     <Content Include="ITjob\Default.aspx" />
     <Content Include="js\ajax\jquery-2.1.3.min.js" />
+    <Content Include="js\Chart.min.js" />
+    <Content Include="js\chartjs-plugin-datalabels.js" />
     <Content Include="LineNotify.aspx" />
     <Content Include="ManageHOD.aspx" />
     <Content Include="OrderRequest.aspx" />

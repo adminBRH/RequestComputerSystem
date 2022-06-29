@@ -293,32 +293,37 @@ namespace RequestComputerSystem
             //{
             Boolean bl;
 
-                userid = Session["UserLogin"].ToString();
-                string rqtype = "Request";
-                string rqrequestuser = InUsername.Value.ToString().Trim();
-                string rqstatus = "process";
-                string rqdateadd = DateTime.Now.ToString(("yyyy-MM-dd HH:mm:ss"));
-                string rqpname = ddl_pname.SelectedValue.ToString();
-                string rqfname = InFName.Value.ToString().Trim();
-                string rqlname = InLName.Value.ToString().Trim();
-                string rqfnameeng = InFNameEng.Value.ToString().Trim();
-                string rqlnameeng = InLNameEng.Value.ToString().Trim();
-                string rqpost = InPost.Value.ToString().Trim();
-                string rqdepartment = InDept.SelectedValue.Trim();
-                string rqfaction = InFaction.Value.ToString().Trim();
-                string rqphone = InPhone.Value.ToString().Trim();
-                string rqspecailty = Specailty.Value.ToString().Trim();
-                string rqcodecare = CodeCare.Value.ToString().Trim();
-                string rqlocation = Location.Value.ToString().Trim();
+            userid = Session["UserLogin"].ToString();
+            string rqtype = "Request";
+            string rqrequestuser = InUsername.Value.ToString().Trim();
+            string rqstatus = "process";
+            string rqdateadd = DateTime.Now.ToString(("yyyy-MM-dd HH:mm:ss"));
+            string rqpname = ddl_pname.SelectedValue.ToString();
+            string rqfname = InFName.Value.ToString().Trim();
+            string rqlname = InLName.Value.ToString().Trim();
+            string rqfnameeng = InFNameEng.Value.ToString().Trim();
+            string rqlnameeng = InLNameEng.Value.ToString().Trim();
+            string rqpost = InPost.Value.ToString().Trim();
+            string rqdepartment = InDept.SelectedValue.Trim();
+            string rqfaction = InFaction.Value.ToString().Trim();
+            string rqphone = InPhone.Value.ToString().Trim();
+            string rqspecailty = Specailty.Value.ToString().Trim();
+            string rqcodecare = CodeCare.Value.ToString().Trim();
+            string rqlocation = Location.Value.ToString().Trim();
 
             string sql = "INSERT INTO request" +
-                             "(userid, rqtype, rqrequestuser, rqstatus, rqdateadd, rqpname, rqfname, rqlname, rqfnameeng, rqlnameeng, rqpost, rqdepartment, rqfaction, rqphone, rqspecailty, rqcodecare, rqlocation)" +
-                             "VALUES('" + userid + "', '"+ rqtype + "', '" + rqrequestuser + "', '" + rqstatus + "', '" + rqdateadd + "', '" + rqpname + "', '" + rqfname + "', '" + rqlname + "', '" + rqfnameeng + "', '" + rqlnameeng + "', '" + rqpost + "', '" + rqdepartment + "', '" + rqfaction + "', '" + rqphone + "', '" + rqspecailty + "', '" + rqcodecare + "', '" + rqlocation + "')";
-                bl = cl_Sql.Modify(sql);
-                if (bl == true)
+                "(userid, rqtype, rqrequestuser, rqstatus, rqdateadd, rqpname, rqfname, rqlname, rqfnameeng, rqlnameeng, rqpost, rqdepartment, rqfaction, rqphone, rqspecailty, rqcodecare, rqlocation)" +
+                "VALUES('" + userid + "', '"+ rqtype + "', '" + rqrequestuser + "', '" + rqstatus + "', '" + rqdateadd + "', '" + rqpname + "', '" + rqfname + "', '" + rqlname + "', '" + rqfnameeng + "', '" + rqlnameeng + "', '" + rqpost + "', '" + rqdepartment + "', '" + rqfaction + "', '" + rqphone + "', '" + rqspecailty + "', '" + rqcodecare + "', '" + rqlocation + "')";
+            bl = cl_Sql.Modify(sql);
+            if (bl == true)
+            {
+                sql = "select max(rqid) as 'rqid' from request where convert(rqdateadd, date) = CURRENT_DATE and userid = '" + userid + "'; ";
+                dt = new DataTable();
+                dt = cl_Sql.select(sql);
+                if (dt.Rows.Count > 0)
                 {
-                    LastID = cl_Sql.LastID("rqid", "request"); //id , table
-                    RequestID = LastID;
+                    RequestID = dt.Rows[0]["rqid"].ToString();
+                    LastID = RequestID;
 
                     sql = "select r.*,d.depthod1,d.depthod2 from request as r " +
                         "left join department as d on r.rqdepartment = d.deptid " +
@@ -337,11 +342,11 @@ namespace RequestComputerSystem
 
                     if (Cb_Bconnect.Checked == true)
                     {
-                    // 1 = B-Connect
-                    // 6 = Arcus Air
+                        // 1 = B-Connect
+                        // 6 = Arcus Air
                         sql = "INSERT INTO requestsystems" +
                             "(rqid, sysid, rqsflag) " +
-                            "VALUES("+ LastID + ", 6, NULL);";
+                            "VALUES(" + LastID + ", 6, NULL);";
                         bl = cl_Sql.Modify(sql);
                         if (bl == true)
                         {
@@ -349,14 +354,14 @@ namespace RequestComputerSystem
 
                             sql = "INSERT INTO approve " +
                                 "(rqsid, aplevel, userid, aprequestuser, apstatus, apuserapprove1, apdate) " +
-                                "VALUES("+ LastID2 + ", 1, '"+ userid + "', '"+ rqrequestuser + "', 'Approved', 0, '" + rqdateadd + "')";
+                                "VALUES(" + LastID2 + ", 1, '" + userid + "', '" + rqrequestuser + "', 'Approved', 0, '" + rqdateadd + "')";
                             bl = cl_Sql.Modify(sql);
 
 
-                        if (rqdepartment == "BRH7112") //By pass อ.จารุวัฑ
-                        {
-                            Approve2 = "0";
-                        }
+                            if (rqdepartment == "BRH7112") //By pass อ.จารุวัฑ
+                            {
+                                Approve2 = "0";
+                            }
 
                             sql = "INSERT INTO approve " +
                                 "(rqsid, aplevel, userid, aprequestuser, apstatus, apuserapprove1, apuserapprove2, apdate) " +
@@ -410,7 +415,7 @@ namespace RequestComputerSystem
                     {
                         sql = "INSERT INTO requestsystems" +
                             "(rqid, sysid, rqsemail, rqsquota, rqsgroupmail_hod, rqsgroupmail_staff, rqsgroupmail_committeeother, rqsflag)" +
-                            "VALUES(" + LastID + ", 2, '" + rqsemail + "', '"+ rqsquota + "', '"+ HOD + "', '" + Staff + "', '" + Committee + "', NULL)";
+                            "VALUES(" + LastID + ", 2, '" + rqsemail + "', '" + rqsquota + "', '" + HOD + "', '" + Staff + "', '" + Committee + "', NULL)";
                         bl = cl_Sql.Modify(sql);
                         if (bl == true)
                         {
@@ -431,7 +436,7 @@ namespace RequestComputerSystem
                     {
                         sql = "INSERT INTO requestsystems" +
                             "(rqid, sysid, rqsemail, rqsquota, rqsgroupmail_hod, rqsgroupmail_staff, rqsgroupmail_committeeother, rqsflag)" +
-                            "VALUES(" + LastID + ", 7, '" + rqsemail + "', '"+ rqsquota + "', '"+ HOD + "', '" + Staff + "', '" + Committee + "', NULL)";
+                            "VALUES(" + LastID + ", 7, '" + rqsemail + "', '" + rqsquota + "', '" + HOD + "', '" + Staff + "', '" + Committee + "', NULL)";
                         bl = cl_Sql.Modify(sql);
                         if (bl == true)
                         {
@@ -452,7 +457,7 @@ namespace RequestComputerSystem
                     {
                         sql = "INSERT INTO requestsystems" +
                             "(rqid, sysid, rqsemail, rqsquota, rqsgroupmail_hod, rqsgroupmail_staff, rqsgroupmail_committeeother, rqsflag)" +
-                            "VALUES(" + LastID + ", 8, '" + rqsemail + "', '"+ rqsquota + "', '"+ HOD + "', '" + Staff + "', '" + Committee + "', NULL)";
+                            "VALUES(" + LastID + ", 8, '" + rqsemail + "', '" + rqsquota + "', '" + HOD + "', '" + Staff + "', '" + Committee + "', NULL)";
                         bl = cl_Sql.Modify(sql);
                         if (bl == true)
                         {
@@ -473,7 +478,7 @@ namespace RequestComputerSystem
                     {
                         sql = "INSERT INTO requestsystems" +
                             "(rqid, sysid, rqsemail, rqsquota, rqsgroupmail_hod, rqsgroupmail_staff, rqsgroupmail_committeeother, rqsflag)" +
-                            "VALUES(" + LastID + ", 9, '" + rqsemail + "', '"+ rqsquota + "', '"+ HOD + "', '" + Staff + "', '" + Committee + "', NULL)";
+                            "VALUES(" + LastID + ", 9, '" + rqsemail + "', '" + rqsquota + "', '" + HOD + "', '" + Staff + "', '" + Committee + "', NULL)";
                         bl = cl_Sql.Modify(sql);
                         if (bl == true)
                         {
@@ -500,22 +505,27 @@ namespace RequestComputerSystem
                         sql = "Delete from request where rqid = " + LastID;
                         cl_Sql.Modify(sql);
 
-                    RequestID = "";
+                        RequestID = "";
                     }
                 }
-
-                if (bl == true)
+                else
                 {
-                    SendMail(RequestID);
+                    bl = false;
                 }
+            }
 
-                return RequestID;
-            //}
-            //catch (Exception ex)
-            //{
-            //    Response.Write("<script>alert('" + ex.Message + "');</script>");
-            //    return false;
-            //}
+            if (bl == true)
+            {
+                SendMail(RequestID);
+            }
+
+            return RequestID;
+        //}
+        //catch (Exception ex)
+        //{
+        //    Response.Write("<script>alert('" + ex.Message + "');</script>");
+        //    return false;
+        //}
         }
 
         public string SendMail(string RequestID)

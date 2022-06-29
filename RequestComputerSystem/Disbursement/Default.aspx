@@ -35,6 +35,7 @@
                         </div>
                         <div class="col-12 text-left btn btn-success">
                             <asp:FileUpload ID="FileUpload1" CssClass="btn btn-light" AllowMultiple="true" runat="server" />
+                            <asp:Label ID="lbl_fileAlert" Text="" runat="server"></asp:Label>
                         </div>
                         <div class="row col-12 mx-auto my-2">
                             <div class="col-2 mx-auto text-right my-auto">ผู้รับเงิน</div>

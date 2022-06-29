@@ -33,6 +33,15 @@ namespace RequestComputerSystem
         protected global::System.Web.UI.WebControls.GridView GridView1;
 
         /// <summary>
+        /// lbl_dept control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lbl_dept;
+
+        /// <summary>
         /// lbl_deptid control.
         /// </summary>
         /// <remarks>
@@ -123,12 +132,30 @@ namespace RequestComputerSystem
         protected global::System.Web.UI.HtmlControls.HtmlInputText txt_hod2name;
 
         /// <summary>
-        /// Button1 control.
+        /// lbl_edit_alert control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlButton Button1;
+        protected global::System.Web.UI.WebControls.Label lbl_edit_alert;
+
+        /// <summary>
+        /// div_edit_btn control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl div_edit_btn;
+
+        /// <summary>
+        /// btn_update control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlButton btn_update;
     }
 }

@@ -17,6 +17,8 @@ namespace RequestComputerSystem.Disbursement
         DataTable dt;
         SQLclass CL_Sql = new SQLclass();
 
+        Files CL_Files = new Files();
+
         DisbursementClass cl_pv = new DisbursementClass();
 
         protected void Page_Load(object sender, EventArgs e)
@@ -204,7 +206,24 @@ namespace RequestComputerSystem.Disbursement
             string Type = txtH_Type.Value.ToString();
             string dept = ddl_department.SelectedValue.ToString();
             string haveFile = "";
-            if (FileUpload1.HasFile) { haveFile = "yes"; }
+            if (FileUpload1.HasFile) 
+            { 
+                haveFile = "yes";
+
+                lbl_fileAlert.Text = "";
+                string checkFile = "";
+                string FileName = FileUpload1.FileName;
+                if (FileName != "")
+                {
+                    checkFile = CL_Files.FileNameNotUse(FileName);
+                    if (checkFile != "")
+                    {
+                        lbl_fileAlert.Text = "<br />" + checkFile;
+                        lbl_fileAlert.ForeColor = System.Drawing.Color.Red;
+                        haveFile = "";
+                    }
+                }
+            }
             if (Type == "" || dept == "" || haveFile == "")
             {
                 Response.Write("<script>alert('กรุณากรอกข้อมูล หรือ แนบไฟล์เอกสาร ให้ครบถ้วน !!');</script>");

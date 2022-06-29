@@ -18,6 +18,8 @@ namespace RequestComputerSystem
         DataTable dt;
         SQLclass CL_Sql = new SQLclass();
 
+        Files CL_Files = new Files();
+
         string hrid = "hr";
 
         protected void Page_Load(object sender, EventArgs e)
@@ -277,20 +279,37 @@ namespace RequestComputerSystem
 
         protected void submit_ServerClick(object sender, EventArgs e)
         {
-            if (checkFile())
+            string checkFileName = "";
+            string FileName = FileUpload1.FileName;
+            if (FileName != "")
             {
-                if (Insertdata())
+                checkFileName = CL_Files.FileNameNotUse(FileName);
+            }
+
+            lbl_fileAlert.Text = "";
+
+            if (checkFileName == "")
+            {
+                if (checkFile())
                 {
-                    Response.Write("<script>alert('บันทึกสำเร็จ'); window.location.href='PayOvertimeList.aspx';</script>");
+                    if (Insertdata())
+                    {
+                        Response.Write("<script>alert('บันทึกสำเร็จ'); window.location.href='PayOvertimeList.aspx';</script>");
+                    }
+                    else
+                    {
+                        Response.Write("<script>alert('ไม่สามารถบันทึกได้กรุณาติดต่อ Admin');</script>");
+                    }
                 }
                 else
                 {
-                    Response.Write("<script>alert('ไม่สามารถบันทึกได้กรุณาติดต่อ Admin');</script>");
+                    lbl_alert.Text = "คุณต้องแนบไฟล์ Excel และ PDF ทั้งสองอย่าง !!";
                 }
             }
             else
             {
-                lbl_alert.Text = "คุณต้องแนบไฟล์ Excel และ PDF ทั้งสองอย่าง !!";
+                lbl_fileAlert.Text = "<br />" + checkFileName;
+                lbl_fileAlert.ForeColor = System.Drawing.Color.Red;
             }
         }
 
