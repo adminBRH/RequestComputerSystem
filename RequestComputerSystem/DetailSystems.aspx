@@ -26,6 +26,7 @@
                     <div class="font-weight-normal text-black-50"> <asp:Label ID="lbl_spec" Text="Specailty......." runat="server"></asp:Label> </div>
                     <div class="font-weight-normal text-black-50"> <asp:Label ID="lbl_care" Text="Code Care......." runat="server"></asp:Label> </div>
                     <div class="font-weight-normal text-black-50"> <asp:Label ID="lbl_lo" Text="Location......." runat="server"></asp:Label> </div>
+                    <div class="font-weight-normal text-black-50"> <asp:Label ID="lbl_remark" Text="Remark......." runat="server"></asp:Label> </div>
                 </div>
                 <div class="col-auto">
                     <div class="font-weight-normal text-black-50"> <asp:Label ID="lbl_status" Text="Status......." runat="server"></asp:Label> </div>

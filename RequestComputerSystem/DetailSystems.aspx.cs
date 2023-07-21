@@ -22,10 +22,10 @@ namespace RequestComputerSystem
             if (Request.QueryString["apid"] != null)
             {
                 string apid = Request.QueryString["apid"].ToString();
-                sql = "select a.*,al.aplname,r.rqid,rs.sysid,s.sysname,rs.rqsemail,rs.rqsquota,rs.rqsgroupmail_hod,rs.rqsgroupmail_staff,rs.rqsgroupmail_committeeother " +
+                sql = "select a.*,al.aplname,r.rqid,rs.sysid,s.sysname,rs.rqsvalue,rs.rqsemail,rs.rqsquota,rs.rqsgroupmail_hod,rs.rqsgroupmail_staff,rs.rqsgroupmail_committeeother " +
                     ",concat(r.rqpname,' ',r.rqfname, ' ',r.rqlname) as 'UserReqName',d.deptname " +
                     ",concat(u2.userpname,' ',u2.userfname,' ',u2.userlname) as 'userCreate',u2.userposition as 'userCreateposition' " +
-                    ",r.rqcodecare ,r.rqlocation ,r.rqspecailty " +
+                    ",r.rqcodecare ,r.rqlocation ,r.rqspecailty, r.rqremark " +
                     "from brh_it_request.approve as a " +
                     "left join brh_it_request.approvelevel as al on al.apllevel=a.aplevel " +
                     "left join brh_it_request.requestsystems as rs on a.rqsid = rs.rqsid " +
@@ -46,6 +46,11 @@ namespace RequestComputerSystem
                     }
 
                     lbl_systems.Text = "<b>ระบบที่ร้องขอ : </b>" + dt.Rows[0]["sysname"].ToString();
+                    string sysValue = dt.Rows[0]["rqsvalue"].ToString();
+                    if (sysValue != "")
+                    {
+                        lbl_systems.Text += " --> " + sysValue;
+                    }
 
                     if (dt.Rows[0]["sysid"].ToString() == "2")
                     {
@@ -77,6 +82,7 @@ namespace RequestComputerSystem
                     lbl_spec.Text = "<b>Specailty : </b>" + dt.Rows[0]["rqspecailty"].ToString();
                     lbl_care.Text = "<b>Code Care : </b>" + dt.Rows[0]["rqcodecare"].ToString();
                     lbl_lo.Text = "<b>Location : </b>" + dt.Rows[0]["rqlocation"].ToString();
+                    lbl_remark.Text = "<b>หมายเหตุ : </b><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + dt.Rows[0]["rqremark"].ToString();
 
                     lbl_status.Text = "<b>This Status : </b>" + dt.Rows[0]["aplname"].ToString();
                     lbl_by.Text = "<b>By : </b>" + dt.Rows[0]["userCreate"].ToString();

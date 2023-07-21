@@ -170,6 +170,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="About.aspx" />
+    <Content Include="Alarm.aspx" />
     <Content Include="API\user.aspx" />
     <Content Include="ApproveEvent.aspx" />
     <Content Include="ApproveList.aspx" />
@@ -183,18 +184,24 @@
     <Content Include="Connected Services\BRH_SendMail\RequestComputerSystem.BRH_SendMail.MailSendResponse.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Content>
+    <Content Include="css\bootstrap.min.css" />
     <Content Include="Disbursement\Approve.aspx" />
     <Content Include="Disbursement\Default.aspx" />
     <Content Include="Disbursement\img\indexdetail.PNG" />
     <Content Include="Disbursement\img\LOGO-BRH.png" />
     <Content Include="Disbursement\List.aspx" />
+    <Content Include="ESign\Default.aspx" />
+    <Content Include="ESign\ManageLineApprove.aspx" />
     <Content Include="image\gif\Alert_Light.gif" />
     <Content Include="image\icons\approve.png" />
     <Content Include="image\icons\BRHfavicon.ico" />
+    <Content Include="image\icons\error_icon.png" />
     <Content Include="image\icons\excel.png" />
     <Content Include="image\icons\google-chrome.png" />
+    <Content Include="image\icons\info_icon.png" />
     <Content Include="image\icons\re-prot.png" />
     <Content Include="image\icons\Request.ico" />
+    <Content Include="image\icons\warning_icon.png" />
     <Content Include="image\Innovation2019.jpg" />
     <Content Include="image\LOGO-BRH.png" />
     <Content Include="image\LogoNetwork\bangkok-hospital.png" />
@@ -224,6 +231,8 @@
     <Content Include="PayOvertimeDefault.aspx" />
     <Content Include="PayOvertimeDetail.aspx" />
     <Content Include="PayOvertimeList.aspx" />
+    <Content Include="Scripts\signature_pad.js" />
+    <Content Include="Scripts\signature_pad.min.js" />
     <Content Include="StrategyService\Default.aspx" />
     <Content Include="StrategyService\Received.aspx" />
     <Content Include="StrategyService\ReceiveList.aspx" />
@@ -2084,6 +2093,13 @@
     <Content Include="Scripts\popper-utils.js.map" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Alarm.aspx.cs">
+      <DependentUpon>Alarm.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Alarm.aspx.designer.cs">
+      <DependentUpon>Alarm.aspx</DependentUpon>
+    </Compile>
     <Compile Include="API\user.aspx.cs">
       <DependentUpon>user.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -2214,6 +2230,20 @@
       <DependentUpon>List.aspx</DependentUpon>
     </Compile>
     <Compile Include="Disbursement\PrivateClass.cs" />
+    <Compile Include="ESign\Default.aspx.cs">
+      <DependentUpon>Default.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ESign\Default.aspx.designer.cs">
+      <DependentUpon>Default.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="ESign\ManageLineApprove.aspx.cs">
+      <DependentUpon>ManageLineApprove.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ESign\ManageLineApprove.aspx.designer.cs">
+      <DependentUpon>ManageLineApprove.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>

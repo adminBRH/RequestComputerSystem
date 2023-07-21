@@ -9,6 +9,38 @@
     </div>
 
     <div class="card card-body">
+        <asp:UpdatePanel ID="UpdatePanel_dept" runat="server">
+            <ContentTemplate>
+                <div class="col-12 mx-auto">
+                    <u><b>เลือกโรงพยาบาล</b></u> 
+                </div>
+                <div class="col-12 mx-auto">
+                    <asp:DropDownList ID="dl_branch" CssClass="col-lg-6 col-sm-12 form-control" OnSelectedIndexChanged="dl_branch_SelectedIndexChanged" AutoPostBack="true" runat="server"></asp:DropDownList>
+                </div>
+                <div class="col-12 mx-auto mt-5">
+                    <u><b>เลือกหน่วยงาน</b></u> 
+                </div>
+                <div class="col-12 mx-auto">
+                   <asp:DropDownList ID="dl_department" CssClass="col-lg-6 col-sm-12 form-control" AutoPostBack="true" OnSelectedIndexChanged="dl_department_SelectedIndexChanged" runat="server">
+                       <asp:ListItem Text="" Value=""></asp:ListItem>
+                   </asp:DropDownList>
+                    <div class="row col-12 mx-auto mt-3">
+                        <div class="col-lg-6 col-sm-12 mx-auto my-2">
+                            <asp:Label ID="lbl_HOD1" Text="" runat="server"></asp:Label>
+                        </div>
+                        <div class="col-lg-6 col-sm-12 mx-auto my-2">
+                            <asp:Label ID="lbl_HOD2" Text="" runat="server"></asp:Label>
+                        </div>
+                    </div>
+                </div>
+            </ContentTemplate>
+            <Triggers>
+                <asp:AsyncPostBackTrigger ControlID="dl_department" EventName="selectedindexchanged" />
+            </Triggers>
+        </asp:UpdatePanel>
+    </div>
+
+    <div class="card card-body my-2">
        <u><b>วัตถุประสงค์เพื่อ</b></u>  
        <div class="mt-2 mb-5">
            <div class="row col-12 input-group" onclick="ShowOther()">
@@ -81,21 +113,6 @@
                <asp:Label ID="lbl_fileAlert" Text="" runat="server"></asp:Label>
            </div>
         </div>
-       <div class="btn btn-outline-primary col-5 mb-2">
-           <asp:UpdatePanel ID="UpdatePanel_dept" runat="server">
-               <ContentTemplate>
-                   เลือกแผนก : 
-                   <asp:DropDownList ID="dl_department" AutoPostBack="true" OnSelectedIndexChanged="dl_department_SelectedIndexChanged" runat="server">
-                       <asp:ListItem Text="" Value=""></asp:ListItem>
-                   </asp:DropDownList>
-                   <br /><asp:Label ID="lbl_HOD1" Text="" runat="server"></asp:Label>
-                   <br /><asp:Label ID="lbl_HOD2" Text="" runat="server"></asp:Label>
-                </ContentTemplate>
-               <Triggers>
-                   <asp:AsyncPostBackTrigger ControlID="dl_department" EventName="selectedindexchanged" />
-               </Triggers>
-           </asp:UpdatePanel>
-       </div>
     </div>
 
     <div class="col-12 mx-auto text-center my-5">

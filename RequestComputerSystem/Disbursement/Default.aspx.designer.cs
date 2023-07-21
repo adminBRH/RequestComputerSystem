@@ -51,6 +51,24 @@ namespace RequestComputerSystem.Disbursement
         protected global::System.Web.UI.HtmlControls.HtmlInputText txtH_Type;
 
         /// <summary>
+        /// UpdatePanel_input control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.UpdatePanel UpdatePanel_input;
+
+        /// <summary>
+        /// ddl_branch control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList ddl_branch;
+
+        /// <summary>
         /// ddl_department control.
         /// </summary>
         /// <remarks>
@@ -58,6 +76,15 @@ namespace RequestComputerSystem.Disbursement
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.DropDownList ddl_department;
+
+        /// <summary>
+        /// lbl_hod control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lbl_hod;
 
         /// <summary>
         /// FileUpload1 control.

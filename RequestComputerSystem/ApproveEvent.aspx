@@ -2,6 +2,23 @@
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
 
 <form id="form1" runat="server">
+
+<style>
+    .textTopic {
+        font-size: large;
+        font-weight: bold;
+        color: gray;
+    }
+    .iconStatus {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+    }
+    .divDisable {
+        opacity: 0.4;
+    }
+</style>
+
 <!-- Page Wrapper -->
   <div id="wrapper">
 
@@ -16,32 +33,47 @@
 
           <!-- Content Row -->
           <div class="row">
-
-            <div class="card shadow h-100 py-2 col-xl-11 mb-6 mx-auto">
+            <div class="card shadow h-100 py-2 col-12 mb-6 mx-auto">
                 <div class="mb-0 text-gray-800">
-                    { <b>Request ID :</b> <asp:Label ID="lb0_0" Text="0" runat="server"></asp:Label> }
-                    { <b>ระบบที่ร้องขอ :</b> <asp:Label ID="lb0_1" Text="..................." runat="server"></asp:Label> } 
-                    { <b>ผู้ใช้งาน :</b> <asp:Label ID="lb0_2" Text="..................." runat="server"></asp:Label> }
-
-                    { <b>ตำแหน่ง :</b> <asp:Label ID="lb0_3" Text="..................." runat="server"></asp:Label> } 
-                    { <b>แผนก :</b> <asp:Label ID="lb0_4" Text="..................." runat="server"></asp:Label> } 
+                    <b>Request ID :</b> <asp:Label ID="lb0_0" Text="0" runat="server"></asp:Label>
+                    <br />
+                    <b>ร้องขอให้ :</b> <asp:Label ID="lb0_2" Text="..................." runat="server"></asp:Label>
+                    <b>ตำแหน่ง :</b> <asp:Label ID="lb0_3" Text="..................." runat="server"></asp:Label> 
+                    <br />
+                    <b>โรงพยาบาล :</b> <asp:Label ID="lbl_branch" Text="..................." runat="server"></asp:Label> 
+                    <br />
+                    <b>แผนก :</b> <asp:Label ID="lb0_4" Text="..................." runat="server"></asp:Label>
                 </div>
             </div>
+            <div class="card shadow h-100 py-2 col-12 mb-6 mx-auto">
+                <div class="mb-0 text-gray-800">
+                    <b>ระบบที่ร้องขอ :</b> <asp:Label ID="lb0_1" Text="..................." runat="server"></asp:Label>
+                    <asp:Label ID="lb0_1_detail" Text="..................." runat="server"></asp:Label>
+                </div>
+            </div>
+              <div class="card shadow h-100 py-2 col-12 mb-6 mx-auto">
+                <div class="mb-0 text-gray-800">
+                    <b>หมายเหตุเพิ่มเติม :</b> <asp:Label ID="lb0_5" Text="..................." runat="server"></asp:Label> 
+                </div>
+            </div>
+            <div class="col-12">&nbsp;</div>
             
             <!-- Event ผู้ร้องขอ -->
-            <div class="col-xl-3 mb-2"> <!-- class="col-xl-3 col-md-6 mb-4" -->
+            <div class="col-lg-4 col-sm-1 mx-auto mb-2"> <!-- class="col-xl-3 col-md-6 mb-4" -->
               <div class="card border-left-success shadow h-100 py-2">
                 <div class="card-body">
-                  <div class="row no-gutters align-items-center">
-                    <div class="col mr-2">
-                      <div class="h5 mb-0 font-weight-bold text-gray-800">ผู้ร้องขอ</div>
-                        <hr />
-                      <div class="font-weight-normal text-black-50">( <asp:Label ID="lb1_1" Text="......................." runat="server"></asp:Label> )</div>
-                      <div class="font-weight-normal text-black-50">ตำแหน่ง <asp:Label ID="lb1_2" Text="..................." runat="server"></asp:Label></div>
-                      <div class="font-weight-normal text-black-50"><asp:Label ID="lb1_3" Text="......../......../......." runat="server"></asp:Label></div>
-                      <asp:Button ID="bt_edit" type="button" CssClass="btn btn-outline-warning" OnClick="bt_edit_Click" visible="false" runat="server" Text="แก้ไขข้อมูล" />
-                    </div>
-                    <div class="col-auto">
+                  <div class="row no-gutters">
+                      <div class="textTopic">ผู้ร้องขอ</div>
+                        <div class="col-12 mx-auto text-center">
+                          <hr />
+                          <div class="font-weight-normal text-black-50">( <asp:Label ID="lb1_1" Text="......................." runat="server"></asp:Label> )</div>
+                          <div class="font-weight-normal text-black-50">ตำแหน่ง <asp:Label ID="lb1_2" Text="..................." runat="server"></asp:Label></div>
+                          <div class="font-weight-normal text-black-50"><asp:Label ID="lb1_3" Text="......../......../......." runat="server"></asp:Label></div>
+                          <asp:Button ID="bt_edit" type="button" CssClass="btn btn-outline-warning" OnClick="bt_edit_Click" visible="false" runat="server" Text="แก้ไขข้อมูล" />
+                          <a id="bt_1_2" href="#" class="btn btn-outline-danger" onclick="Fn_SetValue('1')" data-toggle="modal" data-target="#NotApproveModal" visible="false" runat="server">ยกเลิก</a>
+                          <asp:Button ID="bt_1_3" type="button" CssClass="btn btn-outline-light" OnClick="bt_3_ServerClick" visible="false" runat="server" Text="ยกเลิก" />
+                        </div>
+                    <div class="iconStatus">
                       <i class="fas fa-check fa-2x text-success"></i>
                     </div>
                   </div>
@@ -50,35 +82,36 @@
             </div>
 
             <!-- Event ตรวจสอบโดย(หัวหน้าแผนก) Level 2 -->
-            <div class="col-xl-3 mb-2">
-              <div class="card border-left-secondary shadow h-100 py-2" id="div2" runat="server">
+            <div class="col-lg-4 col-sm-1 mx-auto mb-2">
+              <div id="div2" class="card border-left-secondary shadow h-100 py-2 divDisable" runat="server">
                 <div class="card-body">
-                  <div class="row no-gutters align-items-center">
-                    <div class="col mr-2">
-                      <div class="h5 mb-0 font-weight-bold text-gray-800">ตรวจสอบโดย(หัวหน้าแผนก)</div>
-                        <hr />
-                      <div class="font-weight-normal text-black-50">( <asp:Label ID="lb2_1" Text="......................." runat="server"></asp:Label> )</div>
-                      <div class="font-weight-normal text-black-50">ตำแหน่ง <asp:Label ID="lb2_2" Text="..................." runat="server"></asp:Label></div>
-                      <div class="font-weight-normal text-black-50"><asp:Label ID="lb2_3" Text="......../......../......." runat="server"></asp:Label></div>
-                      <div class="font-weight-normal text-black-50"><asp:Label ID="lb2_4" Text="" runat="server"></asp:Label></div>
-                     <asp:Button ID="bt_2_1" type="button" CssClass="btn btn-outline-success" OnClick="bt_1_ServerClick" visible="false" runat="server" Text="อนุมัติ" />
-                     <a id="bt_2_2" href="#" class="btn btn-outline-danger" onclick="Fn_SetValue('2')" data-toggle="modal" data-target="#NotApproveModal" visible="false" runat="server">ไม่อนุมัติ</a>
-                     <asp:Button ID="bt_2_3" type="button" CssClass="btn btn-outline-light" OnClick="bt_3_ServerClick" visible="false" runat="server" Text="ยกเลิก" />
-                    </div>
-                    <div class="col-auto">
-                      <i id="i2" runat="server" class="fas fa-tag fa-2x text-secondary"></i>
-                    </div>
+                  <div class="row no-gutters">
+                      <div class="textTopic">ตรวจสอบโดย(หัวหน้าแผนก)</div>
+                        <div class="col-12 mx-auto text-center">
+                            <hr />
+                            <div class="font-weight-normal text-black-50">( <asp:Label ID="lb2_1" Text="......................." runat="server"></asp:Label> )</div>
+                            <div class="font-weight-normal text-black-50">ตำแหน่ง <asp:Label ID="lb2_2" Text="..................." runat="server"></asp:Label></div>
+                            <div class="font-weight-normal text-black-50"><asp:Label ID="lb2_3" Text="......../......../......." runat="server"></asp:Label></div>
+                            <div class="font-weight-normal text-black-50"><asp:Label ID="lb2_4" Text="" runat="server"></asp:Label></div>
+                            <asp:Button ID="bt_2_1" type="button" CssClass="btn btn-outline-success" OnClick="bt_1_ServerClick" visible="false" runat="server" Text="อนุมัติ" />
+                            <a id="bt_2_2" href="#" class="btn btn-outline-danger" onclick="Fn_SetValue('2')" data-toggle="modal" data-target="#NotApproveModal" visible="false" runat="server">ไม่อนุมัติ</a>
+                            <asp:Button ID="bt_2_3" type="button" CssClass="btn btn-outline-light" OnClick="bt_3_ServerClick" visible="false" runat="server" Text="ยกเลิก" />
+                        </div>
+                      <div class="iconStatus">
+                          <i id="i2" runat="server" class="fas fa-tag fa-2x text-secondary"></i>
+                      </div>
                   </div>
                 </div>
               </div>
             </div>
+
             <!-- Event ตรวจสอบโดย(ผู้จัดการสายงาน) Level 3 -->
-            <div class="col-xl-3 mb-2">
-              <div id="div3" class="card border-left-secondary shadow h-100 py-2" runat="server">
+            <div class="col-lg-4 col-sm-1 mx-auto mb-2">
+              <div id="div3" class="card border-left-secondary shadow h-100 py-2 divDisable" runat="server">
                 <div class="card-body">
-                  <div class="row no-gutters align-items-center">
-                    <div class="col mr-2">
-                      <div class="h5 mb-0 font-weight-bold text-gray-800">ตรวจสอบโดย(ผู้จัดการสายงาน)</div>
+                  <div class="row no-gutters">
+                      <div class="textTopic">ตรวจสอบโดย(ผู้จัดการสายงาน)</div>
+                    <div class="col-12 mx-auto text-center">
                         <hr />
                       <div class="font-weight-normal text-black-50">( <asp:Label ID="lb3_1" Text="......................." runat="server"></asp:Label> )</div>
                       <div class="font-weight-normal text-black-50">ตำแหน่ง <asp:Label ID="lb3_2" Text="..................." runat="server"></asp:Label></div>
@@ -88,8 +121,32 @@
                     <a id="bt_3_2" class="btn btn-outline-danger" onclick="Fn_SetValue('3')" href="#" data-toggle="modal" data-target="#NotApproveModal" visible="false" runat="server">ไม่อนุมัติ</a>
                     <asp:Button ID="bt_3_3" type="button" CssClass="btn btn-outline-light" OnClick="bt_3_ServerClick" visible="false" runat="server" Text="ยกเลิก" />
                     </div>
-                    <div class="col-auto">
+                    <div class="iconStatus">
                       <i id="i3" class="fas fa-tag fa-2x text-secondary" runat="server"></i>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+              <!-- Event เห็นชอบโดย Level 3x1 -->
+            <div class="col-lg-4 col-sm-1 mx-auto mb-2">
+              <div id="div3x1" class="card border-left-secondary shadow h-100 py-2 divDisable" runat="server">
+                <div class="card-body">
+                  <div class="row no-gutters">
+                      <div class="textTopic">เห็นชอบโดย</div>
+                    <div class="col-12 mx-auto text-center">
+                        <hr />
+                      <div class="font-weight-normal text-black-50">( <asp:Label ID="lb3x1_1" Text="......................." runat="server"></asp:Label> )</div>
+                      <div class="font-weight-normal text-black-50">ตำแหน่ง <asp:Label ID="lb3x1_2" Text="..................." runat="server"></asp:Label></div>
+                      <div class="font-weight-normal text-black-50"><asp:Label ID="lb3x1_3" Text="......../......../......." runat="server"></asp:Label></div>
+                      <div class="font-weight-normal text-black-50"><asp:Label ID="lb3x1_4" Text="" runat="server"></asp:Label></div>
+                    <asp:Button ID="bt_3x1_1" type="button" CssClass="btn btn-outline-success" OnClick="bt_1_ServerClick" visible="false" runat="server" Text="อนุมัติ" />
+                    <a id="bt_3x1_2" class="btn btn-outline-danger" onclick="Fn_SetValue('3x1')" href="#" data-toggle="modal" data-target="#NotApproveModal" visible="false" runat="server">ไม่อนุมัติ</a>
+                    <asp:Button ID="bt_3x1_3" type="button" CssClass="btn btn-outline-light" OnClick="bt_3_ServerClick" visible="false" runat="server" Text="ยกเลิก" />
+                    </div>
+                    <div class="iconStatus">
+                      <i id="i3x1" class="fas fa-tag fa-2x text-secondary" runat="server"></i>
                     </div>
                   </div>
                 </div>
@@ -97,12 +154,12 @@
             </div>
 
             <!-- Event ทบทวน/เห็นชอบโดย Level 4 -->
-            <div class="col-xl-3 mb-2">
-              <div id="div4" class="card border-left-secondary shadow h-100 py-2" runat="server">
+            <div class="col-lg-4 col-sm-1 mx-auto mb-2">
+              <div id="div4" class="card border-left-secondary shadow h-100 py-2 divDisable" runat="server">
                 <div class="card-body">
-                  <div class="row no-gutters align-items-center">
-                    <div class="col mr-2">
-                      <div class="h5 mb-0 font-weight-bold text-gray-800">ทบทวน/เห็นชอบโดย</div>
+                  <div class="row no-gutters">
+                      <div class="textTopic">ทบทวน/เห็นชอบโดย</div>
+                    <div class="col-12 mx-auto text-center">
                         <hr />
                       <div class="font-weight-normal text-black-50">( <asp:Label ID="lb4_1" Text="......................." runat="server"></asp:Label> )</div>
                       <div class="font-weight-normal text-black-50">ตำแหน่ง <asp:Label ID="lb4_2" Text="..................." runat="server"></asp:Label></div>
@@ -113,7 +170,7 @@
                     <a id="bt_4_2" class="btn btn-outline-danger" onclick="Fn_SetValue('4')" href="#" data-toggle="modal" data-target="#NotApproveModal" visible="false" runat="server">ไม่เห็นชอบ</a>
                     <asp:Button ID="bt_4_3" type="button" CssClass="btn btn-outline-light" OnClick="bt_3_ServerClick" visible="false" runat="server" Text="ยกเลิก" />
                     </div>
-                    <div class="col-auto">
+                    <div class="iconStatus">
                       <i id="i4" class="fas fa-tag fa-2x text-secondary" runat="server"></i>
                     </div>
                   </div>
@@ -122,12 +179,12 @@
             </div>
 
             <!-- Event เห็นควรอนุมัติโดย Level 5 -->
-            <div class="col-xl-6 mb-2">
-              <div id="div5" class="card border-left-secondary shadow h-100 py-2" runat="server">
+            <div class="col-lg-4 col-sm-1 mx-auto mb-2">
+              <div id="div5" class="card border-left-secondary shadow h-100 py-2 divDisable" runat="server">
                 <div class="card-body">
-                  <div class="row no-gutters align-items-center">
-                    <div class="col mr-2">
-                      <div class="h5 mb-0 font-weight-bold text-gray-800">เห็นควรอนุมัติโดย</div>
+                  <div class="row no-gutters">
+                      <div class="textTopic">เห็นควรอนุมัติโดย</div>
+                    <div class="col-12 mx-auto text-center">
                         <hr />
                       <div class="font-weight-normal text-black-50">( <asp:Label ID="lb5_1" Text="......................." runat="server"></asp:Label> )</div>
                       <div class="font-weight-normal text-black-50">ตำแหน่ง <asp:Label ID="lb5_2" Text="..................." runat="server"></asp:Label></div>
@@ -137,7 +194,7 @@
                     <a id="bt_5_2" class="btn btn-outline-danger" onclick="Fn_SetValue('5')" href="#" data-toggle="modal" data-target="#NotApproveModal" visible="false" runat="server">ไม่อนุมัติ</a>
                     <asp:Button ID="bt_5_3" type="button" CssClass="btn btn-outline-light" OnClick="bt_3_ServerClick" visible="false" runat="server" Text="ยกเลิก" />
                     </div>
-                    <div class="col-auto">
+                    <div class="iconStatus">
                       <i id="i5" class="fas fa-tag fa-2x text-secondary" runat="server"></i>
                     </div>
                   </div>
@@ -146,12 +203,12 @@
             </div>
 
             <!-- Event อนุมัติโดย Level 6 -->
-            <div class="col-xl-6 mb-2">
-              <div id="div6" class="card border-left-secondary shadow h-100 py-2" runat="server">
+            <div class="col-lg-4 col-sm-1 mx-auto mb-2">
+              <div id="div6" class="card border-left-secondary shadow h-100 py-2 divDisable" runat="server">
                 <div class="card-body">
-                  <div class="row no-gutters align-items-center">
-                    <div class="col mr-2">
-                      <div class="h5 mb-0 font-weight-bold text-gray-800">อนุมัติโดย</div>
+                  <div class="row no-gutters">
+                      <div class="textTopic">อนุมัติโดย</div>
+                    <div class="col-12 mx-auto text-center">
                         <hr />
                       <div class="font-weight-normal text-black-50">( <asp:Label ID="lb6_1" Text="......................." runat="server"></asp:Label> )</div>
                       <div class="font-weight-normal text-black-50">ตำแหน่ง <asp:Label ID="lb6_2" Text="..................." runat="server"></asp:Label></div>
@@ -161,7 +218,7 @@
                     <a id="bt_6_2" class="btn btn-outline-danger" onclick="Fn_SetValue('6')" href="#" data-toggle="modal" data-target="#NotApproveModal" visible="false" runat="server">ไม่อนุมัติ</a>
                     <asp:Button ID="bt_6_3" type="button" CssClass="btn btn-outline-light" OnClick="bt_3_ServerClick" visible="false" runat="server" Text="ยกเลิก" />
                     </div>
-                    <div class="col-auto">
+                    <div class="iconStatus">
                       <i id="i6" class="fas fa-tag fa-2x text-secondary" runat="server"></i>
                     </div>
                   </div>
@@ -170,12 +227,12 @@
             </div>
 
             <!-- Event ผู้ดำเนินการ Level 7 -->
-            <div class="col-xl-4 mb-2"> <!-- class="col-xl-3 col-md-6 mb-4" -->
-              <div id="div7" class="card border-left-secondary shadow h-100 py-2" runat="server">
+            <div class="col-lg-4 col-sm-1 mx-auto mb-2"> <!-- class="col-xl-3 col-md-6 mb-4" -->
+              <div id="div7" class="card border-left-secondary shadow h-100 py-2 divDisable" runat="server">
                 <div class="card-body">
-                  <div class="row no-gutters align-items-center">
-                    <div class="col mr-2">
-                      <div class="h5 mb-0 font-weight-bold text-gray-800">ผู้ดำเนินการ</div>
+                  <div class="row no-gutters">
+                      <div class="textTopic">ผู้ดำเนินการ</div>
+                    <div class="col-12 mx-auto text-center">
                         <hr />
                       <div class="font-weight-normal text-black-50"> <asp:Label ID="lb7_1" Text="......................." runat="server"></asp:Label> </div>
                       <div class="font-weight-normal text-black-50"> <asp:Label ID="lb7_2" Text="..................." runat="server"></asp:Label></div>
@@ -185,7 +242,7 @@
                     <a id="bt_7_2" class="btn btn-outline-danger" onclick="Fn_SetValue('7')" href="#" data-toggle="modal" data-target="#NotApproveModal" visible="false" runat="server">Reject</a>
                     <asp:Button ID="bt_7_3" type="button" CssClass="btn btn-outline-light" OnClick="bt_3_ServerClick" visible="false" runat="server" Text="ยกเลิก" />
                     </div>
-                    <div class="col-auto">
+                    <div class="iconStatus">
                       <i id="i7" class="fas fa-tag fa-2x text-secondary" runat="server"></i>
                     </div>
                   </div>
@@ -194,19 +251,19 @@
             </div>
 
             <!-- Event แจ้งผู้ขอใช้ Level 8 -->
-            <div class="col-xl-4 mb-2">
-              <div id="div8" class="card border-left-secondary shadow h-100 py-2" runat="server">
+            <div class="col-lg-4 col-sm-1 mx-auto mb-2">
+              <div id="div8" class="card border-left-secondary shadow h-100 py-2 divDisable" runat="server">
                 <div class="card-body">
-                  <div class="row no-gutters align-items-center">
-                    <div class="col mr-2">
-                      <div class="h5 mb-0 font-weight-bold text-gray-800">แจ้งผู้ขอใช้</div>
+                  <div class="row no-gutters">
+                      <div class="textTopic">แจ้งผู้ขอใช้</div>
+                    <div class="col-12 mx-auto text-center">
                         <hr />
                       <div class="font-weight-normal text-black-50">( <asp:Label ID="lb8_1" Text="......................." runat="server"></asp:Label> )</div>
                       <div class="font-weight-normal text-black-50">ตำแหน่ง <asp:Label ID="lb8_2" Text="..................." runat="server"></asp:Label></div>
                       <div class="font-weight-normal text-black-50"><asp:Label ID="lb8_3" Text="......../......../......." runat="server"></asp:Label></div>
                       <a id="bt_8" class="btn btn-outline-danger" onclick="Fn_SetValue('8')" href="#" data-toggle="modal" data-target="#RemarkModal" visible="false" runat="server">Close Job</a>
                     </div>
-                    <div class="col-auto">
+                    <div class="iconStatus">
                       <i id="i8" class="fas fa-tag fa-2x text-secondary" runat="server"></i>
                     </div>
                   </div>
@@ -215,18 +272,18 @@
             </div>
 
             <!-- Event อื่นๆ/หมายเหตุ -->
-            <div class="col-xl-4 mb-2">
-              <div id="div9" class="card border-left-secondary shadow h-100 py-2" runat="server">
+            <div class="col-lg-4 col-sm-1 mx-auto mb-2">
+              <div id="div9" class="card border-left-secondary shadow h-100 py-2 divDisable" runat="server">
                 <div class="card-body">
-                  <div class="row no-gutters align-items-center">
-                    <div class="col mr-2">
-                      <div class="h5 mb-0 font-weight-bold text-gray-800">อื่นๆ/หมายเหตุ</div>
+                  <div class="row no-guttersr">
+                      <div class="textTopic">อื่นๆ/หมายเหตุ</div>
+                    <div class="col-12 mx-auto text-center">
                         <hr />
                       <div class="font-weight-normal text-black-50"><asp:Label ID="lb9_1" Text="......................." runat="server"></asp:Label></div>
                       <div class="font-weight-normal text-black-50"><asp:Label ID="lb9_2" Text="..................." runat="server"></asp:Label></div>
                       <div class="font-weight-normal text-black-50"><asp:Label ID="lb9_3" Text="......../......../......." runat="server"></asp:Label></div>
                     </div>
-                    <div class="col-auto">
+                    <div class="iconStatus">
                       <i id="i9" class="fas fa-tag fa-2x text-secondary" runat="server"></i>
                     </div>
                   </div>

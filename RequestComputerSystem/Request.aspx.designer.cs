@@ -42,6 +42,42 @@ namespace RequestComputerSystem
         protected global::System.Web.UI.UpdatePanel UpdatePanel_input;
 
         /// <summary>
+        /// dd_branch control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList dd_branch;
+
+        /// <summary>
+        /// InDept control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList InDept;
+
+        /// <summary>
+        /// lbl_approval control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lbl_approval;
+
+        /// <summary>
+        /// lbl_approval2 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lbl_approval2;
+
+        /// <summary>
         /// InUsername control.
         /// </summary>
         /// <remarks>
@@ -105,33 +141,6 @@ namespace RequestComputerSystem
         protected global::System.Web.UI.HtmlControls.HtmlInputText InPost;
 
         /// <summary>
-        /// InDept control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList InDept;
-
-        /// <summary>
-        /// lbl_approval control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lbl_approval;
-
-        /// <summary>
-        /// lbl_approval2 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lbl_approval2;
-
-        /// <summary>
         /// InFaction control.
         /// </summary>
         /// <remarks>
@@ -177,58 +186,31 @@ namespace RequestComputerSystem
         protected global::System.Web.UI.HtmlControls.HtmlInputText Location;
 
         /// <summary>
-        /// lblCb_Bconnect control.
+        /// lblCBHIS control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl lblCb_Bconnect;
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl lblCBHIS;
 
         /// <summary>
-        /// Cb_Bconnect control.
+        /// CBHIS control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.CheckBox Cb_Bconnect;
+        protected global::System.Web.UI.HtmlControls.HtmlInputCheckBox CBHIS;
 
         /// <summary>
-        /// lblCb_VPN control.
+        /// DD_HIS control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl lblCb_VPN;
-
-        /// <summary>
-        /// Cb_VPN control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.CheckBox Cb_VPN;
-
-        /// <summary>
-        /// lblCb_MS control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl lblCb_MS;
-
-        /// <summary>
-        /// Cb_MS control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.CheckBox Cb_MS;
+        protected global::System.Web.UI.WebControls.DropDownList DD_HIS;
 
         /// <summary>
         /// lblCb_SwL control.
@@ -267,22 +249,148 @@ namespace RequestComputerSystem
         protected global::System.Web.UI.WebControls.CheckBox Cb_IPP;
 
         /// <summary>
-        /// lblCb_Com control.
+        /// lblCb_Tablet control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl lblCb_Com;
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl lblCb_Tablet;
 
         /// <summary>
-        /// Cb_Com control.
+        /// Cb_Tablet control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.CheckBox Cb_Com;
+        protected global::System.Web.UI.WebControls.CheckBox Cb_Tablet;
+
+        /// <summary>
+        /// lblCb_iPad control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl lblCb_iPad;
+
+        /// <summary>
+        /// Cb_iPad control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.CheckBox Cb_iPad;
+
+        /// <summary>
+        /// lblCBVPN control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl lblCBVPN;
+
+        /// <summary>
+        /// CBVPN control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlInputCheckBox CBVPN;
+
+        /// <summary>
+        /// txt_VPNAccount control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlInputText txt_VPNAccount;
+
+        /// <summary>
+        /// lblCBPrinter control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl lblCBPrinter;
+
+        /// <summary>
+        /// CBPrinter control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlInputCheckBox CBPrinter;
+
+        /// <summary>
+        /// DD_Printer control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList DD_Printer;
+
+        /// <summary>
+        /// lblCBCom control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl lblCBCom;
+
+        /// <summary>
+        /// CBCom control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlInputCheckBox CBCom;
+
+        /// <summary>
+        /// DD_Com control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList DD_Com;
+
+        /// <summary>
+        /// lblCBDrive control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl lblCBDrive;
+
+        /// <summary>
+        /// CBDrive control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlInputCheckBox CBDrive;
+
+        /// <summary>
+        /// DD_Drive control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList DD_Drive;
 
         /// <summary>
         /// lblCb_Email control.
@@ -310,15 +418,6 @@ namespace RequestComputerSystem
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlInputText txt_Email;
-
-        /// <summary>
-        /// dd_Quota control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList dd_Quota;
 
         /// <summary>
         /// lblcb_groupmail control.
@@ -364,6 +463,15 @@ namespace RequestComputerSystem
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txt_commmitee;
+
+        /// <summary>
+        /// txt_remark control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlTextArea txt_remark;
 
         /// <summary>
         /// Label1 control.

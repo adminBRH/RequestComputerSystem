@@ -15,7 +15,7 @@ public class DisbursementClass
     DataTable dt;
     SQLclass cl_Sql = new SQLclass();
 
-    public Boolean approval(string id, string type, string deptid)
+    public Boolean approval(string branch, string id, string type, string deptid)
     {
         Boolean bl = false;
 
@@ -24,16 +24,38 @@ public class DisbursementClass
         dt = cl_Sql.select(sql);
         if (dt.Rows.Count > 0)
         {
+            int approvelevel = 1;
+
+            string status1 = "'waiting'";
             string hod1 = dt.Rows[0]["depthod1"].ToString();
             string hod2 = dt.Rows[0]["depthod2"].ToString();
+
+            if (Bypass(branch, "", type, hod1) == "bypass")
+            {
+                status1 = "NULL";
+                hod1 = "-";
+                approvelevel++;
+            }
+
+            if (Bypass(branch, "", type, hod2) == "bypass")
+            {
+                hod2 = "-";
+
+                if (hod1 == "-")
+                {
+                    approvelevel++;
+                }
+            }
 
             sql = "insert into disbursement_approve(da_type ,da_crid " +
                 ",da_level1 ,da_datetime1 ,da_status1 ,da_level2 " +
                 ",da_level3, da_level4, da_level5, da_level6, da_level7, da_level) " +
                 "values('" + type + "','" + id + "'" +
-                ",'" + hod1 + "',CURRENT_TIMESTAMP,'waiting','" + hod2 + "' ";
+                ",'" + hod1 + "',CURRENT_TIMESTAMP," + status1 + ",'" + hod2 + "' ";
 
-            string sql2 = "select * from disbursement_level where dr_type = '" + type + "' and dr_active = 'yes' order by dr_level ";
+            string sql2 = "select * from disbursement_level " +
+                "\nwhere dr_active = 'yes' and dr_branch = '" + branch + "' and dr_type = '" + type + "' " +
+                "\norder by dr_level ";
             DataTable dt2 = new DataTable();
             dt2 = cl_Sql.select(sql2);
             if (dt2.Rows.Count > 0)
@@ -44,22 +66,34 @@ public class DisbursementClass
                 }
             }
 
-            sql = sql + ",'1'); ";
+            sql = sql + ",'" + approvelevel.ToString() + "'); ";
 
             if (cl_Sql.Modify(sql))
             {
                 bl = true;
+            }
+            else
+            {
+
             }
         }
 
         return bl;
     }
 
-    public string Bypass(string level ,string type)
+    public string Bypass(string branch, string level ,string type, string emp)
     {
         string result = "waiting";
 
-        sql = "select * from disbursement_level where dr_empid = '-' and dr_type = '" + type + "' and dr_level = '" + level + "' ";
+        string drlevel = "";
+        if (emp == "-")
+        {
+            drlevel = "and dr_level = '" + level + "' ";
+        }
+
+        sql = "select dr_id from disbursement_level " +
+            "\nwhere dr_active = 'yes' and dr_branch = '" + branch + "' and dr_empid = '" + emp + "' " +
+            "\nand dr_type = '" + type + "' " + drlevel + "; ";
         dt = new DataTable();
         dt = cl_Sql.select(sql);
         if (dt.Rows.Count > 0)
@@ -70,7 +104,7 @@ public class DisbursementClass
         return result;
     }
 
-    public string ApprovedReject(string type, string id, string evn, string level, string remark)
+    public string ApprovedReject(string branch, string type, string id, string evn, string level, string remark)
     {
         string result = "";
         string bypass = "";
@@ -88,15 +122,15 @@ public class DisbursementClass
             if (evn == "approve" && int.Parse(level) < MaxLevel)
             {
                 levelNext = (int.Parse(level) + 1).ToString();
-                levelStatus = Bypass(levelNext, type);
+                levelStatus = Bypass(branch, levelNext, type, "-"); // Return bypass or waiting
                 bypass = levelStatus;
                 if (bypass == "bypass")
                 {
                     string loopNext = "yes";
-                    while (loopNext == "yes")
+                    while (loopNext == "yes") // Find approval
                     {
                         levelNext = (int.Parse(levelNext) + 1).ToString();
-                        levelStatus = Bypass(levelNext, type);
+                        levelStatus = Bypass(branch, levelNext, type, "-");
                         if (levelStatus != "bypass")
                         {
                             levelNext = (int.Parse(levelNext) - 1).ToString();
@@ -120,16 +154,18 @@ public class DisbursementClass
 
             if (bypass == "bypass") { levelup = (int.Parse(levelup) + 1).ToString(); }
 
-            sql = "update disbursement_approve set da_datetime" + level + " = CURRENT_TIMESTAMP, da_status" + level + " = '" + evn + "', da_level = '" + levelup + "', da_remark" + level + " = '" + remark + "' " +
+            sql = "update disbursement_approve " +
+                "\nset da_datetime" + level + " = CURRENT_TIMESTAMP, da_status" + level + " = '" + evn + "', da_level = '" + levelup + "', da_remark" + level + " = '" + remark + "' " +
                 NextLevel +
-                "where da_crid = '" + id + "' and da_type = '" + type + "'; ";
+                "\nwhere da_crid = '" + id + "' and da_type = '" + type + "'; ";
             if (cl_Sql.Modify(sql))
             {
                 string next = "yes";
                 if (evn == "reject")
                 {
                     next = "";
-                    sql = "update disbursement_request set dr_status = '" + evn + "' where dr_id = '" + id + "' ";
+                    sql = "update disbursement_request " +
+                        "\nset dr_status = '" + evn + "' where dr_id = '" + id + "' ";
                     if (cl_Sql.Modify(sql))
                     {
                         next = "yes";
@@ -139,13 +175,16 @@ public class DisbursementClass
                 string LA = LastApprove(type);
                 if (LA == level)
                 {
-                    sql = "update disbursement_request set dr_status = '" + evn + "' where dr_id = '" + id + "' ";
+                    sql = "update disbursement_request " +
+                        "\nset dr_status = '" + evn + "' " +
+                        "\nwhere dr_id = '" + id + "' ";
                     cl_Sql.Modify(sql);
                 }
 
                 if (next == "yes")
                 {
-                    sql = "select * from disbursement_approve where da_crid = '" + id + "'";
+                    sql = "select * from disbursement_approve " +
+                        "\nwhere da_crid = '" + id + "'";
                     dt = new DataTable();
                     dt = cl_Sql.select(sql);
                     if (dt.Rows.Count > 0)
@@ -157,8 +196,9 @@ public class DisbursementClass
                         nextemp = dt.Rows[0][nextemp].ToString();
                         if (nextemp == "")
                         {
-                            sql = "update disbursement_approve set da_level" + levelup + "='-', da_status" + levelup + " = 'bypass' " +
-                                "where da_crid = '" + id + "' ";
+                            sql = "update disbursement_approve " +
+                                "\nset da_level" + levelup + "='-', da_status" + levelup + " = 'bypass' " +
+                                "\nwhere da_crid = '" + id + "' ";
                             if (cl_Sql.Modify(sql))
                             {
                                 bypass = "bypass";
@@ -197,17 +237,17 @@ public class DisbursementClass
         string result = "";
 
         sql = "select da_crid from disbursement_approve where " +
-            "\n(da_level1 = '" + empid + "' and da_status1 like '%" + status + "%' " +
-            "\nor da_level2 = '" + empid + "' and da_status2 like '%" + status + "%' " +
-            "\nor da_level3 = '" + empid + "' and da_status3 like '%" + status + "%' " +
-            "\nor da_level4 = '" + empid + "' and da_status4 like '%" + status + "%' " +
-            "\nor da_level5 = '" + empid + "' and da_status5 like '%" + status + "%' " +
-            "\nor da_level6 = '" + empid + "' and da_status6 like '%" + status + "%' " +
-            "\nor da_level7 = '" + empid + "' and da_status7 like '%" + status + "%' ) ";
+            "\n(da_level1 like '%" + empid + "%' and da_status1 like '%" + status + "%' " +
+            "\nor da_level2 like '%" + empid + "%' and da_status2 like '%" + status + "%' " +
+            "\nor da_level3 like '%" + empid + "%' and da_status3 like '%" + status + "%' " +
+            "\nor da_level4 like '%" + empid + "%' and da_status4 like '%" + status + "%' " +
+            "\nor da_level5 like '%" + empid + "%' and da_status5 like '%" + status + "%' " +
+            "\nor da_level6 like '%" + empid + "%' and da_status6 like '%" + status + "%' " +
+            "\nor da_level7 like '%" + empid + "%' and da_status7 like '%" + status + "%' ) ";
 
         if (status != "waiting") // != Wait me
         {
-            sql += "\nunion select dr_id as 'da_crid' from disbursement_request where dr_empid = '" + empid + "' and dr_status like '%" + status + "%' ";
+            sql += "\nunion select dr_id as 'da_crid' from disbursement_request where dr_empid like '%" + empid + "%' and dr_status like '%" + status + "%' ";
         }
         dt = new DataTable();
         dt = cl_Sql.select(sql);
@@ -237,6 +277,7 @@ public class DisbursementClass
         try
         {
             //emailTo = "brh.hito@brh.co.th"; // ------- for test
+
             sql = "update disbursement_request set dr_sentto='" + emailTo + "' where dr_id = '" + drid + "' ";
             if (cl_Sql.Modify(sql))
             {
@@ -257,7 +298,7 @@ public class DisbursementClass
     {
         DataTable result = new DataTable();
 
-        sql = "select *,CONCAT(u.userpname,' ',u.userfname,' ',u.userlname) as 'fullName'  from `user` as u where u.username = '" + empid + "' ";
+        sql = "select *,CONCAT(u.userpname,' ',u.userfname,' ',u.userlname) as 'fullName'  from `user` as u where u.username like '%" + empid + "%' ";
         dt = new DataTable();
         dt = cl_Sql.select(sql);
         if (dt.Rows.Count > 0)

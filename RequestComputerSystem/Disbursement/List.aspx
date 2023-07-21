@@ -5,14 +5,19 @@
         
         <asp:ScriptManager ID="ScriptManager1" runat="server"></asp:ScriptManager>
         
-       <div class="text-center my-3"> เลือก Status : &nbsp;
-            <asp:DropDownList ID="chang_status" AutoPostBack="true" OnSelectedIndexChanged="chang_status_SelectedIndexChanged" runat="server">
-                 <asp:ListItem Text="All" Value=""></asp:ListItem>  
-                 <asp:ListItem Text="Wait me" Value="waiting" Selected="True"></asp:ListItem>  
-                 <asp:ListItem Text="Wait" Value="wait"></asp:ListItem>  
-                 <asp:ListItem Text="Finish" Value="approve"></asp:ListItem>  
-                 <asp:ListItem Text="Reject" Value="reject"></asp:ListItem>
-            </asp:DropDownList>
+
+       <div class="text-center my-3"> 
+        เลือกโรงพยาบาล : &nbsp;
+        <asp:DropDownList ID="dd_branch" OnSelectedIndexChanged="dd_branch_SelectedIndexChanged" AutoPostBack="true" runat="server">
+        </asp:DropDownList>
+        เลือก Status : &nbsp;
+        <asp:DropDownList ID="chang_status" AutoPostBack="true" OnSelectedIndexChanged="chang_status_SelectedIndexChanged" runat="server">
+                <asp:ListItem Text="All" Value=""></asp:ListItem>  
+                <asp:ListItem Text="Wait me" Value="waiting"></asp:ListItem>  
+                <asp:ListItem Text="Wait" Value="wait"></asp:ListItem>  
+                <asp:ListItem Text="Finish" Value="approve"></asp:ListItem>  
+                <asp:ListItem Text="Reject" Value="reject"></asp:ListItem>
+        </asp:DropDownList>
 
          &nbsp; เลือกวันที่ : &nbsp; <input type="date" id="date_from" value="" onmouseout="SelectDate()" runat="server" /> ถึง : <input type="date" id="date_to" value="" onmouseout="SelectDate()" runat="server" />
            <asp:Button ID="btn_search" Text="Search" runat="server" CssClass="btn btn-primary" OnClick="btn_search_Click" />
@@ -26,18 +31,19 @@
                     <asp:BoundField DataField="dr_id" HeaderText="ID"></asp:BoundField>
                     <asp:BoundField DataField="dr_datetime" HeaderText="Create date" DataFormatString="{0: dd/MM/yyyy HH:mm}"></asp:BoundField>
                     <asp:BoundField DataField="fullname" HeaderText="Create by"></asp:BoundField>
-                    <asp:BoundField DataField="deptname" HeaderText="From department"></asp:BoundField>
+                    <asp:BoundField DataField="departmentname" HeaderText="From department"></asp:BoundField>
                     <asp:BoundField DataField="df_name" HeaderText="Document name"></asp:BoundField>
                     <asp:BoundField DataField="dr_forname" HeaderText="For"></asp:BoundField>
                     <asp:BoundField DataField="dr_status" HeaderText="Status"></asp:BoundField>
-                    <asp:TemplateField HeaderText="" HeaderStyle-CssClass="title_bg" ItemStyle-HorizontalAlign="Left">
+                    <asp:BoundField DataField="approvename" HeaderText="Approval"></asp:BoundField>
+                    <asp:TemplateField HeaderText="" HeaderStyle-CssClass="title_bg" ItemStyle-HorizontalAlign="Center">
                         <ItemTemplate>
                             <div class="mx-auto my-auto">
                                 <a class="btn btn-outline-dark" onmouseover="GetID('<%# Eval("dr_id") %>','<%# Eval("fullname") %>','<%# Eval("dr_datetime") %>','<%# Eval("deptname") %>','<%# Eval("df_name") %>','<%# Eval("dr_status") %>')" data-toggle="modal" data-target="#exampleModal">Detail</a>
                             </div>
                         </ItemTemplate>
                     </asp:TemplateField>
-                    <asp:TemplateField HeaderText="" HeaderStyle-CssClass="title_bg" ItemStyle-HorizontalAlign="Left">
+                    <asp:TemplateField HeaderText="" HeaderStyle-CssClass="title_bg" ItemStyle-HorizontalAlign="Center">
                         <ItemTemplate>
                             <div class="mx-auto my-auto">
                                 <a class="btn btn-outline-dark" href="Approve.aspx?id=<%# Eval("dr_id") %>&type=<%# Eval("dr_type") %>">Approve</a>
@@ -48,7 +54,7 @@
 
                 <FooterStyle BackColor="#CCCCCC" ForeColor="Black"></FooterStyle>
 
-                <HeaderStyle BackColor="#000084" Font-Bold="True" ForeColor="White"></HeaderStyle>
+                <HeaderStyle BackColor="#000084" Font-Bold="True" ForeColor="White" HorizontalAlign="Center"></HeaderStyle>
 
                 <PagerStyle HorizontalAlign="Center" BackColor="#999999" ForeColor="Black"></PagerStyle>
 

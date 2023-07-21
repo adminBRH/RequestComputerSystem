@@ -184,27 +184,39 @@
 
     <!-- CANVAS CHART Start -->
     <div class="row col-12 mx-auto">
+        <div class="row col-12 mx-auto my-auto">
+            <div class="col-2 card card-title bg-dark text-center h1" style="color: white;">
+                Data Date
+            </div>
+            <div class="col-6 card card-title bg-dark text-center h1" style="color: white;">
+                <asp:Label ID="lbl_DataDate" Text="" runat="server"></asp:Label>
+            </div>
+            <div class="col-4 card card-title bg-dark text-center h1" style="color: white;">
+                <asp:Label ID="lbl_total" Text="" runat="server"></asp:Label>
+            </div>
+        </div>
         <!-- Status -->
         <div class="col col-lg-4 col-sm-12 mx-auto my-3">
             <div class="card card-title bg-info text-center h3" style="color: white;">
                 Status
             </div>
             <div class="card card-title text-center h3" style="color: white;">
-                <asp:DropDownList ID="dd_status" CssClass="form-control" runat="server">
-                    <asp:ListItem Text="ALL" Value=""></asp:ListItem>
+                <asp:DropDownList ID="dd_status" CssClass="form-control" OnSelectedIndexChanged="dd_status_SelectedIndexChanged" AutoPostBack="true" runat="server">
+                    <asp:ListItem Text="ALL" Value="" Selected="True"></asp:ListItem>
+                    <asp:ListItem Text="Cancel" Value="Cancel"></asp:ListItem>
                     <asp:ListItem Text="Reject" Value="Reject"></asp:ListItem>
                     <asp:ListItem Text="Wait" Value="Wait"></asp:ListItem>
                     <asp:ListItem Text="Approved" Value="Approved"></asp:ListItem>
                     <asp:ListItem Text="Acknowledge" Value="Acknowledge"></asp:ListItem>
                     <asp:ListItem Text="Finish" Value="Finish"></asp:ListItem>
-                    <asp:ListItem Text="ClosJob" Value="ClosJob"></asp:ListItem>
+                    <asp:ListItem Text="CloseJob" Value="CloseJob"></asp:ListItem>
                 </asp:DropDownList>
             </div>
             <div class="card card-body bg-transparent">
                 <canvas id="cv_status" height="300"></canvas>
                 <div hidden="hidden">
-                    <input type="text" id="txt_status" value="Reject,Wait,Approved,Acknowledge,Finish,ClosJob" runat="server" />
-                    <input type="text" id="txt_status_value" value="36,95,98,10,32,629" runat="server" />
+                    <input type="text" id="txt_status" value="" runat="server" />
+                    <input type="text" id="txt_status_value" value="" runat="server" />
                 </div>
             </div>
         </div>
@@ -215,23 +227,14 @@
                 Systems
             </div>
             <div class="card card-title text-center h3" style="color: white;">
-                <asp:DropDownList ID="dd_systems" CssClass="form-control" runat="server">
-                    <asp:ListItem Text="ALL" Value=""></asp:ListItem>
-                    <asp:ListItem Text="Arcus Air" Value="6"></asp:ListItem>
-                    <asp:ListItem Text="Computer" Value="9"></asp:ListItem>
-                    <asp:ListItem Text="Email Address" Value="2"></asp:ListItem>
-                    <asp:ListItem Text="IP Phone" Value="8"></asp:ListItem>
-                    <asp:ListItem Text="Microsoft Office" Value="4"></asp:ListItem>
-                    <asp:ListItem Text="Software License" Value="7"></asp:ListItem>
-                    <asp:ListItem Text="VPN" Value="3"></asp:ListItem>
-                    <asp:ListItem Text="B-Connect" Value="1"></asp:ListItem>
+                <asp:DropDownList ID="dd_systems" CssClass="form-control" OnSelectedIndexChanged="dd_systems_SelectedIndexChanged" AutoPostBack="true" runat="server">
                 </asp:DropDownList>
             </div>
             <div class="card card-body bg-transparent">
                 <canvas id="cv_System" height="300"></canvas>
                 <div hidden="hidden">
-                    <input type="text" id="txt_System" value="Arcus Air,Computer,Email Address,IP Phone,Microsoft Office,Software License,VPN,B-Connect" runat="server" />
-                    <input type="text" id="txt_System_value" value="217,23,168,20,34,2,24,412" runat="server" />
+                    <input type="text" id="txt_System" value="" runat="server" />
+                    <input type="text" id="txt_System_value" value="" runat="server" />
                 </div>
             </div>
         </div>
@@ -250,15 +253,15 @@
                         <input type="date" id="date_end" value="2022-06-08" runat="server" />
                     </div>
                     <div class="col-2 mx-auto text-center">
-                        <a class="btn btn-outline-primary" style="cursor: pointer;">Filter</a>
+                        <a id="btn_filter" class="btn btn-outline-primary" onserverclick="btn_filter_ServerClick" runat="server" style="cursor: pointer;">Filter</a>
                     </div>
                 </div>
             </div>
             <div class="card card-body bg-transparent">
                 <canvas id="cv_QtyDate" height="300"></canvas>
                 <div hidden="hidden">
-                    <input type="text" id="txt_QtyDate" value="01/06/2565,02/06/2565,03/06/2565,04/06/2565,05/06/2565,06/06/2565,07/06/2565,08/06/2565" runat="server" />
-                    <input type="text" id="txt_QtyDate_Value" value="4,2,5,6,9,10,4,4" runat="server" />
+                    <input type="text" id="txt_QtyDate" value="" runat="server" />
+                    <input type="text" id="txt_QtyDate_Value" value="" runat="server" />
                 </div>
             </div>
         </div>
@@ -285,10 +288,10 @@
 
     function ChartColor(x) { // x = Intensity
         var Red = 'rgba(255, 99, 132, ' + x + ')';
-        var Purple = 'rgba(153, 102, 255, ' + x + '';
+        var Blue = 'rgba(54, 162, 235, ' + x + ')';
         var Yellow = 'rgba(255, 206, 86, ' + x + ')';
         var Orange = 'rgba(255, 159, 64, ' + x + ')';
-        var Blue = 'rgba(54, 162, 235, ' + x + ')';
+        var Purple = 'rgba(153, 102, 255, ' + x + '';
         var Green = 'rgba(75, 192, 192, ' + x + ')';
         var Pink = 'rgba(255, 20, 147, ' + x + ')';
 

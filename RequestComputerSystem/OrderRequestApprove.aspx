@@ -22,7 +22,7 @@
                 <div class="row col-12">
                     <div class="col-3 text-right">รายละเอียด : </div>
                     <div class="col-9"><asp:Label ID="lbl_detail" Text="" runat="server"></asp:Label></div>
-                    <input type="text" id="txtH_detailOrder" value="" runat="server"  hidden="hidden"/>
+                    <input type="text" id="txtH_detailOrder" value="" hidden="hidden" runat="server" />
                 </div>
             </div>
             <div class="col-10 mb-3">
@@ -57,15 +57,16 @@
             </div>
         </div>
 
-        <div class="row col-12 mx-auto">
+        <div class="row col-12 mx-auto" style="font-size: x-large;">
 
             <div class="col-5 mr-3 mb-3">
                 <div class="card card-header bg-gradient-primary" style="color:white">
                     ความเห็นผู้จัดการฝ่าย
                 </div>
                 <div class="card-body bg-gradient-light">
-                    <div id="div_apy1" class="col-12" runat="server" visible="false" style="color:green;"><i id="apy1" class="fas fa-check fa-sm" runat="server"></i> อนุมัติ <asp:Label ID="lbl_apy1" Text=".............................." runat="server"></asp:Label></div>
-                    <div id="div_apn1" class="col-12" runat="server" visible="false" style="color:red;"><i id="apn1" class="fas fa-check fa-sm" runat="server"></i> ไม่อนุมัติ <asp:Label ID="lbl_apn1" Text=".............................." runat="server"></asp:Label></div>
+                    <div id="div_wait1" class="badge badge-warning" runat="server" visible="false" style="font-size: x-large;"><i id="wait1" class="fas fa-clock fa-sm" runat="server"></i> รอการอนุมัติจาก</div>
+                    <div id="div_apy1" class="badge badge-success" runat="server" visible="false"><i id="apy1" class="fas fa-check fa-sm" runat="server"></i> อนุมัติ <asp:Label ID="lbl_apy1" Text=".............................." runat="server"></asp:Label></div>
+                    <div id="div_apn1" class="badge badge-danger" runat="server" visible="false"><i id="apn1" class="fas fa-check fa-sm" runat="server"></i> ไม่อนุมัติ <asp:Label ID="lbl_apn1" Text=".............................." runat="server"></asp:Label></div>
                     <div class="col-12 text-center">(<asp:Label id="lbl_name_ap1" Text="..............................." runat="server"></asp:Label>)</div>
                     <div class="col-12 text-center"><asp:Label id="lbl_date_ap1" Text="......../......../........" runat="server"></asp:Label></div>
                     <div id="div_btn1" class="row col-12 text-center mb-3" runat="server" visible="false">
@@ -80,8 +81,9 @@
                     ความเห็นของตัวแทนคณะกรรมการ Costing
                 </div>
                 <div class="card-body bg-gradient-light">
-                    <div id="div_apy2" class="col-12" runat="server" visible="false" style="color:green;"><i id="apy2" class="fas fa-check fa-sm" runat="server"></i> อนุมัติ <asp:Label ID="lbl_apy2" Text=".............................." runat="server"></asp:Label></div>
-                    <div id="div_apn2" class="col-12" runat="server" visible="false" style="color:red;"><i id="apn2" class="fas fa-check fa-sm" runat="server"></i> ไม่อนุมัติ <asp:Label ID="lbl_apn2" Text=".............................." runat="server"></asp:Label></div>
+                    <div id="div_wait2" class="badge badge-warning" runat="server" visible="false" style="font-size: x-large;"><i id="I1" class="fas fa-clock fa-sm" runat="server"></i> รอการอนุมัติจาก</div>
+                    <div id="div_apy2" class="badge badge-success" runat="server" visible="false"><i id="apy2" class="fas fa-check fa-sm" runat="server"></i> อนุมัติ <asp:Label ID="lbl_apy2" Text=".............................." runat="server"></asp:Label></div>
+                    <div id="div_apn2" class="badge badge-danger" runat="server" visible="false"><i id="apn2" class="fas fa-check fa-sm" runat="server"></i> ไม่อนุมัติ <asp:Label ID="lbl_apn2" Text=".............................." runat="server"></asp:Label></div>
                     <div class="col-12 text-center">(<asp:Label id="lbl_name_ap2" Text="..............................." runat="server"></asp:Label>)</div>
                     <div class="col-12 text-center"><asp:Label id="lbl_date_ap2" Text="......../......../........" runat="server"></asp:Label></div>
                     <div id="div_btn2" class="row col-12 text-center mb-3" runat="server" visible="false">
@@ -96,8 +98,9 @@
                     <asp:Label ID="lbl_3" Text="ความเห็นของผู้จัดการฝ่ายบัญชี" runat="server"></asp:Label>
                 </div>
                 <div class="card-body bg-gradient-light">
-                    <div id="div_apy3" class="col-12" runat="server" visible="false" style="color:green;"><i id="apy3" class="fas fa-check fa-sm" runat="server"></i> อนุมัติ <asp:Label ID="lbl_apy3" Text=".............................." runat="server"></asp:Label></div>
-                    <div id="div_apn3" class="col-12" runat="server" visible="false" style="color:red;"><i id="apn3" class="fas fa-check fa-sm" runat="server"></i> ไม่อนุมัติ <asp:Label ID="lbl_apn3" Text=".............................." runat="server"></asp:Label></div>
+                    <div id="div_wait3" class="badge badge-warning" runat="server" visible="false"><i class="fas fa-clock fa-sm"></i> รอการอนุมัติจาก</div>
+                    <div id="div_apy3" class="badge badge-success" runat="server" visible="false"><i id="apy3" class="fas fa-check fa-sm" runat="server"></i> อนุมัติ <asp:Label ID="lbl_apy3" Text=".............................." runat="server"></asp:Label></div>
+                    <div id="div_apn3" class="badge badge-danger" runat="server" visible="false"><i id="apn3" class="fas fa-check fa-sm" runat="server"></i> ไม่อนุมัติ <asp:Label ID="lbl_apn3" Text=".............................." runat="server"></asp:Label></div>
                     <div class="col-12 text-center">(<asp:Label id="lbl_name_ap3" Text="..............................." runat="server"></asp:Label>)</div>
                     <div class="col-12 text-center"><asp:Label id="lbl_date_ap3" Text="......../......../........" runat="server"></asp:Label></div>
                     <div id="div_btn3" class="row col-12 text-center mb-3" runat="server" visible="false">
@@ -112,8 +115,9 @@
                     ความเห็นของรองผู้อำนวยการโรงพยาบาล
                 </div>
                 <div class="card-body bg-gradient-light">
-                    <div id="div_apy4" class="col-12" runat="server" visible="false" style="color:green;"><i id="apy4" class="fas fa-check fa-sm" runat="server"></i> อนุมัติ <asp:Label ID="lbl_apy4" Text=".............................." runat="server"></asp:Label></div>
-                    <div id="div_apn4" class="col-12" runat="server" visible="false" style="color:red;"><i id="apn4" class="fas fa-check fa-sm" runat="server"></i> ไม่อนุมัติ <asp:Label ID="lbl_apn4" Text=".............................." runat="server"></asp:Label></div>
+                    <div id="div_wait4" class="badge badge-warning" runat="server" visible="false"><i id="I3" class="fas fa-clock fa-sm" runat="server"></i> รอการอนุมัติจาก</div>
+                    <div id="div_apy4" class="badge badge-success" runat="server" visible="false"><i id="apy4" class="fas fa-check fa-sm" runat="server"></i> อนุมัติ <asp:Label ID="lbl_apy4" Text=".............................." runat="server"></asp:Label></div>
+                    <div id="div_apn4" class="badge badge-danger" runat="server" visible="false"><i id="apn4" class="fas fa-check fa-sm" runat="server"></i> ไม่อนุมัติ <asp:Label ID="lbl_apn4" Text=".............................." runat="server"></asp:Label></div>
                     <div class="col-12 text-center">(<asp:Label id="lbl_name_ap4" Text="..............................." runat="server"></asp:Label>)</div>
                     <div class="col-12 text-center"><asp:Label id="lbl_date_ap4" Text="......../......../........" runat="server"></asp:Label></div>
                     <div id="div_btn4" class="row col-12 text-center mb-3" runat="server" visible="false">
@@ -128,8 +132,9 @@
                     ความเห็นของฝ่ายกลยุทธ์และสารสนเทศ
                 </div>
                 <div class="card-body bg-gradient-light">
-                    <div id="div_apy5" class="col-12" runat="server" visible="false" style="color:green;"><i id="apy5" class="fas fa-check fa-sm" runat="server"></i> อนุมัติ <asp:Label ID="lbl_apy5" Text=".............................." runat="server"></asp:Label></div>
-                    <div id="div_apn5" class="col-12" runat="server" visible="false" style="color:red;"><i id="apn5" class="fas fa-check fa-sm" runat="server"></i> ไม่อนุมัติ <asp:Label ID="lbl_apn5" Text=".............................." runat="server"></asp:Label></div>
+                    <div id="div_wait5" class="badge badge-warning" runat="server" visible="false"><i id="I4" class="fas fa-clock fa-sm" runat="server"></i> รอการอนุมัติจาก</div>
+                    <div id="div_apy5" class="badge badge-success" runat="server" visible="false"><i id="apy5" class="fas fa-check fa-sm" runat="server"></i> อนุมัติ <asp:Label ID="lbl_apy5" Text=".............................." runat="server"></asp:Label></div>
+                    <div id="div_apn5" class="badge badge-danger" runat="server" visible="false"><i id="apn5" class="fas fa-check fa-sm" runat="server"></i> ไม่อนุมัติ <asp:Label ID="lbl_apn5" Text=".............................." runat="server"></asp:Label></div>
                     <div class="col-12 text-center">(<asp:Label id="lbl_name_ap5" Text="..............................." runat="server"></asp:Label>)</div>
                     <div class="col-12 text-center"><asp:Label id="lbl_date_ap5" Text="......../......../........" runat="server"></asp:Label></div>
                     <div id="div_btn5" class="row col-12 text-center mb-5" runat="server" visible="false">
@@ -144,8 +149,9 @@
                     ความเห็นของผู้รับผิดชอบดำเนินการแผนก IT
                 </div>
                 <div class="card-body bg-gradient-light">
-                    <div id="div_apy6" class="col-12" runat="server" visible="false" style="color:green;"><i id="apy6" class="fas fa-check fa-sm" runat="server"></i> รับทราบ <asp:Label ID="lbl_apy6" Text=".............................." runat="server"></asp:Label></div>
-                    <div id="div_apn6" class="col-12" runat="server" visible="false" style="color:red;"><i id="apn6" class="fas fa-check fa-sm" runat="server"></i> ยกเลิก <asp:Label ID="lbl_apn6" Text=".............................." runat="server"></asp:Label></div>
+                    <div id="div_wait6" class="badge badge-warning" runat="server" visible="false"><i id="I5" class="fas fa-clock fa-sm" runat="server"></i> รอการอนุมัติจาก</div>
+                    <div id="div_apy6" class="badge badge-success" runat="server" visible="false"><i id="apy6" class="fas fa-check fa-sm" runat="server"></i> รับทราบ <asp:Label ID="lbl_apy6" Text=".............................." runat="server"></asp:Label></div>
+                    <div id="div_apn6" class="badge badge-danger" runat="server" visible="false"><i id="apn6" class="fas fa-check fa-sm" runat="server"></i> ยกเลิก <asp:Label ID="lbl_apn6" Text=".............................." runat="server"></asp:Label></div>
                     <div class="col-12 text-center">(<asp:Label id="lbl_name_ap6" Text="..............................." runat="server"></asp:Label>)</div>
                     <div class="col-12 text-center"><asp:Label id="lbl_date_ap6" Text="......../......../........" runat="server"></asp:Label></div>
                     <div id="div_btn6" class="row col-12 text-center mb-3" runat="server" visible="false">

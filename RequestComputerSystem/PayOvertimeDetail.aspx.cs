@@ -81,7 +81,6 @@ namespace RequestComputerSystem
                     "WHERE (p.pt_id = '" + id + "');";
 
 
-
             dt = new DataTable();
             dt = CL_Sql.select(sql);
 

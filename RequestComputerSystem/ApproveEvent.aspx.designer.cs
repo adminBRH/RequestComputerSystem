@@ -33,15 +33,6 @@ namespace RequestComputerSystem
         protected global::System.Web.UI.WebControls.Label lb0_0;
 
         /// <summary>
-        /// lb0_1 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lb0_1;
-
-        /// <summary>
         /// lb0_2 control.
         /// </summary>
         /// <remarks>
@@ -60,6 +51,15 @@ namespace RequestComputerSystem
         protected global::System.Web.UI.WebControls.Label lb0_3;
 
         /// <summary>
+        /// lbl_branch control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lbl_branch;
+
+        /// <summary>
         /// lb0_4 control.
         /// </summary>
         /// <remarks>
@@ -67,6 +67,33 @@ namespace RequestComputerSystem
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label lb0_4;
+
+        /// <summary>
+        /// lb0_1 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lb0_1;
+
+        /// <summary>
+        /// lb0_1_detail control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lb0_1_detail;
+
+        /// <summary>
+        /// lb0_5 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lb0_5;
 
         /// <summary>
         /// lb1_1 control.
@@ -103,6 +130,24 @@ namespace RequestComputerSystem
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button bt_edit;
+
+        /// <summary>
+        /// bt_1_2 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlAnchor bt_1_2;
+
+        /// <summary>
+        /// bt_1_3 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button bt_1_3;
 
         /// <summary>
         /// div2 control.
@@ -265,6 +310,87 @@ namespace RequestComputerSystem
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl i3;
+
+        /// <summary>
+        /// div3x1 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl div3x1;
+
+        /// <summary>
+        /// lb3x1_1 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lb3x1_1;
+
+        /// <summary>
+        /// lb3x1_2 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lb3x1_2;
+
+        /// <summary>
+        /// lb3x1_3 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lb3x1_3;
+
+        /// <summary>
+        /// lb3x1_4 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lb3x1_4;
+
+        /// <summary>
+        /// bt_3x1_1 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button bt_3x1_1;
+
+        /// <summary>
+        /// bt_3x1_2 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlAnchor bt_3x1_2;
+
+        /// <summary>
+        /// bt_3x1_3 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button bt_3x1_3;
+
+        /// <summary>
+        /// i3x1 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl i3x1;
 
         /// <summary>
         /// div4 control.

@@ -173,18 +173,80 @@ public class SQLclass
         return StID;
     }
 
-    public string EmpName(string empid)
+    public DataTable dt_Branch()
     {
-        string result = "";
+        string sql = "select distinct LEFT(deptid,3) as 'branchname' from department where deptactive = 'yes'; ";
+        DataTable dt = new DataTable();
+        dt = select(sql);
+        if (dt.Rows.Count > 0)
+        { }
+        return dt;
+    }
+    
+    public DataTable dt_Department(string branch)
+    {
+        if (branch != "")
+        {
+            branch = branch.Substring(0, 3);
+        }
 
-        string sql = "select concat(userpname,' ',userfname,' ',userlname) as 'fullname' from user where username = '" + empid + "' ";
+        string sql = "select deptid, concat(deptname,' [',deptid,']') as 'deptname' from department " +
+                "\nwhere deptactive = 'yes' and deptid like '" + branch + "%' " +
+                "\nand (depthod1<>'' or depthod1 is not null) " +
+                "\norder by deptname";
+        DataTable dt = new DataTable();
+        dt = select(sql);
+        if (dt.Rows.Count > 0)
+        { }
+        return dt;
+    }
+
+    public DataTable dt_Systems()
+    {
+        string sql = "select * from systems where sysactive = 'Y'; ";
+        DataTable dt = new DataTable();
+        dt = select(sql);
+        if (dt.Rows.Count > 0) 
+        { }
+        return dt;
+    }
+
+    public DataTable EmpName(string empid)
+    {
+        string sql = "select concat(ifnull(userpname,''),userfname,' ',userlname) as 'fullname', userposition " +
+            "\nfrom user where username = '" + empid + "' ";
         DataTable dte = new DataTable();
         dte = select(sql);
         if (dte.Rows.Count > 0)
+        { }
+        return dte;
+    }
+
+    public string CheckITsite(string br, string empid)
+    {
+        if (empid == "brh_it")
         {
-            result = dte.Rows[0]["fullname"].ToString();
+            if (br.ToUpper() == "BRD")
+            {
+                empid = "brd_it";
+            }
         }
-        return result;
+        return empid;
+    }
+
+    public string EmployeeMail(string empid)
+    {
+        string email = "";
+
+        string sql = "select useremail from `user` where username = '" + empid + "'; ";
+        DataTable dt = new DataTable();
+        dt = select(sql);
+        if (dt.Rows.Count > 0)
+        {
+            empid = dt.Rows[0]["useremail"].ToString();
+        }
+
+        return email;
     }
 }
 

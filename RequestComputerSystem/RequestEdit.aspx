@@ -8,7 +8,7 @@
     <div class="row">
         <div class="card col-10 mx-auto mb-2">
             <div class="h5 card card-header alert alert-primary">
-                ข้อมูลพนักงาน
+                ข้อมูลพนักงานที่ต้องการใช้งาน
             </div>
             <div class="card card-body mb-3">
                 <table width="100%">
@@ -46,13 +46,13 @@
                         <td>
                             <div class="input-group">
                                 <label for="txt_fnameeng" class="btn btn-dark">Name</label>
-                                <input type="text" id="txt_fnameeng" class="form-control mb-2 mr-2" runat="server" value="" required />
+                                <input type="text" id="txt_fnameeng" class="form-control mb-2 mr-2" runat="server" value="" />
                             </div>
                         </td>
                         <td>
                             <div class="input-group">
                                 <label for="txt_lnameeng" class="btn btn-dark">Last name</label>
-                                <input type="text" id="txt_lnameeng" class="form-control mb-2 mr-2" runat="server" value="" required />
+                                <input type="text" id="txt_lnameeng" class="form-control mb-2 mr-2" runat="server" value="" />
                             </div>
                         </td>
                     </tr>
@@ -115,9 +115,9 @@
             </div>
         </div>
 
-        <div class="card col-10 mx-auto mb-2">
-            <div class="h5 card card-header alert alert-primary">
-                ข้อมูลระบบ
+        <div class="card col-10 mx-auto mb-2" runat="server" visible="false">
+            <div class="h5 card card-header alert alert-primary" style="color:red;">
+                ระบบที่ร้องขอ (ห้ามแก้ไข)
             </div>
             <div class="card card-body mb-3">
                 <table width="100%">

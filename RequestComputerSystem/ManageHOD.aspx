@@ -6,6 +6,14 @@
 
         <asp:ScriptManager ID="ScriptManager1" runat="server"></asp:ScriptManager>
 
+    <div class="row col-12 mx-auto">
+        <div class="col-6 mx-auto">
+            <asp:DropDownList ID="dd_Branch" CssClass="form-control" OnSelectedIndexChanged="dd_Branch_SelectedIndexChanged" AutoPostBack="true" runat="server"></asp:DropDownList>
+        </div>
+        <div class="col-6 mx-auto">
+            <asp:DropDownList ID="dd_Department" CssClass="form-control" OnSelectedIndexChanged="dd_Department_SelectedIndexChanged" AutoPostBack="true" runat="server"></asp:DropDownList>
+        </div>
+    </div>
     <div class="col-12 mx-auto">
         <asp:GridView ID="GridView1" CssClass="mx-auto" runat="server" AutoGenerateColumns="False" BackColor="White" BorderColor="#CCCCCC" BorderStyle="None" BorderWidth="1px" CellPadding="3">
             <Columns>
@@ -14,7 +22,7 @@
                 <asp:BoundField DataField="depthod1" HeaderText="รหัสหัวหน้าแผนก"></asp:BoundField>
                 <asp:BoundField DataField="HOD1" HeaderText="ชื่อหัวหน้าแผนก"></asp:BoundField>
                 <asp:BoundField DataField="depthod2" HeaderText="รหัสหัวหน้าฝ่าย"></asp:BoundField>
-                <asp:BoundField DataField="HOD2" HeaderText="ชื่อฟัวหน้าฝ่าย"></asp:BoundField>
+                <asp:BoundField DataField="HOD2" HeaderText="ชื่อหัวหน้าฝ่าย"></asp:BoundField>
                 <asp:TemplateField HeaderText="" HeaderStyle-CssClass="title_bg" ItemStyle-HorizontalAlign="Left">
                     <ItemTemplate>
                         <a href="#" class="btn btn-outline-danger" onmouseover="FixID('<%# Eval("deptid") %>','<%# Eval("deptname") %>')" data-toggle="modal" data-target="#alertModal">edit</a>
@@ -109,7 +117,10 @@
                     <div class="col-12 mx-auto">
                         <asp:Label ID="lbl_edit_alert" Text="" ForeColor="Red" Font-Size="Large" runat="server"></asp:Label>
                     </div>
-
+                    <div hidden="hidden">
+                        <input type="text" id="txtH_hod1id" value="" runat="server" />
+                        <input type="text" id="txtH_hod2id" value="" runat="server" />
+                    </div>
                   </div>
                   <div id="div_edit_btn" class="modal-footer" runat="server">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>

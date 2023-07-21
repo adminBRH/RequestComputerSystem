@@ -30,17 +30,24 @@ namespace RequestComputerSystem
 
                 if (!IsPostBack)
                 {
+                    string dateStart = DateTime.Now.AddDays(-30).ToString("yyyy-MM-dd");
+                    string dateEnd = DateTime.Now.Date.ToString("yyyy-MM-dd");
+                    date_Start.Value = dateStart;
+                    date_End.Value = dateEnd;
+
+                    if (UserStatus == "admin" || UserStatus == "it")
+                    {
+                        ddl_status.SelectedValue = "";
+                    }
+                    else
+                    {
+                        ddl_status.SelectedValue = "Wait me";
+                    }
+
+                    Branch();
                     Systems();
-                    string sr = ddl_status.SelectedValue.Trim();
-                    string sy = ddl_system.SelectedValue.Trim();
-                    string date = "";
-                    Grid1(sr, sy, date);
+                    Search();
                 }
-                else
-                {
-
-                }
-
             }
             else
             {
@@ -48,12 +55,19 @@ namespace RequestComputerSystem
             }
         }
 
-        //protected void ddl_status_SelectedIndexChanged(object sender, EventArgs e)
-        //{
-        //    string sr = ddl_status.SelectedValue.Trim();
-        //    string date = txtdate.Value.ToString().Trim();
-        //    Grid1(sr, date);
-        //}
+        protected void Branch()
+        {
+            sql = "select distinct LEFT(deptid,3) as 'branchname' from department where deptactive = 'yes';";
+            dt = new DataTable();
+            dt = cl_Sql.select(sql);
+            if (dt.Rows.Count > 0)
+            { }
+            dd_branch.DataSource = dt;
+            dd_branch.DataTextField = "branchname";
+            dd_branch.DataValueField = "branchname";
+            dd_branch.DataBind();
+            dd_branch.Items.Insert(0, new ListItem("ALL", ""));
+        }
 
         protected void Systems()
         {
@@ -69,7 +83,7 @@ namespace RequestComputerSystem
             ddl_system.Items.Insert(0, new ListItem("All Systems", ""));
         }
 
-        public Boolean Grid1(string sr, string sy, string da)
+        public Boolean Grid1(string branch, string sr, string sy, string dateStart, string dateEnd)
         {
             Boolean bl = false;
             
@@ -79,54 +93,52 @@ namespace RequestComputerSystem
             {
                 apSystem = "like '%%' ";
             }
-            string date = da;
 
-            sql = "select r.rqid, rs.rqsid, a.apid, CONCAT('[',r.rqid,'.',rs.rqsid,']') as 'ReqID', r.rqdateadd, CONCAT(r.rqpname,' ',r.rqfname,' ',r.rqlname) as 'UserReqName' " +
-                "\n, r.rqpost, r.rqdepartment as 'UserReqDept', d.deptname as 'UserReqDeptName' " +
-                "\n, s.sysname, a.apstatus, a.aplevel, a.aplname, r.userid ,a.userid as 'apuserapprove', a.apuserapprove1, a.apuserapprove2, a.apdate " +
-                "\nfrom brh_it_request.requestsystems as rs " +
-                "\nleft join brh_it_request.request as r on r.rqid = rs.rqid " +
-                "\nleft join brh_it_request.systems as s on s.sysid = rs.sysid " +
-                "\nleft join brh_it_request.department as d on d.deptid = r.rqdepartment " +
-                "\nleft join( " +
-                "\n    select a.*,al.aplname from brh_it_request.approve as a " +
-                "\n    left join(select rqsid, MAX(aplevel) as 'aplevelMAX','Y' as 'LastStatus' from brh_it_request.approve group by rqsid) as a2 " +
-                "\n        on a2.rqsid = a.rqsid and a2.aplevelMAX = a.aplevel " +
-                "\n    left join brh_it_request.approvelevel as al on al.apllevel=a.aplevel " +
-                "\n    where a2.LastStatus = 'Y' " +
-                "\n) a on a.rqsid = rs.rqsid " +
-                "\nwhere r.rqtype <> 'Reject' " +
-                "\nand apstatus like '%" + apStatus + "%' " +
-                "\nand rs.sysid " + apSystem +
-                "\nand r.rqdateadd like '%" + date + "%' ";
-
-            if (Request.QueryString["qid"] != null)
+            string onlyuser = "#";
+            string orderby = "order by rs.rqid ";
+            if (apStatus == "Wait" || apStatus == "Wait me")
             {
-                string rqid = Request.QueryString["qid"].ToString();
-                if (rqid != "")
+                orderby += "desc ";
+                if (apStatus == "Wait me")
                 {
-                    sql += "\nand r.rqid='" + rqid + "' ";
+                    apStatus = "Wait";
+                    onlyuser = "";
                 }
-
             }
 
-                if (UserStatus == "admin" || UserStatus == "it")
-                {
-                    
-                }
-                else
-                {
-                    sql += "and (r.userid = '" + UserLogin + "' or a.userid = '" + UserLogin + "' or a.apuserapprove1 = '" + UserLogin + "') ";
-                }
+            if (UserStatus == "admin" || UserStatus == "it")
+            {
+                UserLogin = "";
+            }
 
-                if (apStatus == "Wait")
-                {
-                    sql += "order by rs.rqid";
-                }
-                else
-                {
-                    sql += "order by rs.rqid desc";
-                }
+            sql = "Select a.*, r.rqid, concat('[',r.rqid,'.',a.rqsid,']') as 'ReqID', s.sysname, rs.rqsvalue, " +
+                "\nconcat(s.sysname,ifnull(concat(' : ',rs.rqsvalue),'')) as 'SystemName', r.rqdateadd, " +
+                "\nconcat(ifnull(fu.userpname,''),fu.userfname,' ',fu.userlname) as 'UserReqName', " +
+                "\nconcat(ifnull(apu.userpname,''),apu.userfname,' ',apu.userlname) as 'UserApprove', " +
+                "\nr.rqdepartment, d.deptname, concat(r.rqdepartment,' ',d.deptname) as 'UserReqDeptName', al.aplname " +
+                "\nfrom ( " +
+                "\n    select ap.*,if(ap.aplevel=7,'brh_it',ap.apuserapprove1) as 'apUser' from approve as ap " +
+                "\n    left join (select rqsid, MAX(apid) as 'apidMAX' from approve group by rqsid) as am on am.rqsid = ap.rqsid " +
+                "\n    where ap.apid = am.apidMax " +
+                "\n) as a " +
+                "\nleft join ( " +
+                "\n    select DISTINCT rqsid from approve " +
+                "\n    where (userid like '%" + UserLogin + "%' or aprequestuser like '%" + UserLogin + "%' or apuserapprove1 like '%" + UserLogin + "%' or apuserapprove2 like '%" + UserLogin + "%') " +
+                "\n) as sh on sh.rqsid = a.rqsid " +
+                "\nleft join requestsystems as rs on rs.rqsid = a.rqsid " +
+                "\nleft join request as r on r.rqid = rs.rqid " +
+                "\nleft join systems as s on s.sysid = rs.sysid " +
+                "\nleft join `user` as fu on fu.username = a.aprequestuser " +
+                "\nleft join `user` as apu on apu.username = a.apUser " +
+                "\nleft join department as d on d.deptid = r.rqdepartment " +
+                "\nleft join approvelevel as al on al.aplid = a.aplevel and al.apllevel_sub = a.aplevel_sub " +
+                "\nwhere sh.rqsid is not null " +
+                "\nand r.rqdepartment like '" + branch + "%' " +
+                "\nand rs.sysid " + apSystem + " " +
+                "\nand (convert(r.rqdateadd,date) between convert('" + dateStart + "',date) and convert('" + dateEnd + "',date)) " +
+                "\nand a.apstatus like '%" + apStatus + "%' " +
+                "\n"+ onlyuser + "and a.apUser = '" + UserLogin + "' " +
+                "\n" + orderby + "; ";
 
             dt = new DataTable();
             dt = cl_Sql.select(sql);
@@ -142,7 +154,38 @@ namespace RequestComputerSystem
             }
 
             return bl;
-        } 
+        }
+
+        private void Search()
+        {
+            string branch = dd_branch.SelectedValue.ToString();
+            string status = ddl_status.SelectedValue.Trim();
+            string system = ddl_system.SelectedValue.Trim();
+            string dateStart = date_Start.Value.ToString().Trim();
+            string dateEnd = date_End.Value.ToString().Trim();
+
+            Grid1(branch, status, system, dateStart, dateEnd);
+        }
+
+        protected void dd_branch_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            Search();
+        }
+
+        protected void ddl_system_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            Search();
+        }
+
+        protected void ddl_status_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            Search();
+        }
+
+        protected void bt_search_Click(object sender, EventArgs e)
+        {
+            Search();
+        }
 
         protected void GridView1_RowCommand(object sender, GridViewCommandEventArgs e)
         {
@@ -217,18 +260,7 @@ namespace RequestComputerSystem
         protected void GridView1_PageIndexChanging(object sender, GridViewPageEventArgs e)
         {
             GridView1.PageIndex = e.NewPageIndex;
-            string sr = ddl_status.SelectedValue.Trim();
-            string sy = ddl_system.SelectedValue.Trim();
-            string date = txtdate.Value.ToString().Trim();
-            Grid1(sr, sy, date);
-        }
-
-        protected void bt_search_Click(object sender, EventArgs e)
-        {
-            string sr = ddl_status.SelectedValue.Trim();
-            string sy = ddl_system.SelectedValue.Trim();
-            string date = txtdate.Value.ToString().Trim();
-            Grid1(sr, sy, date);
+            Search();
         }
     }
 }

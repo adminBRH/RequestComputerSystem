@@ -49,7 +49,7 @@ namespace RequestComputerSystem
                 string encryptedText = Request.QueryString["IDs"].ToString();
                 user = cl_ED.Decrypt(encryptedText, "12345");
 
-                sql = "select * from  brh_it_request.`user` where username = '" + user + "' ";
+                sql = "select * from  `user` where username = '" + user + "' ";
                 dt = new DataTable();
                 dt = cl_Sql.select(sql);
                 if (dt.Rows.Count > 0)
@@ -107,16 +107,24 @@ namespace RequestComputerSystem
                     }
 
                     string sql1 = "";
-                    sql1 = "select *,concat(userpname,' ',userfname,' ',userlname) as 'UserFullName' from brh_it_request.`user` where username='" + user + "' and userpassword='" + pass + "'";
+                    sql1 = "select *,concat(userpname,' ',userfname,' ',userlname) as 'UserFullName' from `user` where username='" + user + "' and userpassword='" + pass + "'";
 
                     dt = cl_Sql.select(sql1);
                     if (dt.Rows.Count > 0)
                     {
                         Session["UserID"] = dt.Rows[0]["userid"].ToString();
                         Session["UserLogin"] = dt.Rows[0]["username"].ToString();
-                        Session["UserStatus"] = dt.Rows[0]["userstatus"].ToString();
-                        Session["UserFullName"] = dt.Rows[0]["UserFullName"].ToString();
+                        string FullName = dt.Rows[0]["userpname"].ToString();
+                        if (FullName != "")
+                        {
+                            FullName += " ";
+                        }
+                        FullName += dt.Rows[0]["userfname"].ToString() + " " + dt.Rows[0]["userlname"].ToString();
+                        Session["UserFullName"] = FullName;
                         Session["UserDeptid"] = dt.Rows[0]["userdeptcode"].ToString();
+
+                        string status = dt.Rows[0]["userstatus"].ToString();
+                        Session["UserStatus"] = status;
 
                         if (dt.Rows[0]["userdateedit"].ToString() == null)
                         {
@@ -127,16 +135,22 @@ namespace RequestComputerSystem
                             Session["ChangePass"] = "No";
                         }
 
-                        Session["HOD"] = "No";
-
-                        if (dt.Rows[0]["userstatus"].ToString() != "admin")
+                        if (status.ToLower() == "hod")
                         {
-                            sql1 = "select * from brh_it_request.department as d where (d.depthod1='" + dt.Rows[0]["username"].ToString() + "' or d.depthod2='" + dt.Rows[0]["username"].ToString() + "') ";
-                            dt = new DataTable();
-                            dt = cl_Sql.select(sql1);
-                            if (dt.Rows.Count > 0)
+                            Session["HOD"] = "Yes";
+                        }
+                        else
+                        {
+                            Session["HOD"] = "No";
+                            if (status != "admin")
                             {
-                                Session["HOD"] = "Yes";
+                                sql1 = "select * from department as d where (d.depthod1='" + dt.Rows[0]["username"].ToString() + "' or d.depthod2='" + dt.Rows[0]["username"].ToString() + "') ";
+                                dt = new DataTable();
+                                dt = cl_Sql.select(sql1);
+                                if (dt.Rows.Count > 0)
+                                {
+                                    Session["HOD"] = "Yes";
+                                }
                             }
                         }
 
@@ -191,8 +205,11 @@ namespace RequestComputerSystem
         {
             if (Request.QueryString["goto"] != null)
             {
-                string page = Request.QueryString["goto"].ToString();
-                Response.Redirect(page);
+                string url = Request.Url.ToString();
+                int lenUrl = url.Length;
+                int find = url.IndexOf("goto=") + 5;
+                string part = url.Substring(find, (lenUrl - find));
+                Response.Redirect(part);
             }
             else
             {

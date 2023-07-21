@@ -22,6 +22,8 @@ namespace RequestComputerSystem
         Files CL_File = new Files();
 
         string status = "";
+        string deptid = "";
+        string branch = "";
 
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -37,34 +39,41 @@ namespace RequestComputerSystem
                 else
                 {
                     string id = Request.QueryString["id"].ToString();
-                    if (!Permission(id))
+                    if (!IsPostBack)
                     {
-                        Response.Redirect("OrderRequestList.aspx");
+                        if (!Permission(id, "view"))
+                        {
+                            Response.Redirect("OrderRequestList.aspx");
+                        }
                     }
                 }
+
                 select_data();
             }
         }
 
-        public Boolean Permission(string id)
+        public Boolean Permission(string id, string evn)
         {
             Boolean bl = false;
 
             string empid = Session["UserLogin"].ToString();
-            string Aplv = "";
             sql = "select * from changeorder where rqid = '" + id + "' ";
             dt2 = new DataTable();
             dt2 = CL_Sql.select(sql);
             if (dt2.Rows.Count > 0)
             {
-                Aplv = "\nempid = '" + empid + "' or ";
-                for (int i=1; i<=6; i++)
+                string level = dt2.Rows[0]["Approvelv"].ToString();
+                if (evn == "view")
                 {
-                    Aplv = Aplv + " \nApprovelevel" + i.ToString() + " = '" + empid + "' ";
-                    if (i < 6) { Aplv = Aplv + "or "; }
+                    evn = "\nor empid = '" + empid + "'";
                 }
-
-                sql = "select * from changeorder where rqid = '" + id + "' and (" + Aplv + ") ";
+                else
+                {
+                    evn = "";
+                }
+                sql = "select * from changeorder " +
+                    "\nwhere rqid = '" + id + "' " +
+                    "\nand Approvelevel" + level + " = '" + empid + "' " + evn + "; ";
                 dt2 = new DataTable();
                 dt2 = CL_Sql.select(sql);
                 if (dt2.Rows.Count > 0)
@@ -76,6 +85,23 @@ namespace RequestComputerSystem
             return bl;
         }
 
+        public Boolean OpenApprove(string apv, string userlogin)
+        {
+            Boolean bl = false;
+            if (status == "admin" || status == "it")
+            {
+                bl = true;
+            }
+            else
+            {
+                if (apv == userlogin)
+                {
+                    bl = true;
+                }
+            }
+            return bl;
+        }
+
         public Boolean select_data() //Select ข้อมูลมาแสดง
         {
             Boolean result = false;
@@ -84,6 +110,7 @@ namespace RequestComputerSystem
             string empid = "";
 
             id = Request.QueryString["id"].ToString();
+            string UserLogin = Session["UserLogin"].ToString();
 
             lbl_id.Text = id;
 
@@ -92,6 +119,9 @@ namespace RequestComputerSystem
             dt = CL_Sql.select(sql);
             if (dt.Rows.Count > 0)
             {
+                deptid = dt.Rows[0]["deptid"].ToString();
+                branch = deptid.Substring(0, 3);
+
                 string OBJ = dt.Rows[0]["objective"].ToString();
                 lbl_Obj.Text = OBJ;
                 if (OBJ == "Other")
@@ -142,7 +172,14 @@ namespace RequestComputerSystem
                 if (Apv1 != "")
                 {
                     lbl_name_ap1.Text = "..." + EmployeeName(Apv1) + "...";
-                    if (level == "1") { div_btn1.Visible = true; }
+                    if (level == "1")
+                    {
+                        div_wait1.Visible = true;
+                        if (OpenApprove(Apv1, UserLogin))
+                        {
+                            div_btn1.Visible = true;
+                        }
+                    }
                 }
                 string ap1 = dt.Rows[0]["App1"].ToString();
                 if (ap1 != "")
@@ -159,7 +196,14 @@ namespace RequestComputerSystem
                 if (Apv2 != "")
                 {
                     lbl_name_ap2.Text = "..." + EmployeeName(Apv2) + "...";
-                    if (level == "2") { div_btn2.Visible = true; }
+                    if (level == "2")
+                    {
+                        div_wait2.Visible = true;
+                        if (OpenApprove(Apv2, UserLogin))
+                        {
+                            div_btn2.Visible = true;
+                        }
+                    }
                 }
                 string ap2 = dt.Rows[0]["App2"].ToString();
                 if (ap2 != "")
@@ -176,7 +220,14 @@ namespace RequestComputerSystem
                 if (Apv3 != "")
                 {
                     lbl_name_ap3.Text = "..." + EmployeeName(Apv3) + "...";
-                    if (level == "3") { div_btn3.Visible = true; }
+                    if (level == "3")
+                    {
+                        div_wait3.Visible = true;
+                        if (OpenApprove(Apv3, UserLogin))
+                        {
+                            div_btn3.Visible = true;
+                        }
+                    }
                 }
                 string ap3 = dt.Rows[0]["App3"].ToString();
                 if (ap3 != "")
@@ -193,7 +244,14 @@ namespace RequestComputerSystem
                 if (Apv4 != "")
                 {
                     lbl_name_ap4.Text = "..." + EmployeeName(Apv4) + "...";
-                    if (level == "4") { div_btn4.Visible = true; }
+                    if (level == "4")
+                    {
+                        div_wait4.Visible = true;
+                        if (OpenApprove(Apv4, UserLogin))
+                        {
+                            div_btn4.Visible = true;
+                        }
+                    }
                 }
                 string ap4 = dt.Rows[0]["App4"].ToString();
                 if (ap4 != "")
@@ -210,7 +268,14 @@ namespace RequestComputerSystem
                 if (Apv5 != "")
                 {
                     lbl_name_ap5.Text = "..." + EmployeeName(Apv5) + "...";
-                    if (level == "5") { div_btn5.Visible = true; }
+                    if (level == "5")
+                    {
+                        div_wait5.Visible = true;
+                        if (OpenApprove(Apv5, UserLogin))
+                        {
+                            div_btn5.Visible = true;
+                        }
+                    }
                 }
                 string ap5 = dt.Rows[0]["App5"].ToString();
                 if (ap5 != "")
@@ -227,7 +292,14 @@ namespace RequestComputerSystem
                 if (Apv6 != "")
                 {
                     lbl_name_ap6.Text = "..." + EmployeeName(Apv6) + "...";
-                    if (level == "6") { div_btn6.Visible = true; }
+                    if (level == "6")
+                    {
+                        div_wait6.Visible = true;
+                        if (OpenApprove(Apv6, UserLogin))
+                        {
+                            div_btn6.Visible = true;
+                        }
+                    }
                 }
                 string ap6 = dt.Rows[0]["App6"].ToString();
                 if (ap6 != "")
@@ -251,12 +323,13 @@ namespace RequestComputerSystem
         {
             string Result = "";
 
-            sql = "select * from `user` where username = '" + empid + "' ";
+            sql = "select concat(ifnull(userpname,''),userfname,' ',userlname) as 'empname' from `user` " +
+                "\nwhere username = '" + empid + "' ";
             dt2 = new DataTable();
             dt2 = CL_Sql.select(sql);
             if (dt2.Rows.Count > 0)
             {
-                Result = dt2.Rows[0]["userpname"].ToString() + " " + dt2.Rows[0]["userfname"].ToString() + " " + dt2.Rows[0]["userlname"].ToString();
+                Result = dt2.Rows[0]["empname"].ToString();
             }
 
             return Result;
@@ -320,13 +393,13 @@ namespace RequestComputerSystem
                 string next = "";
 
                 string status = Session["UserStatus"].ToString();
-                if (status == "admin" || status == "test")
+                if (status == "admin" || status == "it" || status == "test")
                 {
                     next = "yes";
                 }
                 else
                 {
-                    if (Permission(Request.QueryString["id"].ToString()))
+                    if (Permission(Request.QueryString["id"].ToString(), "update"))
                     {
                         next = "yes";
                     }
@@ -366,6 +439,8 @@ namespace RequestComputerSystem
             string Date_field = "";
             string status = "";
 
+            string userid = Session["UserLogin"].ToString();
+
             YN_field = "App" + level;
             Remark_field = "Remark" + level;
             Date_field = "Date" + level;
@@ -381,28 +456,42 @@ namespace RequestComputerSystem
                 else if (lv == 3) { empid = "'100384'"; } // <----------------- ผู้จัดการฝ่าย บัญชี
                 else if (lv == 4) { empid = "'151579'"; } // <----------------- รองผู้อำนวยการโรงพยาบาล
                 else if (lv == 5) { empid = "'151588'"; } // <----------------- ฝ่ายกลยุทธ์และสารสนเทศ
-                else if (lv == 6) { empid = "'brh_it'"; } // <----------------- IT
+                else if (lv == 6) // <----------------- IT
+                { 
+                    empid = "'brh_it'"; 
+                } 
                 else { }
 
                 if(txtH_detailOrder.Value == "yes") // flow Costing Only
                 {
                     if (lv == 2){ empid = "'100384'"; } // <---------------------- คณะกรรมการ Costing
                     else if (lv == 3) { empid = "'151579'"; level = "4"; } // <----------------- รองผู้อำนวยการโรงพยาบาล
-                    else if (lv == 5) { empid = "'150831'"; level = "3"; } // <----------------- ผู้จัดการฝ่าย การตลาด
+                    else if (lv == 5) { empid = "'150117'"; level = "3"; } // <----------------- ผู้จัดการฝ่าย การตลาด
                     else if (lv == 4) { empid = "'151588'"; level = "5"; } // <----------------- ฝ่ายกลยุทธ์และสารสนเทศ
-                    else if (lv == 6) { empid = "'brh_it'"; } // <----------------- IT
+                    else if (lv == 6) // <----------------- IT
+                    {
+                        empid = "'brh_it'"; 
+                    }
                     else { }
                 }
 
-                if (lv > 6) { status = "Finish"; level = (lv - 1).ToString(); empid = "'brh_it'"; }
+                if (lv > 6) 
+                { 
+                    status = "Finish"; 
+                    level = (lv - 1).ToString();
+                    empid = "'brh_it'"; 
+                }
             }
             else
             {
                 status = "Reject";
 
                 //if (int.Parse(level) > 1) { level = (int.Parse(level) - 1).ToString(); }
-                empid = "'" + Session["UserLogin"].ToString() + "'";
+                empid = "'" + userid + "'";
             }
+
+            // Confition Check IT support by site
+            empid = CL_Sql.CheckITsite(branch.ToUpper(), empid);
 
             applevel_field = "Approvelevel" + level;
 
@@ -539,6 +628,8 @@ namespace RequestComputerSystem
 
                 if (emailTo != "")
                 {
+                    //emailTo = "brh.hito@brh.co.th"; // for Test Only
+
                     BRH_SendMail.ServiceSoapClient BRHmail = new BRH_SendMail.ServiceSoapClient();
                     BRHmail.MailSend(emailTo, sj, htmlBody + htmlFooter, emailFrom, "Systems Request", "", "", "", false);
                 }

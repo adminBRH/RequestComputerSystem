@@ -259,7 +259,7 @@ namespace RequestComputerSystem
             codecare = txt_codecare.Value.ToString();
             location = txt_location.Value.ToString();
 
-            sql = "select * from brh_it_request.request where rqid = " + rqid;
+            sql = "select * from request where rqid = " + rqid;
             dt = new DataTable();
             dt = cl_Sql.select(sql);
             if (dt.Rows.Count > 0)
@@ -267,7 +267,7 @@ namespace RequestComputerSystem
                 deptidold = dt.Rows[0]["rqdepartment"].ToString();
             }
 
-            sql = "UPDATE brh_it_request.request " +
+            sql = "UPDATE request " +
                 "SET userid='" + userid + "', rqrequestuser='" + empid + "', rqdateadd=NOW(), rqfname='" + fname + "', rqlname='" + lname + "', rqfnameeng='" + fnameeng + "' " +
                 ", rqlnameeng='" + lnameeng + "', rqpost='" + post + "', rqdepartment='" + deptid + "', rqfaction='" + faction + "', rqphone='" + phone + "' " +
                 ", rqcodecare='" + codecare + "', rqlocation='" + location + "', rqspecailty='" + specailty + "', rqpname='" + pname + "' " +
@@ -280,7 +280,7 @@ namespace RequestComputerSystem
                 {
                     bl = false;
 
-                    sql = "select * from brh_it_request.requestsystems where rqid = '" + rqid + "' and sysid=2 ";
+                    sql = "select * from requestsystems where rqid = '" + rqid + "' and sysid=2 ";
                     dt = new DataTable();
                     dt = cl_Sql.select(sql);
                     if (dt.Rows.Count > 0)

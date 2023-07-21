@@ -2,7 +2,9 @@
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
 
     <form runat="server">
+
     <asp:ScriptManager ID="ScriptManager1" runat="server"></asp:ScriptManager>
+
      <div class="col-9 mx-auto" id="mainpage" runat="server">
         <div class="card">
             <div class ="card-body">
@@ -27,35 +29,50 @@
                         }
                     </script>
 
-                    <div class="col-12 mx-auto text-center btn btn-success" >
-                        <div class="col-12 text-left btn btn-success my-2">
-                            <asp:DropDownList ID="ddl_department" CssClass="btn btn-light"  runat="server">
-                                <asp:ListItem Text="กรุณาเลือกแผนก" Value="" Selected="True"></asp:ListItem>  
-                            </asp:DropDownList>  
-                        </div>
-                        <div class="col-12 text-left btn btn-success">
-                            <asp:FileUpload ID="FileUpload1" CssClass="btn btn-light" AllowMultiple="true" runat="server" />
-                            <asp:Label ID="lbl_fileAlert" Text="" runat="server"></asp:Label>
-                        </div>
-                        <div class="row col-12 mx-auto my-2">
-                            <div class="col-2 mx-auto text-right my-auto">ผู้รับเงิน</div>
-                            <div class="col-2 mx-auto">
-                                <input type="text" id="txt_forpName" value="" class="form-control" placeholder="คำนำหน้า" runat="server" />
+                    <asp:UpdatePanel id="UpdatePanel_input" runat="server">
+                        <ContentTemplate>
+                            <div class="row col-12 mx-auto bg-success" >
+                                <span class="btn btn-dark mt-2">
+                                    เลือกโรงพยาบาล
+                                </span>
+                                <div class="col-12 text-left mx-auto my-2">
+                                    <asp:DropDownList ID="ddl_branch" CssClass="form-control" OnSelectedIndexChanged="ddl_branch_SelectedIndexChanged" AutoPostBack="true" runat="server"> 
+                                    </asp:DropDownList> 
+                                </div>
+                                <span class="btn btn-dark">
+                                    เลือกหน่วยงาน
+                                </span>
+                                <div class="col-12 text-left mx-auto my-2">
+                                    <asp:DropDownList ID="ddl_department" CssClass="form-control" OnSelectedIndexChanged="ddl_department_SelectedIndexChanged" AutoPostBack="true" runat="server">
+                                    </asp:DropDownList>  
+                                </div>
+                                <div class="col-12 text-left mx-auto mb-5" style="background-color:aliceblue; border-radius: 10px;">
+                                    <asp:Label ID="lbl_hod" Text="" runat="server"></asp:Label>
+                                </div>
+                                <div class="col-12 text-left mx-auto my-2">
+                                    <asp:FileUpload ID="FileUpload1" CssClass="form-control" AllowMultiple="true" runat="server" />
+                                    <asp:Label ID="lbl_fileAlert" Text="" runat="server"></asp:Label>
+                                </div>
+                                <div class="row col-12 mx-auto my-2">
+                                    <div class="col-2 mx-auto text-right my-auto">
+                                        <span class="btn btn-dark"> ผู้รับเงิน </span>
+                                    </div>
+                                    <div class="col-2 mx-auto">
+                                        <input type="text" id="txt_forpName" value="" class="form-control" placeholder="คำนำหน้า" runat="server" />
+                                    </div>
+                                    <div class="col-4 mx-auto">
+                                        <input type="text" id="txt_forfName" value="" class="form-control" placeholder="ชื่อ" runat="server" />
+                                    </div>
+                                    <div class="col-4 mx-auto">
+                                        <input type="text" id="txt_forlName" value="" class="form-control" placeholder="นามสกุล" runat="server" />
+                                    </div>
+                                </div>
                             </div>
-                            <div class="col-4 mx-auto">
-                                <input type="text" id="txt_forfName" value="" class="form-control" placeholder="ชื่อ" runat="server" />
-                            </div>
-                            <div class="col-4 mx-auto">
-                                <input type="text" id="txt_forlName" value="" class="form-control" placeholder="นามสกุล" runat="server" />
-                            </div>
-                        </div>
+                        </ContentTemplate>
+                    </asp:UpdatePanel>
+                    <div class="col-12 mt-3 mx-auto my-5 text-center">
+                        <button type="button" class="btn btn-info" id="submit_1" onserverclick="submit_1_ServerClick"  runat="server">SUBMIT</button>
                     </div>
-
-                    <br />
-                            <div class="col-12 mt-3 mx-auto text-center">
-                                    <button type="button" class="btn btn-info" id="submit_1" onserverclick="submit_1_ServerClick"  runat="server">SUBMIT</button>
-                            </div>
-                    <br />
                 </div>
             </div>
         </div>

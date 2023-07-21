@@ -3,22 +3,26 @@
     <form runat="server">
     <asp:ScriptManager ID="ScriptManager1" runat="server"></asp:ScriptManager>
     <div class="card ">
-        <div class="card-body text-center">
+        <div class="card-body">
             <h3>PayOvertime List</h3>
             <br />               
-                         เลือก Status เอกสารของท่าน: 
-                         <asp:DropDownList ID="select_status" AutoPostBack="true" OnSelectedIndexChanged="select_status_SelectedIndexChanged" runat="server">
-                         <asp:ListItem Text="All" Value=""></asp:ListItem>  
-                         <asp:ListItem Text="Wait" Value="wait" Selected="True"></asp:ListItem>  
-                         <asp:ListItem Text="Finish" Value="finish"></asp:ListItem>  
-                         <asp:ListItem Text="Reject" Value="reject"></asp:ListItem>                          
-                         </asp:DropDownList>
-            
+            เลือกโรงพยาบาล
+            <asp:DropDownList ID="DD_branch" AutoPostBack="true" OnSelectedIndexChanged="DD_branch_SelectedIndexChanged" runat="server">
+            </asp:DropDownList>
+
+            เลือก Status เอกสารของท่าน: 
+            <asp:DropDownList ID="select_status" AutoPostBack="true" OnSelectedIndexChanged="select_status_SelectedIndexChanged" runat="server">
+            <asp:ListItem Text="All" Value=""></asp:ListItem>  
+            <asp:ListItem Text="Wait" Value="wait" Selected="True"></asp:ListItem>  
+            <asp:ListItem Text="Finish" Value="finish"></asp:ListItem>  
+            <asp:ListItem Text="Reject" Value="reject"></asp:ListItem>                          
+            </asp:DropDownList>
             
             <asp:GridView ID="Pay_list" class="col-12 mx-auto bg-light" runat="server"  OnRowDataBound="Pay_list_RowDataBound" AutoGenerateColumns="False" BackColor="White" BorderColor="#3366CC" BorderStyle="None" BorderWidth="1px" CellPadding="4">
                 <Columns>
                     <asp:BoundField DataField="pt_id" HeaderText="ID"></asp:BoundField>
-                    <asp:BoundField DataField="date_request" HeaderText="Date Request" DataFormatString="{0:dd-MM-yyyy}"></asp:BoundField>
+                    <asp:BoundField DataField="pt_time" HeaderText="Create date" DataFormatString="{0:dd-MM-yyyy}"></asp:BoundField>
+                    <asp:BoundField DataField="date_request" HeaderText="For month" DataFormatString="{0:MMMM}"></asp:BoundField>
                     <asp:BoundField DataField="username" HeaderText="Employee"></asp:BoundField>
                     <asp:BoundField DataField="deptname" HeaderText="Department"></asp:BoundField> 
                     <asp:BoundField DataField="hod_status" HeaderText="Manager Status"></asp:BoundField>

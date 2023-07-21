@@ -24,6 +24,15 @@ namespace RequestComputerSystem
         protected global::System.Web.UI.HtmlControls.HtmlForm form1;
 
         /// <summary>
+        /// dd_branch control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList dd_branch;
+
+        /// <summary>
         /// ddl_status control.
         /// </summary>
         /// <remarks>
@@ -42,13 +51,22 @@ namespace RequestComputerSystem
         protected global::System.Web.UI.WebControls.DropDownList ddl_system;
 
         /// <summary>
-        /// txtdate control.
+        /// date_Start control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlInputText txtdate;
+        protected global::System.Web.UI.HtmlControls.HtmlInputGenericControl date_Start;
+
+        /// <summary>
+        /// date_End control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlInputGenericControl date_End;
 
         /// <summary>
         /// bt_search control.

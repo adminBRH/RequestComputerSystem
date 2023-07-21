@@ -41,18 +41,43 @@ namespace RequestComputerSystem
             }
 
             if (!IsPostBack)
-            {    
-                department();
+            {
+                string userDept = "";
+                if (Session["userDeptid"] != null)
+                {
+                    userDept = Session["userDeptid"].ToString();
+                }
+
+                Branch(userDept);
+                department(userDept);
                 Searchhod2();
             }
         }
-        public Boolean department()
+
+        public void Branch(string br_select)
+        {
+            dt = new DataTable();
+            dt = CL_Sql.dt_Branch();
+
+            DD_branch.DataSource = dt;
+            DD_branch.DataTextField = "branchname";
+            DD_branch.DataValueField = "branchname";
+            DD_branch.DataBind();
+
+            if (br_select != "")
+            {
+                DD_branch.SelectedValue = br_select.Substring(0, 3);
+            }
+        }
+
+        public Boolean department(string deptID)
         {
             Boolean result = false;
 
-            sql = "SELECT deptid,deptname FROM brh_it_request.department order by deptname";
+            string br_select = DD_branch.SelectedValue.ToString();
+
             dt = new DataTable();
-            dt = CL_Sql.select(sql);
+            dt = CL_Sql.dt_Department(br_select);
             if (dt.Rows.Count > 0)
             {
                 dd_department.DataSource = dt;
@@ -63,6 +88,16 @@ namespace RequestComputerSystem
                 result = true;
             }
 
+            if (deptID != "")
+            {
+                try
+                {
+                    dd_department.SelectedValue = deptID;
+                }
+                catch
+                { }
+            }
+
             return result;
         }
 
@@ -70,7 +105,8 @@ namespace RequestComputerSystem
         {
             String result = "";
 
-            sql = "SELECT * FROM brh_it_request.department WHERE deptid='" + dd_department.SelectedValue + "' ";
+            sql = "SELECT deptid, depthod1, depthod2 FROM department " +
+                "\nWHERE deptid='" + dd_department.SelectedValue + "' ";
             dt = new DataTable();
             dt = CL_Sql.select(sql);
             if (dt.Rows.Count > 0)
@@ -80,12 +116,11 @@ namespace RequestComputerSystem
 
                 result = hod1;
 
-                sql = "select *,concat(userpname,' ',userfname,' ',userlname) as 'fullname'  from `user` where username = '" + result + "' ";
                 dt = new DataTable();
-                dt = CL_Sql.select(sql);
+                dt = CL_Sql.EmpName(result);
                 if (dt.Rows.Count > 0)
                 {
-                    lbl_HOD1.Text = "หัวหน้าแผนก : " + dt.Rows[0]["fullname"].ToString();
+                    lbl_HOD1.Text = dt.Rows[0]["fullname"].ToString() + " [" + dt.Rows[0]["userposition"].ToString() + "]";
                 }
 
                 result = hod2;
@@ -97,12 +132,11 @@ namespace RequestComputerSystem
                 }
                 else
                 {
-                    sql = "select *,concat(userpname,' ',userfname,' ',userlname) as 'fullname'  from `user` where username = '" + result + "' ";
                     dt = new DataTable();
-                    dt = CL_Sql.select(sql);
+                    dt = CL_Sql.EmpName(result);
                     if (dt.Rows.Count > 0)
                     {
-                        lbl_HOD2.Text = "หัวหน้าฝ่าย : " + dt.Rows[0]["fullname"].ToString();
+                        lbl_HOD2.Text = dt.Rows[0]["fullname"].ToString() + " [" + dt.Rows[0]["userposition"].ToString() + "]";
                     }
                 }
             }
@@ -114,6 +148,16 @@ namespace RequestComputerSystem
             return result;
         }
 
+        protected void DD_branch_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            string br_select = "";
+            if (Session["userDeptid"] != null)
+            {
+                br_select = Session["userDeptid"].ToString();
+            }
+            department(br_select);
+            Searchhod2();
+        }
 
         protected void dd_department_SelectedIndexChanged(object sender, EventArgs e)
         {
@@ -312,6 +356,5 @@ namespace RequestComputerSystem
                 lbl_fileAlert.ForeColor = System.Drawing.Color.Red;
             }
         }
-
     }
 }

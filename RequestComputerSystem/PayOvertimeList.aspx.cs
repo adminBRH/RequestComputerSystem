@@ -29,12 +29,19 @@ namespace RequestComputerSystem
 
             if (!IsPostBack)
             {
-                SelectData("wait");
+                string br_select = "";
+                if (Session["userDeptid"] != null)
+                {
+                    br_select = Session["userDeptid"].ToString();
+                }
+
+                Branch(br_select);
+                SelectData(br_select.Substring(0, 3), "wait");
             }
            
         }
 
-        public Boolean SelectData(string status)
+        public Boolean SelectData(string branch,string status)
         {
             Boolean result = false;
 
@@ -47,15 +54,16 @@ namespace RequestComputerSystem
                 userid = Session["UserLogin"].ToString();
             }
 
-            sql = "SELECT p.*,d.deptname,CONCAT(u.userpname,' ',u.userfname,' ',u.userlname)as 'username' ,"+
-                "\nCONCAT(h.userpname, ' ', h.userfname, ' ', h.userlname) as 'hodname' , " +
-                "\nCONCAT(hr.userpname, ' ', hr.userfname, ' ', hr.userlname) as 'hrname'" +
-                "\nFROM brh_it_request.payovertime as p " +
+            sql = "SELECT p.*,concat(p.dept_id,' ',d.deptname) as 'deptname' ," +
+                "\nCONCAT(ifnull(u.userpname,''), u.userfname,' ',u.userlname)as 'username', "+
+                "\nCONCAT(ifnull(h.userpname,''), h.userfname, ' ', h.userlname) as 'hodname', " +
+                "\nCONCAT(ifnull(hr.userpname,''), hr.userfname, ' ', hr.userlname) as 'hrname' " +
+                "\nFROM payovertime as p " +
                 "\nLEFT JOIN department as d on d.deptid = p.dept_id " +
                 "\nLEFT JOIN `user` as u on u.username = p.user_id " +
                 "\nLEFT JOIN `user` as h on h.username = p.hod_id " +
                 "\nLEFT JOIN `user` as hr on hr.username = p.hr_id " +
-                "\nWHERE 1 ";
+                "\nWHERE dept_id like '" + branch + "%' ";
 
 
             if (Session["UserStatus"] != null) // เรียกใช้ เงื่อไขี้เพื่อให้ Admin เห็นข้อมูลทั้งหมด และ User เห็นแค่ของตัวเอง
@@ -88,6 +96,36 @@ namespace RequestComputerSystem
 
         }
 
+        protected void Search()
+        {
+            string br_select = DD_branch.SelectedValue.ToString();
+            string status = select_status.SelectedValue.ToString();
+            SelectData(br_select, status);
+        }
+
+        public void Branch(string br_select)
+        {
+            dt = new DataTable();
+            dt = CL_Sql.dt_Branch();
+
+            DD_branch.DataSource = dt;
+            DD_branch.DataTextField = "branchname";
+            DD_branch.DataValueField = "branchname";
+            DD_branch.DataBind();
+            DD_branch.Items.Insert(0, new ListItem("ALL",""));
+
+            string userStatus = Session["UserStatus"].ToString();
+            if (userStatus == "admin" || userStatus == "it")
+            { }
+            else
+            {
+                if (br_select != "")
+                {
+                    DD_branch.SelectedValue = br_select.Substring(0, 3);
+                }
+            }
+        }
+
         public string FiledStatus(string ptid)
         {
             string result = "";
@@ -115,6 +153,16 @@ namespace RequestComputerSystem
             }
 
             return result;
+        }
+
+        protected void select_status_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            Search();
+        }
+
+        protected void DD_branch_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            Search();
         }
 
         public string WhoCreate(string id)
@@ -232,12 +280,14 @@ namespace RequestComputerSystem
                 BRH_SendMail.ServiceSoapClient BRHmail = new BRH_SendMail.ServiceSoapClient();
                 BRHmail.MailSend(emailTo, "Pay Overtime Request", htmlBody, emailFrom, "Systems Request", "", "", "", false);
 
+                sql = "update payovertime set pt_mailto = '" + emailTo + "' where pt_id = '" + ptid + "'; ";
+                CL_Sql.Modify(sql);
+
                 rt = "success";
             }
 
             return rt;
         }
-
 
         public string SelectRemark(string ptid)
         {
@@ -285,14 +335,17 @@ namespace RequestComputerSystem
 
             if (e.Row.RowType == DataControlRowType.DataRow)
             {
-                TableCell hod_id = e.Row.Cells[8];
-                TableCell hr_id = e.Row.Cells[9];
+                int x = 0;
+                x = x + 1; // ขยับเพิ่ม 1 ตำแหน่ง
 
-                TableCell hod_status = e.Row.Cells[4];
-                TableCell hr_status = e.Row.Cells[6];
+                TableCell hod_id = e.Row.Cells[x+8];
+                TableCell hr_id = e.Row.Cells[x+9];
 
-                TableCell btn_approve = e.Row.Cells[10];
-                TableCell ViewDetail = e.Row.Cells[11];
+                TableCell hod_status = e.Row.Cells[x+4];
+                TableCell hr_status = e.Row.Cells[x+6];
+
+                TableCell btn_approve = e.Row.Cells[x+10];
+                TableCell ViewDetail = e.Row.Cells[x+11];
 
                 string HodStatus = hod_status.Text.Trim();
                 string HrStatus = hr_status.Text.Trim();
@@ -363,15 +416,9 @@ namespace RequestComputerSystem
                 hod_id.Visible = false;
                 hr_id.Visible = false;
                 // ------------------------------------------------------------------------
-                Pay_list.HeaderRow.Cells[8].Visible = false;
-                Pay_list.HeaderRow.Cells[9].Visible = false;
+                Pay_list.HeaderRow.Cells[x+8].Visible = false;
+                Pay_list.HeaderRow.Cells[x+9].Visible = false;
             }
-        }
-
-        protected void select_status_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            string status = select_status.SelectedValue.ToString();
-            SelectData(status);
         }
 
         protected void ViewDetail_ServerClick(object sender, EventArgs e)

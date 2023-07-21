@@ -177,6 +177,15 @@ namespace RequestComputerSystem
         protected global::System.Web.UI.WebControls.Label lbl_lo;
 
         /// <summary>
+        /// lbl_remark control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lbl_remark;
+
+        /// <summary>
         /// lbl_status control.
         /// </summary>
         /// <remarks>

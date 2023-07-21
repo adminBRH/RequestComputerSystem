@@ -123,6 +123,24 @@ namespace RequestComputerSystem
         protected global::System.Web.UI.WebControls.Label lblCEmail;
 
         /// <summary>
+        /// lbl_DataDate control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lbl_DataDate;
+
+        /// <summary>
+        /// lbl_total control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lbl_total;
+
+        /// <summary>
         /// dd_status control.
         /// </summary>
         /// <remarks>
@@ -193,6 +211,15 @@ namespace RequestComputerSystem
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlInputGenericControl date_end;
+
+        /// <summary>
+        /// btn_filter control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlAnchor btn_filter;
 
         /// <summary>
         /// txt_QtyDate control.

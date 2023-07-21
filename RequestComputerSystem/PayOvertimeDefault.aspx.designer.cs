@@ -42,13 +42,13 @@ namespace RequestComputerSystem
         protected global::System.Web.UI.UpdatePanel UpdatePanel_dept;
 
         /// <summary>
-        /// ddl_month control.
+        /// DD_branch control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList ddl_month;
+        protected global::System.Web.UI.WebControls.DropDownList DD_branch;
 
         /// <summary>
         /// dd_department control.
@@ -58,6 +58,15 @@ namespace RequestComputerSystem
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.DropDownList dd_department;
+
+        /// <summary>
+        /// ddl_month control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList ddl_month;
 
         /// <summary>
         /// lbl_HOD1 control.

@@ -32,9 +32,14 @@ namespace RequestComputerSystem
             cb_request.Enabled = false;
             cb_cancel.Enabled = false;
 
-            cb_bconnect.Enabled = false;
+            cb_AA.Enabled = false;
+            cb_SWL.Enabled = false;
+            cb_IPPhone.Enabled = false;
+            cb_Tablet.Enabled = false;
+            cb_iPad.Enabled = false;
             cb_VPN.Enabled = false;
-            cb_MS.Enabled = false;
+            cb_Printer.Enabled = false;
+            cb_Com.Enabled = false;
             cb_email.Enabled = false;
             cb_quota.Enabled = false;
 
@@ -61,15 +66,15 @@ namespace RequestComputerSystem
         public Boolean QueryRequest()
         {
             Boolean bl = false;
-            sql = "select r.*,rs.rqsid,rs.rqsemail,rs.rqsquota,rs.rqsgroupmail_hod,rs.rqsgroupmail_staff,rs.rqsgroupmail_committeeother,rs.sysid,s.sysname " +
-                ",a.apid,a.aplevel,a.apstatus,a.aprequestuser,concat(u.userpname, ' ', u.userfname, ' ', u.userlname) as 'UserLevel', u.userposition,a.apdate,a.apremark " +
-                "    from brh_it_request.approve as a " +
-                "left join brh_it_request.`user` as u on u.username = a.userid " +
-                "left join brh_it_request.requestsystems as rs on rs.rqsid = a.rqsid " +
-                "left join brh_it_request.request as r on r.rqid = rs.rqid " +
-                "left join brh_it_request.systems as s on s.sysid = rs.sysid " +
-                "where a.userid<>'0' and a.rqsid = " + rqsid + " " +
-                "order by a.aplevel";
+            sql = "select r.*,rs.rqsid,rs.rqsemail,rs.rqsquota,rs.rqsgroupmail_hod,rs.rqsgroupmail_staff,rs.rqsgroupmail_committeeother,rs.sysid,rs.rqsvalue,s.sysname " +
+                "\n,a.apid,a.aplevel,a.apstatus,a.aprequestuser,concat(u.userpname, ' ', u.userfname, ' ', u.userlname) as 'UserLevel', u.userposition,a.apdate,a.apremark " +
+                "\nfrom approve as a " +
+                "\nleft join `user` as u on u.username = a.userid " +
+                "\nleft join requestsystems as rs on rs.rqsid = a.rqsid " +
+                "\nleft join request as r on r.rqid = rs.rqid " +
+                "\nleft join systems as s on s.sysid = rs.sysid " +
+                "\nwhere a.userid<>'0' and a.rqsid = " + rqsid + " " +
+                "\norder by a.aplevel";
             dt = new DataTable();
             dt = cl_Sql.select(sql);
             if (dt.Rows.Count > 0)
@@ -93,18 +98,22 @@ namespace RequestComputerSystem
                 lb_CodeCare.Text = dt.Rows[0]["rqcodecare"].ToString();
                 lb_Location.Text = dt.Rows[0]["rqlocation"].ToString();
 
-                lb_ID.Text = "เลขที่ : [" + dt.Rows[0]["rqid"].ToString() + "] (" + dt.Rows[0]["rqsid"].ToString() + "." + dt.Rows[0]["apid"].ToString() + ")";
+                lb_ID.Text = "เลขที่ : [" + dt.Rows[0]["rqid"].ToString() + "." + dt.Rows[0]["rqsid"].ToString() + "]";
                 lb_date.Text = "Print date : " + DateTime.Now.ToString();
 
                 string sysid = dt.Rows[0]["sysid"].ToString();
+                string rqsvalue = dt.Rows[0]["rqsvalue"].ToString();
 
                 if (request == "Request") { cb_request.Checked = true; }
 
-                if (sysid == "1") { cb_bconnect.Checked = true; }
-                if (sysid == "3") { cb_VPN.Checked = true; }
-                if (sysid == "4") { cb_MS.Checked = true; }
                 if (sysid == "2")
                 {
+                    P_email.Visible = true;
+                    pd_email_1.Visible = true;
+                    pd_email_2.Visible = true;
+                    pd_email_3.Visible = true;
+                    pd_email_4.Visible = true;
+
                     cb_email.Checked = true;
                     lb_email.Text = dt.Rows[0]["rqsemail"].ToString();
 
@@ -119,6 +128,52 @@ namespace RequestComputerSystem
                         if (dtr["rqsgroupmail_staff"].ToString() != "") { cb_staff.Checked = true; }
                         if (dtr["rqsgroupmail_committeeother"].ToString() != "") { cb_committee.Checked = true; lb_committee.Text = dtr["rqsgroupmail_committeeother"].ToString(); }
                     }
+                }
+                if (sysid == "3") 
+                { 
+                    cb_VPN.Checked = true;
+                    P_VPN.Visible = true;
+                    pd_VPN.Visible = true;
+                    lbl_VPNAccount.Text = rqsvalue;
+                }
+                if (sysid == "6") 
+                { 
+                    cb_AA.Checked = true;
+                    P_AA.Visible = true;
+                }
+                if (sysid == "7")
+                {
+                    cb_SWL.Checked = true;
+                    P_SWL.Visible = true;
+                }
+                if (sysid == "8")
+                {
+                    cb_IPPhone.Checked = true;
+                    P_IPPhone.Visible = true;
+                }
+                if (sysid == "9")
+                {
+                    cb_Com.Checked = true;
+                    P_Com.Visible = true;
+                    pd_Com.Visible = true;
+                    lbl_Com.Text = rqsvalue;
+                }
+                if (sysid == "10")
+                {
+                    cb_Printer.Checked = true;
+                    P_Printer.Visible = true;
+                    pd_Printer.Visible = true;
+                    lbl_Printer.Text = rqsvalue;
+                }
+                if (sysid == "11")
+                {
+                    cb_Tablet.Checked = true;
+                    P_Tablet.Visible = true;
+                }
+                if (sysid == "12")
+                {
+                    cb_iPad.Checked = true;
+                    P_iPad.Visible = true;
                 }
 
                 string actor = "";
@@ -151,7 +206,12 @@ namespace RequestComputerSystem
                         if (dtr["apstatus"].ToString() != "Cancel") { ck4_1.Visible = true; } else { ck4_2.Visible = true; }
                         lb_lv4.Text = dtr["UserLevel"].ToString();
                         lb_pos4.Text = dtr["userposition"].ToString();
-                        lb_remark4.Text = "หมายเหตุ: " + dtr["apremark"].ToString();
+                        string apremark = dtr["apremark"].ToString();
+                        if (apremark != "")
+                        {
+                            apremark = "หมายเหตุ: " + apremark;
+                        }
+                        lb_remark4.Text = apremark;
                         lb_date4.Text = DateTime.Parse(dtr["apdate"].ToString()).ToString(formatdate);
                     }
                     if (dtr["aplevel"].ToString() == "5")

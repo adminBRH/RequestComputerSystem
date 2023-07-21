@@ -37,7 +37,15 @@ namespace RequestComputerSystem.Disbursement
                 {
                     if (!IsPostBack)
                     {
-                        SelectDept();
+                        string userDept = "";
+                        if (Session["userDeptid"] != null)
+                        {
+                            userDept = Session["userDeptid"].ToString();
+                        }
+
+                        Branch(userDept);
+                        SelectDept(userDept);
+                        HODname();
                         lbl_rdType.Text = ShowType();
                     }
                 }
@@ -70,14 +78,30 @@ namespace RequestComputerSystem.Disbursement
             return result;
         }
 
-        public Boolean SelectDept()
+        public void Branch(string br_select)
+        {
+            dt = new DataTable();
+            dt = CL_Sql.dt_Branch();
+
+            ddl_branch.DataSource = dt;
+            ddl_branch.DataTextField = "branchname";
+            ddl_branch.DataValueField = "branchname";
+            ddl_branch.DataBind();
+
+            if (br_select != "")
+            {
+                ddl_branch.SelectedValue = br_select.Substring(0, 3);
+            }
+        }
+
+        public Boolean SelectDept(string deptid)
         {
             Boolean result = false;
 
-            sql = "select 0 as 'id',NULL as 'deptid', 'กรุณาเลือกแผนก' as 'deptname' union " +
-                "SELECT 1 as 'id',deptid,deptname FROM brh_it_request.department order by id,deptname";
+            string br_select = ddl_branch.SelectedValue.ToString();
+
             dt = new DataTable();
-            dt = CL_Sql.select(sql);
+            dt = CL_Sql.dt_Department(br_select);
             if (dt.Rows.Count > 0)
             {
                 ddl_department.DataSource = dt;
@@ -88,6 +112,15 @@ namespace RequestComputerSystem.Disbursement
                 result = true;
             }
 
+            if (deptid != "")
+            {
+                try
+                {
+                    ddl_department.SelectedValue = deptid;
+                }
+                catch
+                { }
+            }
 
             return result;
         }
@@ -100,6 +133,7 @@ namespace RequestComputerSystem.Disbursement
             string ddlform = txtH_Type.Value.ToString();
             string form_name = cl_pv.SelectFormName(ddlform);
             string ddldept = ddl_department.SelectedValue.ToString();
+            string branch = ddldept.Substring(0, 3);
             string status = "";
 
             string forfname = txt_forfName.Value.ToString().Trim();
@@ -113,14 +147,23 @@ namespace RequestComputerSystem.Disbursement
                 "\nVALUES(CURRENT_TIMESTAMP, '" + empid + "', '"+ ddlform + "', 'waiting', '"+ type + "', '"+ ddldept +"', '" + forfname + "', '" + forlname + "', '" + forpname + "'); ";
             if (CL_Sql.Modify(sql))
             {
-                string drid = CL_Sql.LastID("dr_id", "disbursement_request");
+                string drid = ""; //CL_Sql.LastID("dr_id", "disbursement_request");
+                sql = "select max(dr_id) as 'dr_id' from disbursement_request " +
+                    "\nwhere dr_empid = '" + empid + "'; ";
+                dt = new DataTable();
+                dt = CL_Sql.select(sql);
+                if (dt.Rows.Count > 0)
+                {
+                    drid = dt.Rows[0]["dr_id"].ToString();
+                }
+                
                 if (drid != "")
                 {
                     UploadFile(drid);
 
                     string drType = "";
 
-                    sql = "select * from disbursement_request where dr_id = '"+ drid + "'";
+                    sql = "select * from disbursement_request where dr_id = '"+ drid + "'; ";
                     dt = new DataTable();
                     dt = CL_Sql.select(sql);
                     if (dt.Rows.Count > 0)
@@ -129,7 +172,7 @@ namespace RequestComputerSystem.Disbursement
                         drType = dt.Rows[0]["dr_type"].ToString();
                     }
 
-                    if (cl_pv.approval(drid, type, ddldept))
+                    if (cl_pv.approval(branch, drid, type, ddldept))
                     {
                         DataTable DT_emp = new DataTable();
                         DT_emp = cl_pv.SelectMailUser(empid);
@@ -240,6 +283,55 @@ namespace RequestComputerSystem.Disbursement
                 }
             }
             
+        }
+
+        protected void HODname()
+        {
+            string deptid = ddl_department.SelectedValue.ToString();
+
+            string hodName = "";
+            sql = "select deptid, depthod1, depthod2 from department " +
+                "\nwhere deptid = '" + deptid + "';";
+            dt = new DataTable();
+            dt = CL_Sql.select(sql);
+            if (dt.Rows.Count > 0)
+            {
+                DataTable dtE = new DataTable();
+                dtE = CL_Sql.EmpName(dt.Rows[0]["depthod1"].ToString());
+                if (dtE.Rows.Count > 0)
+                {
+                    string hod1 = dtE.Rows[0]["fullname"].ToString();
+                    string pos1 = " [" + dtE.Rows[0]["userposition"].ToString() + "]";
+                    hodName = hod1 + pos1;
+                    if (hod1 != "")
+                    {
+                        hodName += "<br />";
+                    }
+                }
+
+                dtE = new DataTable();
+                dtE = CL_Sql.EmpName(dt.Rows[0]["depthod2"].ToString());
+                if (dtE.Rows.Count > 0)
+                {
+                    string hod2 = dtE.Rows[0]["fullname"].ToString();
+                    string pos2 = " [" + dtE.Rows[0]["userposition"].ToString() + "]";
+                    hodName += hod2 + pos2;
+                }
+            }
+
+            lbl_hod.Text = hodName;
+        }
+
+        protected void ddl_branch_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            string br_select = ddl_branch.SelectedValue.ToString();
+            SelectDept(br_select);
+            HODname();
+        }
+
+        protected void ddl_department_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            HODname();
         }
     }
 }

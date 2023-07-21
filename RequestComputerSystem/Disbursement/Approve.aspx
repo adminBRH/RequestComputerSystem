@@ -10,6 +10,43 @@
         <div class="col-12 card card-body">
             <div class="row col-12 mx-auto">
 
+                <!-- Subject & Details -->
+                <div class="col-12 my-1">
+                    <div class="col-lg-3 col-sm-6 btn btn-warning text-left" style="color: black;">
+                        <b>Request ID : <asp:label ID="lbl_reqid" runat="server"></asp:label> </b>
+                    </div>
+                </div>
+                <div class="col-lg-5 col-sm-12 text-left btn btn-facebook mx-auto my-1">
+                    <b>ประเภทของการขออนุมัติเบิกจ่าย</b><br />&nbsp;&nbsp;&nbsp;- 
+                    <asp:label ID="lbl_form" runat="server"></asp:label> 
+                </div>
+                <div class="col-lg-5 col-sm-12 text-left btn btn-primary mx-auto my-1">
+                    <div class="row col-12 mx-auto">
+                        <div class="col-6 mx-auto">
+                            <b>Hospital</b><br />&nbsp;&nbsp;&nbsp;
+                            <asp:label ID="lbl_branch" runat="server"></asp:label>
+                        </div>
+                        <div class="col-6 mx-auto">
+                            <b>Department</b><br />&nbsp;&nbsp;&nbsp;
+                            <asp:label ID="lbl_dept" runat="server"></asp:label>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-5 col-sm-12 text-left btn btn-info mx-auto my-1">
+                    <b>Request by</b><br />&nbsp;&nbsp;&nbsp;
+                    <asp:label ID="lbl_reqname" runat="server"></asp:label> 
+                </div>
+                <div class="col-lg-5 col-sm-12 text-left btn btn-info mx-auto my-1">
+                    <b>Create Date</b><br />&nbsp;&nbsp;&nbsp;
+                    <asp:label ID="lbl_reqdatetime" runat="server"></asp:label>
+                </div>
+                <div class="col-9 mx-auto mt-3">
+                    <i class="fas fa-2x fa-file-archive"></i>
+                </div>
+                <div class="col-10 text-left btn border-info mx-auto mb-3">
+                    <asp:label ID="lbl_show_file" Text="" runat="server"></asp:label>
+                </div>
+
                 <%--<asp:Label ID="lbl_CardApprove" Text="" runat="server"></asp:Label>--%>
 
                 <!-- Card 1 -->
@@ -216,7 +253,6 @@
 
             txt_event.value = event;
             txt_level.value = level;
-           
         }
 
     </script>

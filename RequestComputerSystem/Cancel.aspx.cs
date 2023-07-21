@@ -33,7 +33,8 @@ namespace RequestComputerSystem
                 { }
                 else
                 {
-                    Response.Write("<script>alert('หน้านี้ให้สิทธิเฉพาะ Admin และ HR เท่านั้น !!'); setTimeout(function(){window.location.href='Default.aspx'}, 100);</script>");
+                    Response.Redirect("Alarm?code=W01");
+                    //Response.Write("<script>alert('หน้านี้ให้สิทธิเฉพาะ Admin และ HR เท่านั้น !!'); setTimeout(function(){window.location.href='Default.aspx'}, 100);</script>");
                 }
 
                 userlogin = Session["UserLogin"].ToString();

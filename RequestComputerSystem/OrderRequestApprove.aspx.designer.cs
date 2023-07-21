@@ -114,6 +114,24 @@ namespace RequestComputerSystem
         protected global::System.Web.UI.WebControls.Label lbl_datereq;
 
         /// <summary>
+        /// div_wait1 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl div_wait1;
+
+        /// <summary>
+        /// wait1 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl wait1;
+
+        /// <summary>
         /// div_apy1 control.
         /// </summary>
         /// <remarks>
@@ -211,6 +229,24 @@ namespace RequestComputerSystem
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlAnchor btn_apy1;
+
+        /// <summary>
+        /// div_wait2 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl div_wait2;
+
+        /// <summary>
+        /// I1 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl I1;
 
         /// <summary>
         /// div_apy2 control.
@@ -321,6 +357,15 @@ namespace RequestComputerSystem
         protected global::System.Web.UI.WebControls.Label lbl_3;
 
         /// <summary>
+        /// div_wait3 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl div_wait3;
+
+        /// <summary>
         /// div_apy3 control.
         /// </summary>
         /// <remarks>
@@ -418,6 +463,24 @@ namespace RequestComputerSystem
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlAnchor btn_apy3;
+
+        /// <summary>
+        /// div_wait4 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl div_wait4;
+
+        /// <summary>
+        /// I3 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl I3;
 
         /// <summary>
         /// div_apy4 control.
@@ -519,6 +582,24 @@ namespace RequestComputerSystem
         protected global::System.Web.UI.HtmlControls.HtmlAnchor btn_apy4;
 
         /// <summary>
+        /// div_wait5 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl div_wait5;
+
+        /// <summary>
+        /// I4 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl I4;
+
+        /// <summary>
         /// div_apy5 control.
         /// </summary>
         /// <remarks>
@@ -616,6 +697,24 @@ namespace RequestComputerSystem
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlAnchor btn_apy5;
+
+        /// <summary>
+        /// div_wait6 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl div_wait6;
+
+        /// <summary>
+        /// I5 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl I5;
 
         /// <summary>
         /// div_apy6 control.

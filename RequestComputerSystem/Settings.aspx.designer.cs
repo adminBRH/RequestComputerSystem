@@ -15,6 +15,24 @@ namespace RequestComputerSystem
     {
 
         /// <summary>
+        /// form1 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlForm form1;
+
+        /// <summary>
+        /// SettingScriptManager control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.ScriptManager SettingScriptManager;
+
+        /// <summary>
         /// div7 control.
         /// </summary>
         /// <remarks>
@@ -51,76 +69,67 @@ namespace RequestComputerSystem
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl i7;
 
         /// <summary>
-        /// form1 control.
+        /// txt_titleTh control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlForm form1;
+        protected global::System.Web.UI.HtmlControls.HtmlInputText txt_titleTh;
 
         /// <summary>
-        /// txt_tiltle control.
+        /// txt_titleEng control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txt_tiltle;
+        protected global::System.Web.UI.HtmlControls.HtmlInputText txt_titleEng;
 
         /// <summary>
-        /// txt_tiltle_eng control.
+        /// txt_fnameTh control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txt_tiltle_eng;
+        protected global::System.Web.UI.HtmlControls.HtmlInputText txt_fnameTh;
 
         /// <summary>
-        /// txt_fname control.
+        /// txt_fnameEng control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txt_fname;
+        protected global::System.Web.UI.HtmlControls.HtmlInputText txt_fnameEng;
 
         /// <summary>
-        /// txt_fname_eng control.
+        /// txt_lnameTh control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txt_fname_eng;
+        protected global::System.Web.UI.HtmlControls.HtmlInputText txt_lnameTh;
 
         /// <summary>
-        /// txt_lname control.
+        /// txt_lnameEng control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txt_lname;
+        protected global::System.Web.UI.HtmlControls.HtmlInputText txt_lnameEng;
 
         /// <summary>
-        /// txt_lname_eng control.
+        /// btn_EditName control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txt_lname_eng;
-
-        /// <summary>
-        /// btn_EdName control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btn_EdName;
+        protected global::System.Web.UI.HtmlControls.HtmlAnchor btn_EditName;
 
         /// <summary>
         /// txt_PassOld control.

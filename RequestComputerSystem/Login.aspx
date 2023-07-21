@@ -107,7 +107,7 @@
 					</div>
 
 					<div class="wrap-input100 validate-input" data-validate="Enter password">
-						<input id="InPass" class="input100" type="password" name="pass" placeholder="Password"  runat="server">
+						<input id="InPass" class="input100" type="password" name="pass" placeholder="Password" runat="server">
 						<span class="focus-input100" data-placeholder="&#xe80f;"></span>
 					</div>
 
@@ -123,7 +123,11 @@
 							Login
 						</button>
 					</div>
-                    
+                    <script>
+                        $(function () {
+                            $('[data-toggle="tooltip"]').tooltip()
+                        })
+                    </script>
 				</form>
 			</div>
 		</div>

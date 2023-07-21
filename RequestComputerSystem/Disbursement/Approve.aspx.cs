@@ -16,8 +16,11 @@ namespace RequestComputerSystem.Disbursement
         string sql = "";
         DataTable dt;
         SQLclass cl_Sql = new SQLclass();
+        Files cl_file = new Files();
 
         DisbursementClass cl_pv = new DisbursementClass();
+
+        string branch = "";
 
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -31,7 +34,8 @@ namespace RequestComputerSystem.Disbursement
                 {
                     string type = Request.QueryString["type"].ToString();
                     string crid = Request.QueryString["id"].ToString();
-                    
+
+                    SubjectDetail(crid);
                     SelectData(type, crid);
                     PosName(type);
                 }
@@ -67,6 +71,49 @@ namespace RequestComputerSystem.Disbursement
             return result;
         }
 
+        protected void SubjectDetail(string id)
+        {
+            string dfname = "";
+            string deptid = "";
+            string deptname = "";
+            string reqname = "";
+            string reqdatetime = "";
+
+            sql = "select dr.*, df.df_name, d.deptname, concat(ifnull(u.userpname,''),u.userfname,' ',u.userlname) as 'reqname' " +
+                "\nfrom disbursement_request as dr " +
+                "\nleft join disbursement_form as df on df.df_id = dr.dr_formid " +
+                "\nleft join department as d on d.deptid = dr.dr_dept " +
+                "\nleft join `user` as u on u.username = dr.dr_empid " +
+                "\nwhere dr_id = '" + id + "'; ";
+            dt = new DataTable();
+            dt = cl_Sql.select(sql);
+            if (dt.Rows.Count > 0)
+            {
+                dfname = dt.Rows[0]["df_name"].ToString();
+                deptid = dt.Rows[0]["dr_dept"].ToString();
+                branch = deptid.Substring(0, 3);
+                deptname = dt.Rows[0]["deptname"].ToString();
+                branch = dt.Rows[0]["dr_dept"].ToString().Substring(0, 3);
+                reqname = dt.Rows[0]["reqname"].ToString();
+                reqdatetime = DateTime.Parse(dt.Rows[0]["dr_datetime"].ToString()).ToString("dd/MM/yyyy HH:mm:ss");
+
+                ShowFile(id);
+            }
+
+            lbl_reqid.Text = id;
+            lbl_form.Text = dfname;
+            lbl_branch.Text = branch;
+            lbl_dept.Text = deptname + " (" + deptid + ")";
+            lbl_reqname.Text = reqname;
+            lbl_reqdatetime.Text = reqdatetime;
+        }
+
+        protected void ShowFile(string id)
+        {
+            string file = cl_file.Show("FileUpload/", "id" + id + ",*");
+            lbl_show_file.Text = file;
+        }
+
         public Boolean SelectData(string type, string crid)
         {
             Boolean bl = false;
@@ -96,7 +143,14 @@ namespace RequestComputerSystem.Disbursement
                         //Response.Write("<script>alert('" + i + "');</script>");
                         Label lbl_apv = (Label)form1.FindControl("lbl_apv" + i.ToString());
                         empid = dt.Rows[0]["da_level" + i.ToString()].ToString();
-                        lbl_apv.Text = cl_Sql.EmpName(empid);
+                        string empfullname = "";
+                        DataTable dtE = new DataTable();
+                        dtE = cl_Sql.EmpName(empid);
+                        if (dtE.Rows.Count > 0)
+                        {
+                            empfullname = dtE.Rows[0]["fullname"].ToString();
+                        }
+                        lbl_apv.Text = empfullname;
 
                         Label lbl_date = (Label)form1.FindControl("lbl_date" + i.ToString());
                         date = dt.Rows[0]["da_datetime" + i.ToString()].ToString();
@@ -162,13 +216,11 @@ namespace RequestComputerSystem.Disbursement
             if (type != "")
             {
                 string id = Request.QueryString["id"].ToString();
-                sql = "Select a.*,b.Pos2 from ( " +
-                    "    select '1' as 'Key', userposition as 'Pos1'  from `user` " +
-                    "where username in (select da_level1 from disbursement_approve where da_crid='" + id + "') " +
-                    ") as a left join( " +
-                    "    select '1' as 'Key', userposition as 'Pos2'  from `user` " +
-                    "where username in (select da_level2 from disbursement_approve where da_crid='" + id + "') " +
-                    ") as b on a.Key = b.Key ";
+                sql = "select u1.userposition as 'Pos1', u2.userposition as 'Pos2' " +
+                    "\nfrom disbursement_approve as da " +
+                    "\nleft join `user` as u1 on u1.username = da.da_level1 " +
+                    "\nleft join `user` as u2 on u2.username = da.da_level2 " +
+                    "\nwhere da_crid = '" + id + "' ";
                 dt = new DataTable();
                 dt = cl_Sql.select(sql);
                 if (dt.Rows.Count > 0)
@@ -180,21 +232,30 @@ namespace RequestComputerSystem.Disbursement
                     bl = true;
                 }
 
-                sql = "select * from disbursement_level where dr_type = '" + type + "' order by dr_level ";
+                sql = "select * from disbursement_level " +
+                    "\nwhere dr_branch = '" + branch + "' and dr_type = '" + type + "' " +
+                    "\norder by dr_level ";
                 dt = new DataTable();
                 dt = cl_Sql.select(sql);
                 if (dt.Rows.Count > 0)
                 {
-                    Label lbl_pos3 = (Label)form1.FindControl("lbl_pos3");
-                    lbl_pos3.Text = dt.Rows[0]["dr_levelname"].ToString();
-                    Label lbl_pos4 = (Label)form1.FindControl("lbl_pos4");
-                    lbl_pos4.Text = dt.Rows[1]["dr_levelname"].ToString();
-                    Label lbl_pos5 = (Label)form1.FindControl("lbl_pos5");
-                    lbl_pos5.Text = dt.Rows[2]["dr_levelname"].ToString();
-                    Label lbl_pos6 = (Label)form1.FindControl("lbl_pos6");
-                    lbl_pos6.Text = dt.Rows[3]["dr_levelname"].ToString();
-                    Label lbl_pos7 = (Label)form1.FindControl("lbl_pos7");
-                    lbl_pos7.Text = dt.Rows[4]["dr_levelname"].ToString();
+                    foreach (DataRow dr in dt.Rows)
+                    {
+                        string level = dr["dr_level"].ToString();
+                        Label lbl_pos = (Label)form1.FindControl("lbl_pos" + level);
+                        lbl_pos.Text = dr["dr_levelname"].ToString();
+                    }
+
+                    //Label lbl_pos3 = (Label)form1.FindControl("lbl_pos3");
+                    //lbl_pos3.Text = dt.Rows[0]["dr_levelname"].ToString();
+                    //Label lbl_pos4 = (Label)form1.FindControl("lbl_pos4");
+                    //lbl_pos4.Text = dt.Rows[1]["dr_levelname"].ToString();
+                    //Label lbl_pos5 = (Label)form1.FindControl("lbl_pos5");
+                    //lbl_pos5.Text = dt.Rows[2]["dr_levelname"].ToString();
+                    //Label lbl_pos6 = (Label)form1.FindControl("lbl_pos6");
+                    //lbl_pos6.Text = dt.Rows[3]["dr_levelname"].ToString();
+                    //Label lbl_pos7 = (Label)form1.FindControl("lbl_pos7");
+                    //lbl_pos7.Text = dt.Rows[4]["dr_levelname"].ToString();
                 }
             }
 
@@ -241,7 +302,7 @@ namespace RequestComputerSystem.Disbursement
 
             string remark = ip_remark.Value.ToString().Trim();
 
-            string aj = cl_pv.ApprovedReject(type, id, evn, level, remark); // -------------------------- Approve or Reject
+            string aj = cl_pv.ApprovedReject(branch, type, id, evn, level, remark); // -------------------------- Approve or Reject
 
             sql = "select * from disbursement_request where dr_id = '"+ id + "'";
             dt = new DataTable();
@@ -289,6 +350,11 @@ namespace RequestComputerSystem.Disbursement
                         "<p><a href='http://10.121.10.212:4001/?usermail=" + aj + "'>Link : Access to the system.</a></p>" +
                         "<p></p><p></p><p>Please do not reply to this email because this address is not monitored.</p>" +
                         "<p>Automatic send by Request Systems.</p>";
+
+                    if (Session["Test"] != null) // --------------------------- For Test -------------------------
+                    {
+                        if (Session["Test"].ToString() == "Yes") { emailTo = "brh.hito@brh.co.th"; }
+                    }
 
                     if (cl_pv.SendMail(id,emailTo, subject, Body))
                     {

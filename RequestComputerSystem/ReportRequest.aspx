@@ -9,7 +9,7 @@
 <tr>
 <td>
 <p style="text-align:right"> <asp:Label ID="lb_ID" Text="" runat="server"></asp:Label> </p>
-<p><img src="https://uppic.cc/d/5Dnu" alt="BRH" width="164" height="59" /></p>
+<p><img src="image/LOGO-BRH.png" alt="BRH" width="164" height="59" /></p>
 <p style="text-align: center;">แบบฟอร์มการขอใช้งานระบบคอมพิวเตอร์ในโรงพยาบาลกรุงเทพระยอง</p>
 <p style="text-align: center;">
     <asp:CheckBox ID="cb_request" runat="server" />ขอใช้งาน...............&nbsp; &nbsp; &nbsp;<asp:CheckBox ID="cb_cancel" runat="server" />ยกเลิกการใช้งาน...............
@@ -44,52 +44,62 @@
 </tr>
 </tbody>
 </table>
-<p style="text-align: left;"><asp:CheckBox ID="cb_bconnect" runat="server" />1. B-connect</p>
-<p style="text-align: left;"><asp:CheckBox ID="cb_VPN" runat="server" />2. VPN</p>
-<p style="text-align: left;"><asp:CheckBox ID="cb_MS" runat="server" />3. Microsoft Office</p>
-<p style="text-align: left;"><asp:CheckBox ID="cb_email" runat="server" />4. E-mail Address .....<asp:Label ID="lb_email" runat="server" Text=".................................................."></asp:Label>.....</p>
-<p style="text-align: left;">&nbsp; &nbsp; &nbsp;<asp:CheckBox ID="cb_quota" runat="server" />New Quota :&nbsp; <asp:RadioButton ID="ro_200" runat="server" />200/MB&nbsp; &nbsp;<asp:RadioButton ID="ro_500" runat="server" />500/MB&nbsp; &nbsp;<asp:RadioButton ID="ro_1028" runat="server" />1GB</p>
-<p style="text-align: left;">&nbsp; &nbsp; &nbsp;4.1 E-mail Group name</p>
-<p style="text-align: left;">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <asp:CheckBox ID="cb_hod" runat="server" />BRH HOD&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <asp:CheckBox ID="cb_staff" runat="server" />BRH staff</p>
-<p style="text-align: left;">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <asp:CheckBox ID="cb_committee" runat="server" />Committee/Other .....<asp:Label ID="lb_committee" runat="server" Text="................................................................"></asp:Label>.....</p>
+<br />
+<p style="text-align: left;">ระบบที่ร้องขอ</p>
+<p id="P_AA" style="text-align: left;" runat="server" visible="false"><asp:CheckBox ID="cb_AA" runat="server" />Arcus Air</p>
+<p id="P_SWL" style="text-align: left;" runat="server" visible="false"><asp:CheckBox ID="cb_SWL" runat="server" />Software License</p>
+<p id="P_IPPhone" style="text-align: left;" runat="server" visible="false"><asp:CheckBox ID="cb_IPPhone" runat="server" />IP Phone</p>
+<p id="P_Tablet" style="text-align: left;" runat="server" visible="false"><asp:CheckBox ID="cb_Tablet" runat="server" />Tablet</p>
+<p id="P_iPad" style="text-align: left;" runat="server" visible="false"><asp:CheckBox ID="cb_iPad" runat="server" />iPad</p>
+<p id="P_VPN" style="text-align: left;" runat="server" visible="false"><asp:CheckBox ID="cb_VPN" runat="server" />VPN</p>
+<p id="pd_VPN" style="text-align: left;" runat="server" visible="false">&nbsp; &nbsp; &nbsp;<asp:Label ID="lbl_VPNAccount" Text="" runat="server"></asp:Label></p>
+<p id="P_Printer" style="text-align: left;" runat="server" visible="false"><asp:CheckBox ID="cb_Printer" runat="server" />Printer</p>
+<p id="pd_Printer" style="text-align: left;" runat="server" visible="false">&nbsp; &nbsp; &nbsp;<asp:Label ID="lbl_Printer" Text="" runat="server"></asp:Label></p>
+<p id="P_Com" style="text-align: left;" runat="server" visible="false"><asp:CheckBox ID="cb_Com" runat="server" />Computer</p>
+<p id="pd_Com" style="text-align: left;" runat="server" visible="false">&nbsp; &nbsp; &nbsp;<asp:Label ID="lbl_Com" Text="" runat="server"></asp:Label></p>
+<p id="P_email" style="text-align: left;" runat="server" visible="false"><asp:CheckBox ID="cb_email" runat="server" />E-mail Address .....<asp:Label ID="lb_email" runat="server" Text=".................................................."></asp:Label>.....</p>
+<p id="pd_email_1" style="text-align: left;" runat="server" visible="false">&nbsp; &nbsp; &nbsp;<asp:CheckBox ID="cb_quota" runat="server" />New Quota :&nbsp; <asp:RadioButton ID="ro_200" runat="server" />200/MB&nbsp; &nbsp;<asp:RadioButton ID="ro_500" runat="server" />500/MB&nbsp; &nbsp;<asp:RadioButton ID="ro_1028" runat="server" />1GB</p>
+<p id="pd_email_2" style="text-align: left;" runat="server" visible="false">&nbsp; &nbsp; &nbsp;Group name</p>
+<p id="pd_email_3" style="text-align: left;" runat="server" visible="false">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <asp:CheckBox ID="cb_hod" runat="server" />BRH HOD&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <asp:CheckBox ID="cb_staff" runat="server" />BRH staff</p>
+<p id="pd_email_4" style="text-align: left;" runat="server" visible="false">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <asp:CheckBox ID="cb_committee" runat="server" />Committee/Other .....<asp:Label ID="lb_committee" runat="server" Text="................................................................"></asp:Label>.....</p>
 <p style="text-align: left;">&nbsp; &nbsp; &nbsp;ข้าพเจ้ารับทราบนโยบายรักษาความมั่นคงปลอดภัยของระบบเทคโนโลยีสารสนเทศและการสื่อสารของโรงพยาบาลและจะปฏิบัติตามทุกประการ</p>
 <table style="width: 95%; margin-left: auto; margin-right: auto;" border="1">
 <tbody>
 <tr style="height: 18%;">
-<td style="width: 25%; text-align: center;">&nbsp;ผู้ร้องขอ</td>
-<td style="width: 50%; text-align: center;">&nbsp;ตรวจสอบโดย(หัวหน้าแผนก/ผู้จัดการสายงาน)</td>
-<td style="width: 25%; text-align: center;">&nbsp;ทบทวน/เห็นชอบโดย</td>
+    <td style="width: 25%; text-align: center;">&nbsp;ผู้ร้องขอ</td>
+    <td style="width: 50%; text-align: center;">&nbsp;ตรวจสอบโดย(หัวหน้าแผนก/ผู้จัดการสายงาน)</td>
+    <td style="width: 25%; text-align: center;">&nbsp;ทบทวน/เห็นชอบโดย</td>
 </tr>
 <tr>
-<td style="width: 25%; text-align: center;">
-<p>&nbsp;(<asp:Label ID="lb_lv1" runat="server" Text="........................."></asp:Label>)</p>
-<p>ตำแหน่ง&nbsp;<asp:Label ID="lb_pos1" runat="server" Text="..."></asp:Label></p>
-<p><asp:Label ID="lb_date1" runat="server" Text="...../...../........"></asp:Label></p>
-</td>
-<td style="width: 50%;">
-<table style="width: 100%;">
-<tbody>
-<tr>
-<td style="width: 50%; text-align: center;">
-<p>&nbsp;(<asp:Label ID="lb_lv2" runat="server" Text="........................."></asp:Label>)</p>
-<p>ตำแหน่ง&nbsp;<asp:Label ID="lb_pos2" runat="server" Text="..."></asp:Label></p>
-<p><asp:Label ID="lb_date2" runat="server" Text="...../...../........"></asp:Label></p>
-</td>
-<td style="text-align: center;">
-<p>&nbsp;(<asp:Label ID="lb_lv3" runat="server" Text="........................."></asp:Label>)</p>
-<p>ตำแหน่ง&nbsp;<asp:Label ID="lb_pos3" runat="server" Text="..."></asp:Label></p>
-<p><asp:Label ID="lb_date3" runat="server" Text="...../...../........"></asp:Label></p>
-</td>
-</tr>
-</tbody>
-</table>
-</td>
-<td style="width: 25%; text-align: center;">(<i id="ck4_1" class="fas fa-check fa-sm" runat="server" visible="false"></i>)เห็นชอบ (<i id="ck4_2" class="fas fa-check fa-sm" runat="server" visible="false"></i>)ไม่เห็นชอบ&nbsp;
-<p>&nbsp;(<asp:Label ID="lb_lv4" runat="server" Text="........................."></asp:Label>)</p>
-<p>ตำแหน่ง&nbsp;<asp:Label ID="lb_pos4" runat="server" Text="..."></asp:Label></p>
-<p><asp:Label ID="lb_remark4" CssClass="text-danger" runat="server" Text=""></asp:Label></p>
-<p><asp:Label ID="lb_date4" runat="server" Text="...../...../........"></asp:Label></p>
-</td>
+    <td style="width: 25%; text-align: center;">
+        <p>&nbsp;(<asp:Label ID="lb_lv1" runat="server" Text="........................."></asp:Label>)</p>
+        <p>ตำแหน่ง&nbsp;<asp:Label ID="lb_pos1" runat="server" Text="..."></asp:Label></p>
+        <p><asp:Label ID="lb_date1" runat="server" Text="...../...../........"></asp:Label></p>
+    </td>
+    <td style="width: 50%;">
+        <table style="width: 100%;">
+        <tbody>
+        <tr>
+        <td style="width: 50%; text-align: center;">
+        <p>&nbsp;(<asp:Label ID="lb_lv2" runat="server" Text="........................."></asp:Label>)</p>
+        <p>ตำแหน่ง&nbsp;<asp:Label ID="lb_pos2" runat="server" Text="..."></asp:Label></p>
+        <p><asp:Label ID="lb_date2" runat="server" Text="...../...../........"></asp:Label></p>
+        </td>
+        <td style="text-align: center;">
+        <p>&nbsp;(<asp:Label ID="lb_lv3" runat="server" Text="........................."></asp:Label>)</p>
+        <p>ตำแหน่ง&nbsp;<asp:Label ID="lb_pos3" runat="server" Text="..."></asp:Label></p>
+        <p><asp:Label ID="lb_date3" runat="server" Text="...../...../........"></asp:Label></p>
+        </td>
+        </tr>
+        </tbody>
+        </table>
+    </td>
+    <td style="width: 25%; text-align: center;">(<i id="ck4_1" class="fas fa-check fa-sm" runat="server" visible="false"></i>)เห็นชอบ (<i id="ck4_2" class="fas fa-check fa-sm" runat="server" visible="false"></i>)ไม่เห็นชอบ&nbsp;
+        <p>&nbsp;(<asp:Label ID="lb_lv4" runat="server" Text="........................."></asp:Label>)</p>
+        <p>ตำแหน่ง&nbsp;<asp:Label ID="lb_pos4" runat="server" Text="..."></asp:Label></p>
+        <p><asp:Label ID="lb_remark4" CssClass="text-danger" runat="server" Text=""></asp:Label></p>
+        <p><asp:Label ID="lb_date4" runat="server" Text="...../...../........"></asp:Label></p>
+    </td>
 </tr>
 <tr>
 <td style="width: 25%; text-align: center;" colspan="3">

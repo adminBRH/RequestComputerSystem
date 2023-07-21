@@ -1,5 +1,10 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="Settings.aspx.cs" Inherits="RequestComputerSystem.Settings" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
+
+<form id="form1" runat="server">
+
+<asp:ScriptManager ID="SettingScriptManager" runat="server"></asp:ScriptManager>
+
     <div class="row">
 
         <div class="col-xl-6 mb-4 mx-auto"> <!-- class="col-xl-3 col-md-6 mb-4" -->
@@ -30,8 +35,6 @@
 
     </div>
 
-<form id="form1" runat="server">
-
 <!-- Name Modal-->
   <div class="modal fade" id="EdNameModal" tabindex="-1" role="dialog" aria-labelledby="lblEdNameModal" aria-hidden="true">
     <div class="modal-dialog" role="document">
@@ -44,31 +47,33 @@
         </div>
         <div class="modal-body row">
             <div class="col col-sm-10 col-xl-5 input-group mb-3">
-                <label for="txt_tiltle">คำนำหน้า ไทย :</label><asp:TextBox ID="txt_tiltle" Text="" runat="server"></asp:TextBox>
+                <label for="txt_tiltle">คำนำหน้า ไทย :</label><input type="text" id="txt_titleTh" value="" runat="server" />
             </div>
             <div class="col col-sm-10 col-xl-5 input-group mb-3">
-                <label for="txt_tiltle_eng">คำนำหน้า อังกฤษ :</label><asp:TextBox ID="txt_tiltle_eng" Text="" runat="server"></asp:TextBox>
+                <label for="txt_tiltle_eng">คำนำหน้า อังกฤษ :</label><input id="txt_titleEng" value="" runat="server" />
             </div>
             <div class="col col-sm-10 col-xl-5 input-group mb-3">
-                <label for="txt_fname">ชื่อ ไทย :</label><asp:TextBox ID="txt_fname" Text="" runat="server"></asp:TextBox>
+                <label for="txt_fname">ชื่อ ไทย :</label><input id="txt_fnameTh" value="" runat="server" />
             </div>
             <div class="col col-sm-10 col-xl-5 input-group mb-3">
-                <label for="txt_fname_eng">ชื่อ อังกฤษ :</label><asp:TextBox ID="txt_fname_eng" Text="" runat="server"></asp:TextBox>
+                <label for="txt_fname_eng">ชื่อ อังกฤษ :</label><input id="txt_fnameEng" value="" runat="server" />
             </div>
             <div class="col col-sm-10 col-xl-5 input-group mb-3">
-                <label for="txt_lname">นามสกุล ไทย :</label><asp:TextBox ID="txt_lname" Text="" runat="server"></asp:TextBox>
+                <label for="txt_lname">นามสกุล ไทย :</label><input id="txt_lnameTh" value="" runat="server" />
             </div>
             <div class="col col-sm-10 col-xl-5 input-group mb-3">
-                <label for="txt_lname_eng">นามสกุล อังกฤษ :</label><asp:TextBox ID="txt_lname_eng" Text="" runat="server"></asp:TextBox>
+                <label for="txt_lname_eng">นามสกุล อังกฤษ :</label><input id="txt_lnameEng" value="" runat="server" />
             </div>
         </div>
         <div class="modal-footer">
           <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-          <asp:Button ID="btn_EdName" CssClass="btn btn-primary" OnClick="btn_EdName_Click" UseSubmitBehavior="false" data-dismiss="modal" runat="server" Text="Save" />
+            <a id="btn_EditName" class="btn btn-primary" onserverclick="btn_EditName_ServerClick" runat="server">Save</a>
+          <%--<asp:Button ID="btn_EdName" CssClass="btn btn-primary" OnClick="btn_EdName_Click" UseSubmitBehavior="false" data-dismiss="modal" runat="server" Text="Save" />--%>
         </div>
       </div>
     </div>
   </div>
+
 
 <!-- Password Modal-->
   <div class="modal fade" id="EdPassModal" tabindex="-1" role="dialog" aria-labelledby="lblEdPassModal" aria-hidden="true">
@@ -95,18 +100,18 @@
     </div>
   </div>
 
-</form>
-
-<script>
-    function fn_checknull() {
-        var PassOld = document.getElementById("<%= txt_PassOld.ClientID %>");
+    <script>
+        function fn_checknull() {
+            var PassOld = document.getElementById("<%= txt_PassOld.ClientID %>");
         var PassNew = document.getElementById("<%= txt_PassNew.ClientID %>");
         var PassConf = document.getElementById("<%= txt_PassConf.ClientID %>");
-        if (PassOld.value == "" || PassNew.value == "" || PassConf.value == "") { alert("กรุณากรอกข้อมูลให้ครบถ้วน !!"); }
-        else {
-            if (PassNew.value != PassConf.value) { alert("New Password กับ Confirm Password ไม่ตรงกัน !!"); }
+            if (PassOld.value == "" || PassNew.value == "" || PassConf.value == "") { alert("กรุณากรอกข้อมูลให้ครบถ้วน !!"); }
+            else {
+                if (PassNew.value != PassConf.value) { alert("New Password กับ Confirm Password ไม่ตรงกัน !!"); }
+            }
         }
-    }
-</script>
+    </script>
+
+</form>
 
 </asp:Content>

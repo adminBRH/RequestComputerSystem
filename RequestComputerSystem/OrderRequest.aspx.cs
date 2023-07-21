@@ -28,19 +28,53 @@ namespace RequestComputerSystem
 
             if (!IsPostBack)
             {
-                department();
+                string deptID = "";
+                if (Session["UserDeptid"] != null)
+                {
+                    deptID = Session["UserDeptid"].ToString();
+                }
+                Branch(deptID);
+                department(deptID);
                 Searchhod2();
             }
         }
 
+        public void Branch(string br_select)
+        {
+            dt = new DataTable();
+            dt = CL_Sql.dt_Branch();
+            if (dt.Rows.Count > 0)
+            { }
+            dl_branch.DataSource = dt;
+            dl_branch.DataTextField = "branchname";
+            dl_branch.DataValueField = "branchname";
+            dl_branch.DataBind();
 
-        public Boolean department()
+            if (br_select != "")
+            {
+                dl_branch.SelectedValue = br_select.Substring(0, 3);
+            }
+        }
+
+        protected void dl_branch_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            string dept = "";
+            if (Session["userDeptid"] != null)
+            {
+                dept = Session["userDeptid"].ToString();
+            }
+            department(dept);
+            Searchhod2();
+        }
+
+        public Boolean department(string dept)
         {
             Boolean result = false;
 
-            sql = "SELECT * FROM (Select '0' as 'deptOrderby','' as 'deptid','เลือกแผนก' as 'deptname' union Select '1' as 'deptOrderby',deptid,deptname from brh_it_request.department where depthod1 is not null) as a order by deptOrderby,deptname ";
+            string branch = dl_branch.SelectedValue.ToString();
+
             dt = new DataTable();
-            dt = CL_Sql.select(sql);
+            dt = CL_Sql.dt_Department(branch);
             if (dt.Rows.Count > 0)
             {
                 dl_department.DataSource = dt;
@@ -48,10 +82,25 @@ namespace RequestComputerSystem
                 dl_department.DataValueField = "deptid";
                 dl_department.DataBind();
 
+                if (dept != "")
+                {
+                    try
+                    {
+                        dl_department.SelectedValue = dept;
+                    }
+                    catch 
+                    { }
+                }
+
                 result = true;
             }
 
             return result;
+        }
+
+        protected void dl_department_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            Searchhod2();
         }
 
         public string check_object() //การส่งค่าเป็นสตริงในรูปแบบ Checklist
@@ -101,16 +150,12 @@ namespace RequestComputerSystem
 
         }
 
-        protected void dl_department_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            Searchhod2();
-        }
-
         public string Searchhod2()
         {
             String result = "";
 
-            sql = "SELECT * FROM brh_it_request.department WHERE deptid='" + dl_department.SelectedValue + "' ";
+            sql = "SELECT deptid,depthod1,depthod2 FROM department " +
+                "\nWHERE deptid='" + dl_department.SelectedValue + "' ";
             dt = new DataTable();
             dt = CL_Sql.select(sql);
             if (dt.Rows.Count > 0)
@@ -120,12 +165,11 @@ namespace RequestComputerSystem
 
                 result = hod1;
 
-                sql = "select *,concat(userpname,' ',userfname,' ',userlname) as 'fullname'  from `user` where username = '" + result + "' ";
                 dt = new DataTable();
-                dt = CL_Sql.select(sql);
+                dt = CL_Sql.EmpName(result);
                 if (dt.Rows.Count > 0)
                 {
-                    lbl_HOD1.Text = "หัวหน้าแผนก : " + dt.Rows[0]["fullname"].ToString();
+                    lbl_HOD1.Text = "<b>" + dt.Rows[0]["fullname"].ToString() + "</b><br />" + dt.Rows[0]["userposition"].ToString();
                 }
 
                 result = hod2;
@@ -137,12 +181,11 @@ namespace RequestComputerSystem
                 }
                 else
                 {
-                    sql = "select *,concat(userpname,' ',userfname,' ',userlname) as 'fullname'  from `user` where username = '" + result + "' ";
                     dt = new DataTable();
-                    dt = CL_Sql.select(sql);
+                    dt = CL_Sql.EmpName(result);
                     if (dt.Rows.Count > 0)
                     {
-                        lbl_HOD2.Text = "หัวหน้าฝ่าย : " + dt.Rows[0]["fullname"].ToString();
+                        lbl_HOD2.Text = "<b>" + dt.Rows[0]["fullname"].ToString() + "</b><br />" + dt.Rows[0]["userposition"].ToString();
                     }
                 }
             }
@@ -156,28 +199,52 @@ namespace RequestComputerSystem
 
         protected void btnsubmit_ServerClick(object sender, EventArgs e)
         {
-            if (Insertdata())
+            string objects = check_object();
+            if (objects == "")
             {
-                Response.Write("<script>alert('บันทึกสำเร็จ'); window.location.href='OrderRequestList.aspx';</script>");
+                Response.Write("<script>alert('กรุณาเลือกวัตถุประสงค์ !!');</script>");
             }
             else
             {
-                if (lbl_fileAlert.Text == "")
+                string detail = check_detail();
+                if (detail == "")
                 {
-                    Response.Write("<script>alert('ไม่สามารถบันทึกได้กรุณาติดต่อ Admin');</script>");
+                    Response.Write("<script>alert('กรุณาเลือกรายละเอียด !!');</script>");
+                }
+                else
+                {
+                    string dept = dl_department.SelectedValue.ToString();
+                    if (dept == "")
+                    {
+                        Response.Write("<script>alert('กรุณาเลือกแผนก !!');</script>");
+                    }
+                    else
+                    {
+                        if (Insertdata(objects, detail))
+                        {
+                            Response.Write("<script>alert('บันทึกสำเร็จ'); window.location.href='OrderRequestList.aspx';</script>");
+                        }
+                        else
+                        {
+                            if (lbl_fileAlert.Text == "")
+                            {
+                                Response.Write("<script>alert('ไม่สามารถบันทึกได้กรุณาติดต่อ Admin');</script>");
+                            }
+                        }
+                    }
                 }
             }
         }
 
-        public Boolean Insertdata() // การเพิ่มข้อมูลเข้า Database
+        public Boolean Insertdata(string objects, string detail) // การเพิ่มข้อมูลเข้า Database
         {
             Boolean result = false;
 
             string UpdatePrice = "yes";
 
-            string objects = check_object();
+            //string objects = check_object();
             string other = txt_other.Value.ToString().Trim();
-            string detail = check_detail();
+            //string detail = check_detail();
             string details = txt_details.Value.ToString();
             string Approvelevel1 = Searchhod2();
             string Approvelevel2 = "";

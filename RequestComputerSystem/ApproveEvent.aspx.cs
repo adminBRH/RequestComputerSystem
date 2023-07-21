@@ -19,9 +19,13 @@ namespace RequestComputerSystem
 
         string UserStatus = "";
         string UserLogin = "";
+        string UserLoginName = "";
         string rqid = "";
         string rqsid = "";
         string apLevelMax = "";
+
+        string sysname = "";
+        string sysdetail = "";
 
         string UserRequest = "";
         string PostRequest = "";
@@ -41,67 +45,11 @@ namespace RequestComputerSystem
             {
                 UserStatus = Session["UserStatus"].ToString();
                 UserLogin = Session["UserLogin"].ToString();
+                UserLoginName = Session["UserFullName"].ToString();
 
                 rqsid = Request.QueryString["id"].ToString();
 
-                sql = "select r.rqid, rs.rqsid, concat(u.userpname,' ',u.userfname,' ',u.userlname) as 'userFullName', u.userposition, a.apdate, a.apstatus, a.aprequestuser " +
-                    ",a.userid , concat(u2.userpname,' ',u2.userfname,' ',u2.userlname) as 'userFullName2', u2.userposition as 'userposition2', m.apLevelMax, rs.sysid, s.sysname " +
-                    ",r.rqpost, r.rqdepartment, d.deptname, concat(r.rqpname,' ',r.rqfname,' ',r.rqlname) as 'UserReqName' " +
-                    "from approve as a " +
-                    "left join requestsystems as rs on a.rqsid = rs.rqsid " +
-                    "left join request as r on r.rqid = rs.rqid " +
-                    "left join department as d on d.deptid = r.rqdepartment " +
-                    "left join systems as s on rs.sysid = s.sysid " +
-                    "left join `user` as u on a.aprequestuser = u.username " +
-                    "left join `user` as u2 on a.userid=u2.username " +
-                    "left join (select apid,max(aplevel) as apLevelMax from approve where apstatus<>'Wait' and rqsid = " + rqsid + ") as m on a.apid=m.apid " +
-                    "where a.aplevel = 1 and a.apstatus = 'Approved' and a.rqsid = " + rqsid;
-                dt = new DataTable();
-                dt = cl_Sql.select(sql);
-                if (dt.Rows.Count > 0)
-                {
-                    rqid = dt.Rows[0]["rqid"].ToString();
-                    lb0_0.Text = "[" + rqid + "](" + rqsid + ")";
-                    lb0_1.Text = dt.Rows[0]["sysname"].ToString();
-                    lb0_2.Text = dt.Rows[0]["UserReqName"].ToString();
-                    lb0_3.Text = dt.Rows[0]["rqpost"].ToString();
-                    lb0_4.Text = dt.Rows[0]["deptname"].ToString();
-
-                    UserRequest = dt.Rows[0]["userFullName"].ToString();
-                    lb1_1.Text = dt.Rows[0]["userFullName2"].ToString();
-                    UserActor = dt.Rows[0]["userFullName2"].ToString();
-                    UseridActor = dt.Rows[0]["userid"].ToString();
-                    PostRequest = dt.Rows[0]["userposition"].ToString();
-                    lb1_2.Text = dt.Rows[0]["userposition2"].ToString();
-                    PostActor = dt.Rows[0]["userposition2"].ToString();
-                    lb1_3.Text = dt.Rows[0]["apdate"].ToString();
-
-                    apLevelMax = dt.Rows[0]["apLevelMax"].ToString();
-
-                    // แจ้งผู้ขอใช้
-                    //if (apLevelMax == "6")
-                    //{
-                    //    div8.Attributes.Add("class", "card border-left-success shadow h-100 py-2s");
-                    //    i8.Attributes.Add("class", "fas fa-check fa-2x text-success");
-                    //    lb8_1.Text = dt.Rows[0]["userFullName"].ToString();
-                    //    lb8_2.Text = dt.Rows[0]["userposition"].ToString();
-                    //    lb8_3.Text = dt.Rows[0]["apdate"].ToString();
-                    //}
-
-                    Block2();
-                    Block3();
-                    Block4();
-                    Block5();
-                    Block6();
-                    Block7();
-                    Block8();
-                    Block9();
-                }
-                else
-                {
-
-                }
-
+                Details();
             }
             catch (Exception ex)
             {
@@ -111,23 +59,90 @@ namespace RequestComputerSystem
             
         }
 
-        // ตรวจสอบโดย(หัวหน้าแผนก) ------------ Level 2 --------------------------------------------
-        public string Block2()
+        // Details from request 
+        private void Details()
         {
-            string apstatus = "";
-            
-            sql = "select concat(u.userpname,' ',u.userfname,' ',u.userlname) as 'ApName', u.userposition, a.apdate, a.apstatus " +
-                ", a.apuserapprove1, a.apuserapprove2, a.apremark " +
-                "from approve as a " +
-                "left join `user` as u on a.apuserapprove1 = u.username " +
-                "where a.aplevel = 2 and a.rqsid = " + rqsid;
+            sql = "select r.rqid, rs.rqsid, concat(ifnull(u.userpname,''),u.userfname,' ',u.userlname) as 'userFullName', u.userposition, a.apdate, a.apstatus, a.aprequestuser " +
+                    ",a.userid , concat(ifnull(u2.userpname,''),u2.userfname,' ',u2.userlname) as 'userFullName2', u2.userposition as 'userposition2', m.apLevelMax " +
+                    ", rs.sysid, rs.rqsvalue " +
+                    ", s.sysname " +
+                    ", r.rqpost, r.rqdepartment, d.deptname, concat(r.rqpname,' ',r.rqfname,' ',r.rqlname) as 'UserReqName', r.rqremark " +
+                    "from approve as a " +
+                    "left join requestsystems as rs on a.rqsid = rs.rqsid " +
+                    "left join request as r on r.rqid = rs.rqid " +
+                    "left join department as d on d.deptid = r.rqdepartment " +
+                    "left join systems as s on rs.sysid = s.sysid " +
+                    "left join `user` as u on a.aprequestuser = u.username " +
+                    "left join `user` as u2 on a.userid=u2.username " +
+                    "left join (select apid,max(aplevel) as apLevelMax from approve where apstatus<>'Wait' and rqsid = " + rqsid + ") as m on a.apid=m.apid " +
+                    "where a.aplevel = 1 and a.apstatus = 'Approved' and a.rqsid = " + rqsid;
             dt = new DataTable();
             dt = cl_Sql.select(sql);
             if (dt.Rows.Count > 0)
             {
+                rqid = dt.Rows[0]["rqid"].ToString();
+                lb0_0.Text = "[" + rqid + "](" + rqsid + ")";
+                sysname = dt.Rows[0]["sysname"].ToString();
+                lb0_1.Text = sysname;
+                sysdetail = dt.Rows[0]["rqsvalue"].ToString();
+                if (sysdetail != "")
+                {
+                    sysdetail = " --> " + sysdetail;
+                }
+                lb0_1_detail.Text = sysdetail;
+                lb0_2.Text = dt.Rows[0]["UserReqName"].ToString();
+                lb0_3.Text = dt.Rows[0]["rqpost"].ToString();
+                lbl_branch.Text = dt.Rows[0]["rqdepartment"].ToString().Substring(0, 3);
+                lb0_4.Text = dt.Rows[0]["rqdepartment"].ToString() + " " + dt.Rows[0]["deptname"].ToString();
+                lb0_5.Text = dt.Rows[0]["rqremark"].ToString();
+
+                UserRequest = dt.Rows[0]["userFullName"].ToString();
+                lb1_1.Text = dt.Rows[0]["userFullName2"].ToString();
+                UserActor = dt.Rows[0]["userFullName2"].ToString();
+                UseridActor = dt.Rows[0]["userid"].ToString();
+                PostRequest = dt.Rows[0]["userposition"].ToString();
+                lb1_2.Text = dt.Rows[0]["userposition2"].ToString();
+                PostActor = dt.Rows[0]["userposition2"].ToString();
+                lb1_3.Text = dt.Rows[0]["apdate"].ToString();
+
+                apLevelMax = dt.Rows[0]["apLevelMax"].ToString();
+
+                RunBlock();
+            }
+        }
+
+        // Data for Block Line Approve
+        private DataTable BlockData(string level, string level_sub)
+        {
+            sql = "select concat(u.userpname,' ',u.userfname,' ',u.userlname) as 'ApName' " +
+                "\n, concat(u2.userpname,' ',u2.userfname,' ',u2.userlname) as 'SignName' " +
+                "\n, u.userposition, a.apdate, a.apstatus, a.apremark " +
+                "\n, a.apuserapprove1, a.apuserapprove2 " +
+                "\nfrom approve as a " +
+                "\nleft join `user` as u on a.apuserapprove1 = u.username " +
+                "\nleft join `user` as u2 on a.userid = u2.username " +
+                "\nwhere a.aplevel = " + level + " and a.aplevel_sub = " + level_sub + " and a.rqsid = " + rqsid + " " +
+                "\norder by apid";
+            dt = new DataTable();
+            dt = cl_Sql.select(sql);
+            if (dt.Rows.Count > 0)
+            { }
+
+            return dt;
+        }
+
+        // ตรวจสอบโดย(หัวหน้าแผนก) ------------ Level 2 --------------------------------------------
+        public string Block2()
+        {
+            string apstatus = "";
+
+            dt = new DataTable();
+            dt = BlockData("2", "0");
+            if (dt.Rows.Count > 0)
+            {
                 apstatus = dt.Rows[0]["apstatus"].ToString();
 
-                lb2_1.Text = dt.Rows[0]["ApName"].ToString();
+                lb2_1.Text = dt.Rows[0]["SignName"].ToString();
                 lb2_2.Text = dt.Rows[0]["userposition"].ToString();
 
                 string[] root = new string[] {"0", dt.Rows[0]["apuserapprove1"].ToString(), dt.Rows[0]["apuserapprove2"].ToString() };
@@ -158,15 +173,19 @@ namespace RequestComputerSystem
                     i2.Attributes.Add("class", "fas fa-clock fa-2x text-warning");
                     if (vib == "y")
                     {
+                        lb2_1.Text = dt.Rows[0]["ApName"].ToString();
+
                         bt_edit.Visible = true;
 
                         bt_2_1.Visible = true;
                         bt_2_2.Visible = true;
+
+                        bt_1_2.Visible = true;
                     }
                 }
                 else
                 {
-                    div2.Attributes.Add("class", "card border-left-danger shadow h-100 py-2s");
+                    div2.Attributes.Add("class", "card border-left-danger shadow h-100 py-2s divDisable");
                     i2.Attributes.Add("class", "fas fa-times fa-2x text-danger");
                     if (vib == "y" && apLevelMax=="2")
                     {
@@ -184,18 +203,13 @@ namespace RequestComputerSystem
         {
             string apstatus = "";
 
-            sql = "select concat(u.userpname,' ',u.userfname,' ',u.userlname) as 'ApName', u.userposition, a.apdate, a.apstatus " +
-                ", a.apuserapprove1, a.apuserapprove2 " +
-                "from approve as a " +
-                "left join `user` as u on a.apuserapprove1 = u.username " +
-                "where a.aplevel = 3 and a.rqsid = " + rqsid;
             dt = new DataTable();
-            dt = cl_Sql.select(sql);
+            dt = BlockData("3", "0");
             if (dt.Rows.Count > 0)
             {
                 apstatus = dt.Rows[0]["apstatus"].ToString();
 
-                lb3_1.Text = dt.Rows[0]["ApName"].ToString();
+                lb3_1.Text = dt.Rows[0]["SignName"].ToString();
                 lb3_2.Text = dt.Rows[0]["userposition"].ToString();
 
                 string[] root = new string[] { dt.Rows[0]["apuserapprove1"].ToString(), dt.Rows[0]["apuserapprove2"].ToString() };
@@ -226,6 +240,7 @@ namespace RequestComputerSystem
                     i3.Attributes.Add("class", "fas fa-clock fa-2x text-warning");
                     if (vib == "y")
                     {
+                        lb3_1.Text = dt.Rows[0]["ApName"].ToString();
                         bt_3_1.Visible = true;
                         bt_3_2.Visible = true;
                     }
@@ -244,24 +259,96 @@ namespace RequestComputerSystem
             }
             return apstatus;
         }
+        
+        // เห็นชอบโดย ------------------------ Level 3x1 ----------------------------------------------
+        public string Block3x1()
+        {
+            int X = 1;
+            string apstatus = "";
+            string signname = "";
+            string apname = "";
+            string userposition = "";
+            string userapprove1 = "";
+            string userapprove2 = "";
+            string apdate = "";
+            string apremark = "";
 
-        // ทบทวนเห็นชอบ ---------- Level 4 ----------------------------------------------
+            dt = new DataTable();
+            dt = BlockData("3", "1");
+            if (dt.Rows.Count > 0)
+            {
+                apstatus = dt.Rows[0]["apstatus"].ToString();
+                signname = dt.Rows[0]["SignName"].ToString();
+                apname = dt.Rows[0]["ApName"].ToString();
+                userposition = dt.Rows[0]["userposition"].ToString();
+                userapprove1 = dt.Rows[0]["apuserapprove1"].ToString();
+                userapprove2 = dt.Rows[0]["apuserapprove2"].ToString();
+                apdate = dt.Rows[0]["apdate"].ToString();
+                apremark = dt.Rows[0]["apremark"].ToString();
+
+                lb3x1_1.Text = signname;
+                lb3x1_2.Text = userposition;
+
+                string[] root = new string[] { userapprove1, userapprove2 };
+                string vib = "";
+
+                foreach (string i in root)
+                {
+                    if (UserLogin == i || UserStatus == "admin")
+                    {
+                        vib = "y";
+                        break;
+                    }
+                    else
+                    {
+                        vib = "n";
+                    }
+                }
+
+                if (apstatus == "Approved" || apstatus == "Finish")
+                {
+                    lb3x1_3.Text = apdate;
+                    div3x1.Attributes.Add("class", "card border-left-success shadow h-100 py-2s");
+                    i3x1.Attributes.Add("class", "fas fa-check fa-2x text-success");
+                }
+                else if (apstatus == "Wait")
+                {
+                    div3x1.Attributes.Add("class", "card border-left-warning shadow h-100 py-2s");
+                    i3x1.Attributes.Add("class", "fas fa-clock fa-2x text-warning");
+                    if (vib == "y")
+                    {
+                        lb3x1_1.Text = apname;
+                        bt_3x1_1.Visible = true;
+                        bt_3x1_2.Visible = true;
+                    }
+                }
+                else
+                {
+                    div3x1.Attributes.Add("class", "card border-left-danger shadow h-100 py-2s");
+                    i3x1.Attributes.Add("class", "fas fa-times fa-2x text-danger");
+                    if (vib == "y" && apLevelMax == "3")
+                    {
+                        bt_3x1_3.Visible = true;
+                    }
+                    lb3x1_4.Text = "หมายเหตุ : " + apremark;
+                }
+
+            }
+            return apstatus;
+        }
+
+        // ทบทวนเห็นชอบ ---------------------- Level 4 ----------------------------------------------
         public string Block4()
         {
             string apstatus = "";
 
-            sql = "select concat(u.userpname,' ',u.userfname,' ',u.userlname) as 'ApName', u.userposition, a.apdate, a.apstatus " +
-                ", a.apuserapprove1, a.apuserapprove2, a.apremark " +
-                "from approve as a " +
-                "left join `user` as u on a.apuserapprove1 = u.username " +
-                "where a.aplevel = 4 and a.rqsid = " + rqsid;
             dt = new DataTable();
-            dt = cl_Sql.select(sql);
+            dt = BlockData("4", "0");
             if (dt.Rows.Count > 0)
             {
                 apstatus = dt.Rows[0]["apstatus"].ToString();
 
-                lb4_1.Text = dt.Rows[0]["ApName"].ToString();
+                lb4_1.Text = dt.Rows[0]["SignName"].ToString();
                 lb4_2.Text = dt.Rows[0]["userposition"].ToString();
 
                 string[] root = new string[] { dt.Rows[0]["apuserapprove1"].ToString(), dt.Rows[0]["apuserapprove2"].ToString() };
@@ -293,6 +380,7 @@ namespace RequestComputerSystem
                     i4.Attributes.Add("class", "fas fa-clock fa-2x text-warning");
                     if (vib == "y")
                     {
+                        lb4_1.Text = dt.Rows[0]["ApName"].ToString();
                         bt_4_1.Visible = true;
                         bt_4_2.Visible = true;
                     }
@@ -312,23 +400,18 @@ namespace RequestComputerSystem
             return apstatus;
         }
 
-        // เห็นควรอนุมัติโดย ---------- Level 5 ----------------------------------------------
+        // เห็นควรอนุมัติโดย --------------------- Level 5 ----------------------------------------------
         public string Block5()
         {
             string apstatus = "";
 
-            sql = "select concat(u.userpname,' ',u.userfname,' ',u.userlname) as 'ApName', u.userposition, a.apdate, a.apstatus, a.apremark " +
-                ", a.apuserapprove1, a.apuserapprove2 " +
-                "from approve as a " +
-                "left join `user` as u on a.apuserapprove1 = u.username " +
-                "where a.aplevel = 5 and a.rqsid = " + rqsid;
             dt = new DataTable();
-            dt = cl_Sql.select(sql);
+            dt = BlockData("5", "0");
             if (dt.Rows.Count > 0)
             {
                 apstatus = dt.Rows[0]["apstatus"].ToString();
 
-                lb5_1.Text = dt.Rows[0]["ApName"].ToString();
+                lb5_1.Text = dt.Rows[0]["SignName"].ToString();
                 lb5_2.Text = dt.Rows[0]["userposition"].ToString();
 
                 string[] root = new string[] { dt.Rows[0]["apuserapprove1"].ToString(), dt.Rows[0]["apuserapprove2"].ToString() };
@@ -359,6 +442,7 @@ namespace RequestComputerSystem
                     i5.Attributes.Add("class", "fas fa-clock fa-2x text-warning");
                     if (vib == "y")
                     {
+                        lb5_1.Text = dt.Rows[0]["ApName"].ToString();
                         bt_5_1.Visible = true;
                         bt_5_2.Visible = true;
                     }
@@ -378,23 +462,18 @@ namespace RequestComputerSystem
             return apstatus;
         }
 
-        // อนุมัติโดย ---------- Level 6 ----------------------------------------------
+        // อนุมัติโดย --------------------------- Level 6 ----------------------------------------------
         public string Block6()
         {
             string apstatus = "";
 
-            sql = "select concat(u.userpname,' ',u.userfname,' ',u.userlname) as 'ApName', u.userposition, a.apdate, a.apstatus, a.apremark " +
-                ", a.apuserapprove1, a.apuserapprove2 " +
-                "from approve as a " +
-                "left join `user` as u on a.apuserapprove1 = u.username " +
-                "where a.aplevel = 6 and a.rqsid = " + rqsid;
             dt = new DataTable();
-            dt = cl_Sql.select(sql);
+            dt = BlockData("6", "0");
             if (dt.Rows.Count > 0)
             {
                 apstatus = dt.Rows[0]["apstatus"].ToString();
 
-                lb6_1.Text = dt.Rows[0]["ApName"].ToString();
+                lb6_1.Text = dt.Rows[0]["SignName"].ToString();
                 lb6_2.Text = dt.Rows[0]["userposition"].ToString();
 
                 string[] root = new string[] { dt.Rows[0]["apuserapprove1"].ToString(), dt.Rows[0]["apuserapprove2"].ToString() };
@@ -425,6 +504,7 @@ namespace RequestComputerSystem
                     i6.Attributes.Add("class", "fas fa-paperclip fa-2x text-warning");
                     if (vib == "y")
                     {
+                        lb6_1.Text = dt.Rows[0]["ApName"].ToString();
                         bt_6_1.Visible = true;
                         bt_6_2.Visible = true;
                     }
@@ -444,26 +524,27 @@ namespace RequestComputerSystem
             return apstatus;
         }
 
-        // ผู้ดำเนินการ ---------- Level 7 ----------------------------------------------
+        // ผู้ดำเนินการ -------------------------- Level 7 ----------------------------------------------
         public string Block7()
         {
             string apstatus = "";
 
-            sql = "select * from approve as a where aplevel = 7 and rqsid = " + rqsid;
+            //sql = "select * from approve as a where aplevel = 7 and aplevel_sub = 0 and rqsid = " + rqsid;
             dt = new DataTable();
-            dt = cl_Sql.select(sql);
+            dt = BlockData("7", "0");
             if (dt.Rows.Count > 0) 
             {
                 apstatus = dt.Rows[0]["apstatus"].ToString();
 
-                lb7_1.Text = "<b>BRH IT GROUP</b>";
-                lb7_2.Text = "";
+                lb7_1.Text = "<b>" + dt.Rows[0]["SignName"].ToString() + "</b>";
+                lb7_2.Text = dt.Rows[0]["userposition"].ToString();
 
                 if (apstatus == "Wait")
                 {
                     div7.Attributes.Add("class", "card border-left-warning shadow h-100 py-2s");
                     i7.Attributes.Add("class", "fas fa-paperclip fa-2x text-warning");
 
+                    lb7_1.Text = "<b>" + dt.Rows[0]["ApName"].ToString() + "</b>";
                     if (UserStatus == "admin" || UserStatus == "it")
                     {
                         bt_7_1.Visible = true;
@@ -489,27 +570,30 @@ namespace RequestComputerSystem
                 }
                 else { }
 
-                sql = "select * from `user` where username = '" + dt.Rows[0]["userid"].ToString() + "'; ";
-                dt = new DataTable();
-                dt = cl_Sql.select(sql);
-                if (dt.Rows.Count > 0)
+                if (dt.Rows[0]["userid"].ToString() != "0")
                 {
-                    string fullname = dt.Rows[0]["userpname"].ToString() + " " + dt.Rows[0]["userfname"].ToString() + " " + dt.Rows[0]["userlname"].ToString();
-                    lb7_1.Text = "<b>" + fullname + "</b>";
+                    sql = "select * from `user` where username = '" + dt.Rows[0]["userid"].ToString() + "'; ";
+                    dt = new DataTable();
+                    dt = cl_Sql.select(sql);
+                    if (dt.Rows.Count > 0)
+                    {
+                        string fullname = dt.Rows[0]["userpname"].ToString() + " " + dt.Rows[0]["userfname"].ToString() + " " + dt.Rows[0]["userlname"].ToString();
+                        lb7_1.Text = "<b>" + fullname + "</b>";
+                    }
                 }
             }
 
             return apstatus;
         }
 
-        // แจ้งผู้ขอใช้ ---------- Level 8 ----------------------------------------------
+        // แจ้งผู้ขอใช้ --------------------------- Level 8 ----------------------------------------------
         public string Block8()
         {
             string apstatus = "";
 
-            sql = "select * from approve as a where aplevel = 8 and rqsid = " + rqsid;
+            //sql = "select * from approve as a where aplevel = 8 and aplevel_sub = 0 and rqsid = " + rqsid;
             dt = new DataTable();
-            dt = cl_Sql.select(sql);
+            dt = BlockData("8", "0");
             if (dt.Rows.Count > 0)
             {
                 apstatus = dt.Rows[0]["apstatus"].ToString();
@@ -540,7 +624,7 @@ namespace RequestComputerSystem
             return apstatus;
         }
 
-        // อื่นๆ/หมายเหตุ ---------- Level 9 ----------------------------------------------
+        // อื่นๆ/หมายเหตุ ------------------------ Level 9 ----------------------------------------------
         public string Block9()
         {
             string apstatus = "";
@@ -578,6 +662,20 @@ namespace RequestComputerSystem
             return apstatus;
         }
 
+        // Run All Block Line Approve ---------
+        protected void RunBlock()
+        {
+            Block2();
+            Block3();
+            Block3x1();
+            Block4();
+            Block5();
+            Block6();
+            Block7();
+            Block8();
+            Block9();
+        }
+
         // -------------------------------------------------------- -------------------------------------------------------- 
         // -------------------------------------------------------- --------------------------------------------------------
 
@@ -601,7 +699,8 @@ namespace RequestComputerSystem
 
             if (Approved(apLevel) == true)
             {
-                Response.Write("<script>alert('อนุมัติ เรียบร้อยแล้ว !!'); setTimeout(function(){window.location.href='ApproveEvent.aspx?id=" + rqsid +"'}, 10);</script>");
+                //Response.Write("<script>alert('อนุมัติ เรียบร้อยแล้ว !!'); setTimeout(function(){window.location.href='ApproveEvent.aspx?id=" + rqsid +"'}, 10);</script>");
+                Response.Write("<script>alert('อนุมัติ เรียบร้อยแล้ว !!'); setTimeout(function(){history.back()}, 10);</script>");
             }
             else
             {
@@ -650,20 +749,32 @@ namespace RequestComputerSystem
             Boolean bl = false;
             try
             {
+                string level_sub = "0";
+                string oldLevel = level;
+
+                if (oldLevel == "3x1")
+                {
+                    level = "3";
+                }
+
                 string Dates = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
 
-                sql = "select a.*,r.rqid,rs.sysid  " +
-                    "from approve as a " +
-                    "left join requestsystems as rs on a.rqsid = rs.rqsid " +
-                    "left join request as r on rs.rqid = r.rqid " + 
-                    "where a.apstatus = 'wait' and a.aplevel = " + level + " and a.rqsid = " + rqsid;
+                sql = "select a.*, r.rqid, r.rqdepartment, rs.sysid, s.sysname " +
+                    "\nfrom approve as a " +
+                    "\nleft join requestsystems as rs on a.rqsid = rs.rqsid " +
+                    "\nleft join request as r on rs.rqid = r.rqid " +
+                    "\nleft join systems as s on s.sysid = rs.sysid " + 
+                    "\nwhere a.apstatus = 'wait' and a.aplevel = " + level + " and a.rqsid = " + rqsid;
                 dt = new DataTable();
                 dt = cl_Sql.select(sql);
                 if (dt.Rows.Count > 0)
                 {
                     string rqid = dt.Rows[0]["rqid"].ToString();
+                    string deptid = dt.Rows[0]["rqdepartment"].ToString();
+                    string branch = deptid.Substring(0, 3);
                     string apid = dt.Rows[0]["apid"].ToString();
                     string sysid = dt.Rows[0]["sysid"].ToString();
+                    string sysname = dt.Rows[0]["sysname"].ToString();
                     string UserRequest = dt.Rows[0]["aprequestuser"].ToString();
 
                     string apuserapprove1 = "0";
@@ -671,37 +782,68 @@ namespace RequestComputerSystem
                     string finish = "";
                     if (level == "2")
                     {
-                        // ผู้อนุมัติ ลำดับต่อไป
-                        apuserapprove1 = dt.Rows[0]["apuserapprove2"].ToString();
-                        if (apuserapprove1 == "0" || apuserapprove1 == "")
+                        apuserapprove1 = dt.Rows[0]["apuserapprove2"].ToString(); // ผู้จัดการฝ่าย 
+
+                        if (apuserapprove1 == "0" || apuserapprove1 == "") // ถ้าไม่มี ผู้จัดการฝ่าย 
                         {
-                            // ถ้าไม่มีหัวหน้าสายงาน
-                            level = "3";
-                            apuserapprove1 = "151588";
+                            if (sysid == "13") // Drive O/R
+                            {
+                                apuserapprove1 = "150020"; //พี่วิไล ผจก.ศูนย์คุณภาพ
+                                level_sub = "1";
+                            }
+                            else
+                            {
+                                apuserapprove1 = "151588"; // พี่นุช
+                                level = "3";
+                            }
                         }
                     }
-                    else if (level == "3")
+                    else if (level == "3") //เห็นชอบโดย -- ผู้ทบทวน เห็นชอบโดย
                     {
-                        //ผู้ทบทวน เห็นชอบ
-                        apuserapprove1 = "151588";
-                    }
-                    else if (level == "4" || level == "5")
-                    {
-                        // ยกเลิกลำดับ ผู้บริหาร ไม่ต้องอนุมัติใด นอกจาก สายงานของ ผู้บริหาร เอง
-                        finish = "y"; level = "6";
-                        apuserapprove1 = Session["UserLogin"].ToString();
+                        apuserapprove1 = "151588"; // พี่นุช
 
-                        //if (sysid == "1" || sysid == "6")
+                        if (sysid == "13") // Drive O/R
+                        {
+                            if (oldLevel == level)
+                            {
+                                apuserapprove1 = "150020"; //พี่วิไล ผจก.ศูนย์คุณภาพ
+                                level = "2";
+                                level_sub = "1";
+                            }
+                        }
+                    }
+                    else if (level == "4")
+                    {
+                        finish = "y"; 
+
+                        if (sysid == "3") // VPN
+                        {
+                            apuserapprove1 = "151579"; // ส่งต่อให้ อ. พัชรี อนุมัติ
+                        }
+                        else
+                        {
+                            level = "6"; 
+                            apuserapprove1 = Session["UserLogin"].ToString();
+                        }
+
+                        // ยกเลิกลำดับ ผู้บริหาร ไม่ต้องอนุมัติใด นอกจาก สายงานของ ผู้บริหาร เอง
+                        //if (sysid == "1" || sysid == "6") // B-Connect || Arcus Air
                         //{
                         //    // ส่งต่อให้ ผอ. อนุมัติ เฉพาะร้องขอระบบ B-Connect และ Arcus Air (อ.จา)
-                        //    apuserapprove1 = "040010";
-                        //    apuserapprove2 = "548962";
+                        //    apuserapprove1 = "040010"; OldID
+                        //    apuserapprove2 = "548962"; NewID
                         //}
                         //else
                         //{
                         //    finish = "y"; level = "6";
                         //    apuserapprove1 = Session["UserLogin"].ToString();
                         //}
+                    }
+                    else if (level == "5")
+                    {
+                        finish = "y";
+                        level = "6";
+                        apuserapprove1 = Session["UserLogin"].ToString();
                     }
                     else if (level == "6")
                     {
@@ -728,7 +870,27 @@ namespace RequestComputerSystem
                     }
 
                     int levelInt = 0;
-                    if (finish == "yyy") { levelInt = int.Parse(level); } else { levelInt = int.Parse(level) + 1; }
+                    if (finish == "yyy") 
+                    { 
+                        levelInt = int.Parse(level); 
+                    } 
+                    else 
+                    {
+                        levelInt = int.Parse(level) + 1;
+                    }
+
+                    // Change empid to IT
+                    if (levelInt == 7)
+                    {
+                        if (branch.ToUpper() == "BRD")
+                        {
+                            apuserapprove1 = "brd_it";
+                        }
+                        else
+                        {
+                            apuserapprove1 = "brh_it";
+                        }
+                    }
                     
                     string RequestID = "[" + rqid + "." + rqsid + "]";
 
@@ -741,7 +903,11 @@ namespace RequestComputerSystem
                         apremark = txt_remarkApprove.Value.ToString().Trim();
                     }
 
-                    sql = "update approve set apstatus='" + apst + "', apremark = '" + apremark + "', userid='" + UserLogin + "', apdate='" + Dates + "' where apid = " + apid;
+                    sql = "update approve set apstatus='" + apst + "', " +
+                        "\napremark = '" + apremark + "', " +
+                        "\nuserid='" + UserLogin + "', " +
+                        "\napdate='" + Dates + "' " +
+                        "\nwhere apid = " + apid;
                     if (cl_Sql.Modify(sql) == true)
                     {
                         string StepMail = "";
@@ -781,8 +947,8 @@ namespace RequestComputerSystem
                         }
                         else // Insert การอนุมัติ ตามลำดับขั้น
                         {
-                            sql = "insert into approve(rqsid,aplevel,userid,aprequestuser,apstatus,apuserapprove1,apuserapprove2,apdate) " +
-                                    "select rqsid, " + levelInt + ", 0, aprequestuser, 'Wait' as 'apstatus', '" + apuserapprove1 + "', '" + apuserapprove2 + "', '" + Dates + "' " +
+                            sql = "insert into approve(rqsid,aplevel,aplevel_sub,userid,aprequestuser,apstatus,apuserapprove1,apuserapprove2,apdate) " +
+                                    "select rqsid, " + levelInt + ", " + level_sub + ", 0, aprequestuser, 'Wait' as 'apstatus', '" + apuserapprove1 + "', '" + apuserapprove2 + "', '" + Dates + "' " +
                                     "from approve where apid = " + apid;
                             if (cl_Sql.Modify(sql) == false) { bl = false; }
                         }
@@ -791,11 +957,18 @@ namespace RequestComputerSystem
                         {
                             bl = false;
 
-                            sql = "select u.*, CONCAT(u.userpname,' ',u.userfname,' ',u.userlname) as 'ApvName', CONCAT(u2.userpname,' ',u2.userfname,' ',u2.userlname) as 'ReqName', al.aplname, u2.useremail as 'Requseremail' " +
-                                    "from `user` as u " +
-                                    "left join (select *,'" + apuserapprove1 + "'  as 'Requsername' from `user` where username = '" + UseridActor + "') as u2 on u2.Requsername = u.username " +
-                                    "left join(select*,'" + apuserapprove1 + "' as 'aplusername' from approvelevel where aplgroup = 1 and apllevel = " + levelInt + " ) as al on u.username = al.aplusername " +
-                                    "where u.username = '" + apuserapprove1 + "' ";
+                            sql = "Select u.*, CONCAT(u.userpname,' ',u.userfname,' ',u.userlname) as 'ApvName', " +
+                                "\nCONCAT(u2.userpname,' ',u2.userfname,' ',u2.userlname) as 'ReqName', " +
+                                "\nal.aplname, u2.useremail as 'Requseremail' " +
+                                "\nfrom `user` as u " +
+                                "\nleft join (" +
+                                "\n     select *,'" + apuserapprove1 + "'  as 'Requsername' from `user` where username = '" + UseridActor + "'" +
+                                "\n) as u2 on u2.Requsername = u.username " +
+                                "\nleft join (" +
+                                "\n     select *,'" + apuserapprove1 + "' as 'aplusername' from approvelevel " +
+                                "\n     where aplgroup = 1 and apllevel = " + levelInt + " and apllevel_sub = " + level_sub + " " +
+                                "\n) as al on u.username = al.aplusername " +
+                                "\nwhere u.username = '" + apuserapprove1 + "'; ";
                             dt = new DataTable();
                             dt = cl_Sql.select(sql);
 
@@ -805,28 +978,43 @@ namespace RequestComputerSystem
                                 string ApvStep = dt.Rows[0]["aplname"].ToString();
                                 string ApvName = dt.Rows[0]["ApvName"].ToString();
                                 string ReqName = dt.Rows[0]["ReqName"].ToString();
+                                string Requseremail = dt.Rows[0]["Requseremail"].ToString();
                                 string NameTo = ApvName;
                                 string emailFrom = "info.RequestSystem@brh.co.th";
-                                string CreateDate = DateTime.Now.Date.ToString();
+                                //string ApproveDate = DateTime.Now.Date.ToString();
+                                string ApproveDate = Dates;
 
                                 string htmlBody = "<h1 style='color: #4485b8;'>Systems Request.</h1>" +
+                                        "<h4 style='color: #4485b8;'>" + sysname + "</h4>" +
                                         "<p><strong style='color: #000;'> Request ID:</strong> &nbsp; " + RequestID + " </p>" +
-                                        "<p><strong style='color: #000;'> Approve Date:</strong> &nbsp; " + CreateDate + " </p>";
+                                        "<p><strong style='color: #000;'> Approve Date:</strong> &nbsp; " + ApproveDate + " </p>" +
+                                        "<p><strong style='color: #000;'> Approve by:</strong> &nbsp; " + UserLoginName + " </p>";
                                 if (StepMail== "ToNextLevel")
                                 {
-                                    htmlBody += "<p><strong style='color: #000;'> Waiting step:</strong> &nbsp; " + ApvStep + " </p>" +
+                                    htmlBody += "<br /><p><h4 style='color: #4485b8;'>And now.</h4></p>" +
+                                        "<p><strong style='color: #000;'> Waiting step:</strong> &nbsp; " + ApvStep + " </p>" +
                                         "<p><strong style='color: #000;'> Waiting approval by:</strong> &nbsp; " + ApvName + " </p>";
                                 }
                                 else if (StepMail == "ToITTeam")
                                 {
                                     apuserapprove1 = "0";
-                                    emailTo = "BRH-IT-GROUP@glsict.com"; // ------------------------- E mail IT
+
+                                    // find Email IT by site
+                                    if (branch.ToUpper() == "BRD")
+                                    {
+                                        emailTo = cl_Sql.EmployeeMail("brd_it");
+                                    }
+                                    else
+                                    {
+                                        emailTo = cl_Sql.EmployeeMail("brh_it"); 
+                                    }
+
                                     htmlBody += "<p><strong style='color: #000;'> Process for :</strong> &nbsp; " + ApvStep + " </p>" +
-                                        "<p><strong style='color: #000;'> By:</strong> &nbsp; IT GLS </p>";
+                                        "<p><strong style='color: #000;'> By:</strong> &nbsp; IT LanSignSolution </p>";
                                 }
                                 else if (StepMail == "ToUserReuest")
                                 {
-                                    emailTo = dt.Rows[0]["Requseremail"].ToString();
+                                    emailTo = Requseremail;
                                     NameTo = ReqName;
                                     apuserapprove1 = UserRequest;
                                     htmlBody += "<p><strong style='color: #000;'> Last Step:</strong> &nbsp; " + ApvStep + " </p>" +
@@ -844,9 +1032,14 @@ namespace RequestComputerSystem
                                 }
 
                                 try
-                                { 
+                                {
+                                    //emailTo = "brh.hito@brh.co.th"; // Test Only
+
                                     BRH_SendMail.ServiceSoapClient BRHmail = new BRH_SendMail.ServiceSoapClient();
                                     BRHmail.MailSend(emailTo, "AWaiting your approval", htmlBody, emailFrom, "Systems Request", "", "", "", false);
+
+                                    sql = "update approve set apmailto = '" + emailTo + "' where apid = '" + apid + "'; ";
+                                    cl_Sql.Modify(sql);
 
                                     bl = true;
                                 }
@@ -864,7 +1057,7 @@ namespace RequestComputerSystem
                 Response.Write("<script>alert('"+ ex.Message + "')</script>");
             }
             return bl;
-        }
+        } // ลำดับการอนุมัติ
 
         public Boolean NotApprove(string level)
         {
@@ -873,18 +1066,28 @@ namespace RequestComputerSystem
             {
                 string Dates = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
 
-                sql = "select * from approve where apstatus = 'wait' and aplevel = " + level + " and rqsid = " + rqsid;
+                string apstatus = "and apstatus = 'wait' ";
+                if (level == "1")
+                {
+                    apstatus = "";
+                }
+                sql = "select * from approve where aplevel = " + level + " and rqsid = " + rqsid + " " + apstatus;
                 dt = new DataTable();
                 dt = cl_Sql.select(sql);
                 if (dt.Rows.Count > 0)
                 {
                     string remark = txt_remark.Value.ToString().Trim();
                     string apid = dt.Rows[0]["apid"].ToString();
+                    rqsid = dt.Rows[0]["rqsid"].ToString();
 
-                    sql = "update approve set apstatus='Cancel' ,userid='" + UserLogin + "' ,apremark='" + remark + "' ,apdate='" + Dates + "' where apid = " + apid;
+                    sql = "update approve set apstatus='Cancel' ,userid='" + UserLogin + "' ,apremark='" + remark + "' ,apdate='" + Dates + "' where apid = " + apid + "; ";
+                    if (apstatus == "")
+                    {
+                        sql += "\nupdate approve set apstatus='Cancel',apdate='" + Dates + "' where rqsid = '" + rqsid + "'; ";
+                    }
                     if (cl_Sql.Modify(sql) == true)
                     {
-                        sql = "select * from requestsystems as r where r.rqsid = " + rqsid;
+                        sql = "select * from request where rqid = (select rqid from requestsystems where rqsid = " + rqsid + "); ";
                         dt = new DataTable();
                         dt = cl_Sql.select(sql);
                         if (dt.Rows.Count > 0)
@@ -921,7 +1124,11 @@ namespace RequestComputerSystem
                                     }
 
                                     string htmlBody = "<h1 style='color: #FC390F;'>Systems Request (Rejected)</h1>" +
-                                        "<p><strong style='color: #000;'> Request ID:</strong> &nbsp; " + rqid + " </p>" +
+                                        "<h4 style='color: #FC390F;'>Systems name : " + sysname + "</h4>" +
+                                        "<p><strong style='color: #000;'> Request ID:</strong> &nbsp; [" + rqid + "." + rqsid + "] </p>" +
+                                        "<p><strong style='color: #000;'> Reject Date:</strong> &nbsp; " + Dates + " </p>" +
+                                        "<p><strong style='color: #000;'> Reject by:</strong> &nbsp; " + UserLoginName + " </p>" +
+                                        "<p><strong style='color: #000;'> Remark:</strong> &nbsp; " + remark + " </p>" +
                                         "<p><a href='http://10.121.10.212:4001/Login?goto=ApproveEvent?id=" + rqsid + "'>Link : Access to the system.</a></p>" +
                                         "<p></p><p></p><p>Please do not reply to this email because this address is not monitored.</p>" +
                                         "<p>Automatic send by Request Systems.</p>";
@@ -936,6 +1143,9 @@ namespace RequestComputerSystem
                                     {
                                         BRH_SendMail.ServiceSoapClient BRHmail = new BRH_SendMail.ServiceSoapClient();
                                         BRHmail.MailSend(emailTo, SJ, htmlBody, emailFrom, "Systems Request", "", "", "", false);
+
+                                        sql = "update approve set apmailto = '" + emailTo + "' where apid = '" + apid + "'; ";
+                                        cl_Sql.Modify(sql);
 
                                         bl = true;
                                     }

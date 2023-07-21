@@ -32,69 +32,94 @@ namespace RequestComputerSystem.Disbursement
 
                 if (!IsPostBack)
                 {
-                    Grid1("waiting", "", "");
+                    string br_select = "";
+                    if (Session["userDpetid"] != null)
+                    {
+                        br_select = Session["userDeptid"].ToString();
+                    }
+                    Branch(br_select);
+
+                    string dateStart = DateTime.Now.AddDays(-30).ToString("yyyy-MM-dd");
+                    date_from.Value = dateStart;
+                    string dateNow = DateTime.Now.ToString("yyyy-MM-dd");
+                    date_to.Value = dateNow;
+
+                    string status = "waiting";
+                    string UserStatus = Session["UserStatus"].ToString();
+                    if (UserStatus == "admin" || UserStatus == "finance" || UserStatus == "test" || UserStatus == "superuser")
+                    {
+                        status = "wait";
+                    }
+
+                    chang_status.SelectedValue = status;
+
+                    Grid1(br_select, status, dateStart, dateNow);
                 }
             }
         }
 
-        public Boolean Grid1(string status , string dateFrom, string dateTo)
+        public Boolean Grid1(string branch, string status , string dateFrom, string dateTo)
         {
             Boolean bl = false;
+
+            if (branch != "")
+            {
+                branch = branch.Substring(0, 3);
+            }
 
             string UserStatus = Session["UserStatus"].ToString();
 
             string empid = Session["UserLogin"].ToString();
-            string crid = cl_pv.CRID(empid, status);
 
-            sql = "SELECT f.df_name, dr.*,CONCAT(userpname,' ',userfname,' ',userlname) as 'fullname',d.deptname " +
-                "\n,CONCAT(dr_forpname,' ',dr_forfname,' ',dr_forlname) as dr_forname " +
-                "\nFROM disbursement_request as dr " +
-                "\nleft join `user` as u on u.username = dr.dr_empid " +
-                "\nleft join department as d on d.deptid = dr.dr_dept " +
-                "\nleft join disbursement_form as f on f.df_id = dr.dr_formid " +
-                //"\nwhere dr_status like '%" + status + "%' ";
-                "\nwhere dr_status <> 'cancel' ";
-            if (UserStatus == "admin" || UserStatus == "test" || UserStatus == "superuser")
-            { }
+            if (UserStatus == "admin" || UserStatus == "finance" || UserStatus == "test" || UserStatus == "superuser")
+            {
+                empid = "";
+            }
+
+            sql = "select *,concat(dr_dept,' ',deptname) as 'departmentname' " +
+                "\nfrom v_disbursement " +
+                "\nwhere dr_status <> 'cancel' " +
+                "\nand dr_dept like '" + branch + "%' ";
+            if (status == "waiting") // Wait me
+            {
+                sql += "\nand dr_status = '" + status + "' ";
+                sql += "\nand userid = '" + empid + "' ";
+            }
             else
             {
-                if (status == "waiting")
-                {
-                    sql += "\nand dr_id in (" + crid + ") ";
-                }
-                else
-                {
-                    if (UserStatus == "finance" && status == "")
-                    { }
-                    else
-                    {
-                        sql += "\nand dr_status like '%" + status + "%' ";
-                        if (UserStatus != "finance")
-                        {
-                            sql += "\nand dr_empid = '" + empid + "' ";
-                        }
-                    }
-                }
+                sql += "\nand status like '%" + status + "%' ";
+                sql += "\nand(userid like '%" + empid + "%' or dr_empid like '%" + empid + "%' or other_user like '%" + empid + "%') ";
             }
-
-            if (dateFrom != "") {
-                sql = sql + "\nand (CONVERT(dr_datetime,date) between '" + dateFrom + "' and '" + dateTo + "') ";
-            }
-
-            sql = sql + "\nORDER BY dr_id DESC ";
-
+            sql += "\nand(CONVERT(dr_datetime, date) between '" + dateFrom + "' and '" + dateTo + "') " +
+                "\norder by dr_id DESC; ";
             dt = new DataTable();
             dt = CL_Sql.select(sql);
             if (dt.Rows.Count > 0)
             {
                 bl = true;
             }
-            
 
             GridView1.DataSource = dt;
             GridView1.DataBind();
 
             return bl;
+        }
+
+        public void Branch(string br_select)
+        {
+            dt = new DataTable();
+            dt = CL_Sql.dt_Branch();
+
+            dd_branch.DataSource = dt;
+            dd_branch.DataTextField = "branchname";
+            dd_branch.DataValueField = "branchname";
+            dd_branch.DataBind();
+            dd_branch.Items.Insert(0, new ListItem("ALL",""));
+
+            if (br_select != "")
+            {
+                dd_branch.SelectedValue = br_select.Substring(0, 3);
+            }
         }
 
         public Boolean SelectForm()
@@ -140,11 +165,6 @@ namespace RequestComputerSystem.Disbursement
             lbl_show_excel.Text = file;
         }
 
-        protected void chang_status_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            Search();
-        }
-
         protected void btn_search_Click(object sender, EventArgs e)
         {
             Search();
@@ -154,10 +174,11 @@ namespace RequestComputerSystem.Disbursement
         {
             Boolean bl = false;
 
+            string br_select = dd_branch.SelectedValue.ToString();
             string status = chang_status.SelectedValue.ToString();
             string DateFrom = date_from.Value.ToString();
             string DateTo = date_to.Value.ToString();
-            if(Grid1(status, DateFrom, DateTo))
+            if(Grid1(br_select, status, DateFrom, DateTo))
             {
                 bl = true;
             }
@@ -190,6 +211,16 @@ namespace RequestComputerSystem.Disbursement
                     dr_status.CssClass = "btn btn-light mx-auto my-auto";
                 }
             }
+        }
+
+        protected void dd_branch_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            Search();
+        }
+
+        protected void chang_status_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            Search();
         }
     }
 }
