@@ -19,6 +19,12 @@
     }
 </style>
 
+<script>
+    function backUpdate() {
+        document.cookie = "updateData=" + "yes";
+        window.history.back()
+    }
+</script>
 <!-- Page Wrapper -->
   <div id="wrapper">
 

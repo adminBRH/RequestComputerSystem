@@ -231,6 +231,7 @@
     <Content Include="PayOvertimeDefault.aspx" />
     <Content Include="PayOvertimeDetail.aspx" />
     <Content Include="PayOvertimeList.aspx" />
+    <Content Include="RequestJob\Default.aspx" />
     <Content Include="Scripts\signature_pad.js" />
     <Content Include="Scripts\signature_pad.min.js" />
     <Content Include="StrategyService\Default.aspx" />
@@ -2385,6 +2386,13 @@
     <Compile Include="RequestEdit.aspx.designer.cs">
       <DependentUpon>RequestEdit.aspx</DependentUpon>
     </Compile>
+    <Compile Include="RequestJob\Default.aspx.cs">
+      <DependentUpon>Default.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="RequestJob\Default.aspx.designer.cs">
+      <DependentUpon>Default.aspx</DependentUpon>
+    </Compile>
     <Compile Include="RequestList.aspx.cs">
       <DependentUpon>RequestList.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -2517,9 +2525,12 @@
     <Folder Include="App_Data\" />
     <Folder Include="ArcusAir\images\barcodeArcusAir\" />
     <Folder Include="Disbursement\FileUpload\" />
+    <Folder Include="ExcelFiles\" />
     <Folder Include="FileUploadPay\FilePayOvertime\" />
     <Folder Include="FileUpload\OrderRequest\" />
     <Folder Include="OrderItem\" />
+    <Folder Include="RequestJob\document\" />
+    <Folder Include="RequestJob\image\" />
     <Folder Include="Service\" />
     <Folder Include="Textfile_Bconnect\LoadSuccess\" />
     <Folder Include="Textfile_Bconnect\Load\" />

@@ -298,11 +298,12 @@ namespace RequestComputerSystem
             //dd_Quota.CssClass = "";
             txt_commmitee.CssClass = "";
 
-            if (CBHIS.Checked == true || CbEmail.Checked == true || CBVPN.Checked == true
+            if (CBHIS.Checked == true || Cb_Role.Checked == true || CbEmail.Checked == true || CBVPN.Checked == true
                 || Cb_SwL.Checked == true || Cb_IPP.Checked == true || CBCom.Checked == true || CBDrive.Checked == true
                 || CBPrinter.Checked == true || Cb_Tablet.Checked == true || Cb_iPad.Checked == true)
             {
                 lblCBHIS.Visible = false;
+                lblCb_Role.Visible = false;
                 lblCb_SwL.Visible = false;
                 //lblCb_MS.Visible = false;
                 lblCb_IPP.Visible = false;
@@ -335,6 +336,7 @@ namespace RequestComputerSystem
             else
             {
                 lblCBHIS.Visible = true;
+                lblCb_Role.Visible = true;
                 lblCb_SwL.Visible = true;
                 //lblCb_MS.Visible = true;
                 lblCb_IPP.Visible = true;
@@ -543,6 +545,11 @@ namespace RequestComputerSystem
                             Approve2 = "0";
                         }
                         bl = insertSystemApprove(systemID, rqid, rqrequestuser, rqdateadd, rqdepartment, Approve1, Approve2, rqsemail, rqsquota, HOD, Staff, Committee, rqsflag, DD_HIS.SelectedValue.ToString());
+                    }
+                    if (Cb_Role.Checked == true)
+                    {
+                        systemID = "14";
+                        bl = insertSystemApprove(systemID, rqid, rqrequestuser, rqdateadd, rqdepartment, Approve1, Approve2, rqsemail, rqsquota, HOD, Staff, Committee, rqsflag, "");
                     }
                     if (Cb_SwL.Checked == true)
                     {

@@ -26,13 +26,13 @@ public class DisbursementClass
         {
             int approvelevel = 1;
 
-            string status1 = "'waiting'";
+            string da_status = "'waiting'";
             string hod1 = dt.Rows[0]["depthod1"].ToString();
             string hod2 = dt.Rows[0]["depthod2"].ToString();
 
             if (Bypass(branch, "", type, hod1) == "bypass")
             {
-                status1 = "NULL";
+                da_status = "NULL";
                 hod1 = "-";
                 approvelevel++;
             }
@@ -46,12 +46,10 @@ public class DisbursementClass
                     approvelevel++;
                 }
             }
-
-            sql = "insert into disbursement_approve(da_type ,da_crid " +
-                ",da_level1 ,da_datetime1 ,da_status1 ,da_level2 " +
-                ",da_level3, da_level4, da_level5, da_level6, da_level7, da_level) " +
-                "values('" + type + "','" + id + "'" +
-                ",'" + hod1 + "',CURRENT_TIMESTAMP," + status1 + ",'" + hod2 + "' ";
+            else
+            {
+                da_status = "'waiting'";
+            }
 
             string sql2 = "select * from disbursement_level " +
                 "\nwhere dr_active = 'yes' and dr_branch = '" + branch + "' and dr_type = '" + type + "' " +
@@ -60,21 +58,41 @@ public class DisbursementClass
             dt2 = cl_Sql.select(sql2);
             if (dt2.Rows.Count > 0)
             {
+                sql = "";
                 for (int i = 0; i < dt2.Rows.Count; i++)
                 {
-                    sql = sql + ",'" + dt2.Rows[i]["dr_empid"].ToString() + "' ";
+                    string dr_empid = dt2.Rows[i]["dr_empid"].ToString();
+                    if (dr_empid == "-" && hod2 == "-")
+                    {
+                        approvelevel++;
+                    }
+                    sql = sql + ",'" + dr_empid + "' ";
                 }
             }
 
-            sql = sql + ",'" + approvelevel.ToString() + "'); ";
+            string level = approvelevel.ToString();
+            sql = sql + ",'" + level + "'); ";
+
+            sql = "insert into disbursement_approve(da_type ,da_crid " +
+                "\n,da_level1 ,da_datetime1 ,da_status" + level + " ,da_level2 " +
+                "\n,da_level3, da_level4, da_level5, da_level6, da_level7, da_level) " +
+                "\nvalues('" + type + "','" + id + "'" +
+                "\n,'" + hod1 + "',CURRENT_TIMESTAMP," + da_status + ",'" + hod2 + "' " + sql;
 
             if (cl_Sql.Modify(sql))
             {
-                bl = true;
-            }
-            else
-            {
+                sql = "";
+                if (hod1 == "-")
+                {
+                    sql += "\nupdate disbursement_approve set da_status1 = 'approve' where da_crid = '" + id + "'; ";
+                }
+                if (hod2 == "-")
+                {
+                    sql += "\nupdate disbursement_approve set da_status2 = 'approve', da_datetime2 = CURRENT_TIMESTAMP where da_crid = '" + id + "'; ";
+                }
+                cl_Sql.Modify(sql);
 
+                bl = true;
             }
         }
 

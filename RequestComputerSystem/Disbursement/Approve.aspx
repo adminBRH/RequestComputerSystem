@@ -99,7 +99,7 @@
 
                 <!-- Card 3 -->
                 <div class="col-4 mx-auto my-3">
-                    <div class="card card-header bg-gradient-light">
+                    <div class="card card-header btn-group-danger">
                         <div class="row col-12 mx-auto">
                             <div class="col-10 text-left">
                                 <asp:Label ID="lbl_pos3" Text="" runat="server"></asp:Label>

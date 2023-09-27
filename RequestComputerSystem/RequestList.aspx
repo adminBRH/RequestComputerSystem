@@ -27,6 +27,13 @@
     }
 </style>
     <div class="row">
+        <script>
+            var cookieValue = document.cookie;
+            if (cookieValue == "updateData=yes") {
+                document.cookie = "updateData=; expires=Thu, 01 Jan 1970 00:00:00 UTC;";
+                __doPostBack('<%= bt_search.UniqueID %>', ''); // Search again
+            }
+        </script>
         <div class="col-4 mx-auto my-2">
             <asp:DropDownList ID="dd_branch" CssClass="form-control" OnSelectedIndexChanged="dd_branch_SelectedIndexChanged" AutoPostBack="true" runat="server"></asp:DropDownList>
         </div>
@@ -65,7 +72,7 @@
                         <asp:BoundField DataField="rqdateadd" HeaderText="Request Date" DataFormatString="{0:yyyy-MM-dd}"></asp:BoundField>
                         <asp:BoundField DataField="ReqID" HeaderText="Request ID"><ItemStyle HorizontalAlign="Center"></ItemStyle></asp:BoundField>
                         <asp:BoundField DataField="SystemName" HeaderText="Systems"></asp:BoundField>
-                        <asp:BoundField DataField="UserReqName" HeaderText="Request for"></asp:BoundField>
+                        <asp:BoundField DataField="ReqForName" HeaderText="Request for"></asp:BoundField>
                         <asp:BoundField DataField="UserReqDeptName" HeaderText="Department"></asp:BoundField>
                         <asp:TemplateField HeaderText="" HeaderStyle-CssClass="title_bg" ItemStyle-HorizontalAlign="Left">
                             <ItemTemplate>

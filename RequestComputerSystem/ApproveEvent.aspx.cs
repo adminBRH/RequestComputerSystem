@@ -114,8 +114,8 @@ namespace RequestComputerSystem
         // Data for Block Line Approve
         private DataTable BlockData(string level, string level_sub)
         {
-            sql = "select concat(u.userpname,' ',u.userfname,' ',u.userlname) as 'ApName' " +
-                "\n, concat(u2.userpname,' ',u2.userfname,' ',u2.userlname) as 'SignName' " +
+            sql = "select concat(ifnull(u.userpname,''),u.userfname,' ',u.userlname) as 'ApName' " +
+                "\n, concat(ifnull(u2.userpname,''),u2.userfname,' ',u2.userlname) as 'SignName' " +
                 "\n, u.userposition, a.apdate, a.apstatus, a.apremark " +
                 "\n, a.apuserapprove1, a.apuserapprove2 " +
                 "\nfrom approve as a " +
@@ -171,10 +171,10 @@ namespace RequestComputerSystem
                 {
                     div2.Attributes.Add("class", "card border-left-warning shadow h-100 py-2s");
                     i2.Attributes.Add("class", "fas fa-clock fa-2x text-warning");
+                    lb2_1.Text = dt.Rows[0]["ApName"].ToString();
+
                     if (vib == "y")
                     {
-                        lb2_1.Text = dt.Rows[0]["ApName"].ToString();
-
                         bt_edit.Visible = true;
 
                         bt_2_1.Visible = true;
@@ -238,9 +238,9 @@ namespace RequestComputerSystem
                 {
                     div3.Attributes.Add("class", "card border-left-warning shadow h-100 py-2s");
                     i3.Attributes.Add("class", "fas fa-clock fa-2x text-warning");
+                    lb3_1.Text = dt.Rows[0]["ApName"].ToString();
                     if (vib == "y")
                     {
-                        lb3_1.Text = dt.Rows[0]["ApName"].ToString();
                         bt_3_1.Visible = true;
                         bt_3_2.Visible = true;
                     }
@@ -315,9 +315,9 @@ namespace RequestComputerSystem
                 {
                     div3x1.Attributes.Add("class", "card border-left-warning shadow h-100 py-2s");
                     i3x1.Attributes.Add("class", "fas fa-clock fa-2x text-warning");
+                    lb3x1_1.Text = apname;
                     if (vib == "y")
                     {
-                        lb3x1_1.Text = apname;
                         bt_3x1_1.Visible = true;
                         bt_3x1_2.Visible = true;
                     }
@@ -376,11 +376,11 @@ namespace RequestComputerSystem
                 }
                 else if (apstatus == "Wait")
                 {
+                    lb4_1.Text = dt.Rows[0]["ApName"].ToString();
                     div4.Attributes.Add("class", "card border-left-warning shadow h-100 py-2s");
                     i4.Attributes.Add("class", "fas fa-clock fa-2x text-warning");
                     if (vib == "y")
                     {
-                        lb4_1.Text = dt.Rows[0]["ApName"].ToString();
                         bt_4_1.Visible = true;
                         bt_4_2.Visible = true;
                     }
@@ -440,9 +440,9 @@ namespace RequestComputerSystem
                 {
                     div5.Attributes.Add("class", "card border-left-warning shadow h-100 py-2s");
                     i5.Attributes.Add("class", "fas fa-clock fa-2x text-warning");
+                    lb5_1.Text = dt.Rows[0]["ApName"].ToString();
                     if (vib == "y")
                     {
-                        lb5_1.Text = dt.Rows[0]["ApName"].ToString();
                         bt_5_1.Visible = true;
                         bt_5_2.Visible = true;
                     }
@@ -502,9 +502,9 @@ namespace RequestComputerSystem
                 {
                     div6.Attributes.Add("class", "card border-left-warning shadow h-100 py-2s");
                     i6.Attributes.Add("class", "fas fa-paperclip fa-2x text-warning");
+                    lb6_1.Text = dt.Rows[0]["ApName"].ToString();
                     if (vib == "y")
                     {
-                        lb6_1.Text = dt.Rows[0]["ApName"].ToString();
                         bt_6_1.Visible = true;
                         bt_6_2.Visible = true;
                     }
@@ -543,7 +543,6 @@ namespace RequestComputerSystem
                 {
                     div7.Attributes.Add("class", "card border-left-warning shadow h-100 py-2s");
                     i7.Attributes.Add("class", "fas fa-paperclip fa-2x text-warning");
-
                     lb7_1.Text = "<b>" + dt.Rows[0]["ApName"].ToString() + "</b>";
                     if (UserStatus == "admin" || UserStatus == "it")
                     {
@@ -700,7 +699,7 @@ namespace RequestComputerSystem
             if (Approved(apLevel) == true)
             {
                 //Response.Write("<script>alert('อนุมัติ เรียบร้อยแล้ว !!'); setTimeout(function(){window.location.href='ApproveEvent.aspx?id=" + rqsid +"'}, 10);</script>");
-                Response.Write("<script>alert('อนุมัติ เรียบร้อยแล้ว !!'); setTimeout(function(){history.back()}, 10);</script>");
+                Response.Write("<script>alert('อนุมัติ เรียบร้อยแล้ว !!'); setTimeout(function(){backUpdate()}, 10);</script>");
             }
             else
             {
@@ -715,7 +714,7 @@ namespace RequestComputerSystem
 
             if (NotApprove(apLevel) == true)
             {
-                Response.Write("<script>alert('ไม่อนุมัติ การร้องขอนี้ !!')</script>");
+                Response.Write("<script>alert('ไม่อนุมัติ การร้องขอนี้ !!'); setTimeout(function(){backUpdate()}, 10);</script>");
                 Response.Redirect(Request.RawUrl);
             }
             else
@@ -734,7 +733,7 @@ namespace RequestComputerSystem
 
             if (Cancel(apLevel) == true)
             {
-                Response.Write("<script>alert('ทำการยกเลิก เรียบร้อยแล้ว !!')</script>");
+                Response.Write("<script>alert('ทำการยกเลิก เรียบร้อยแล้ว !!'); setTimeout(function(){backUpdate()}, 10);</script>");
                 Response.Redirect(Request.RawUrl);
             }
             else
@@ -743,6 +742,8 @@ namespace RequestComputerSystem
             }
         }
 
+        // -------------------------------------------------------- -------------------------------------------------------- 
+        // -------------------------------------------------------- --------------------------------------------------------
 
         public Boolean Approved(string level)
         {
@@ -776,6 +777,7 @@ namespace RequestComputerSystem
                     string sysid = dt.Rows[0]["sysid"].ToString();
                     string sysname = dt.Rows[0]["sysname"].ToString();
                     string UserRequest = dt.Rows[0]["aprequestuser"].ToString();
+                    level_sub = dt.Rows[0]["aplevel_sub"].ToString();
 
                     string apuserapprove1 = "0";
                     string apuserapprove2 = "0";
@@ -804,13 +806,40 @@ namespace RequestComputerSystem
 
                         if (sysid == "13") // Drive O/R
                         {
-                            if (oldLevel == level)
+                            if (oldLevel == level && level_sub == "0")
                             {
                                 apuserapprove1 = "150020"; //พี่วิไล ผจก.ศูนย์คุณภาพ
                                 level = "2";
                                 level_sub = "1";
                             }
+                            else
+                            {
+                                if (level_sub == "1")
+                                {
+                                    // Reset level sub for next level
+                                    level_sub = "0";
+                                }
+                            }
+                        } 
+                        else if (sysid == "14") // Role Permission
+                        {
+                            if (oldLevel == level && level_sub == "0")
+                            {
+                                apuserapprove1 = "230142"; //พี่ปลา UM
+                                level = "2";
+                                level_sub = "1";
+                            }
+                            else
+                            {
+                                if (level_sub == "1")
+                                {
+                                    // Reset level sub for next level
+                                    level_sub = "0";
+                                }
+                            }
                         }
+                        else
+                        { }
                     }
                     else if (level == "4")
                     {

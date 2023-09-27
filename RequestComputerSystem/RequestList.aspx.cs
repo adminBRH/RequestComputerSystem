@@ -113,6 +113,7 @@ namespace RequestComputerSystem
 
             sql = "Select a.*, r.rqid, concat('[',r.rqid,'.',a.rqsid,']') as 'ReqID', s.sysname, rs.rqsvalue, " +
                 "\nconcat(s.sysname,ifnull(concat(' : ',rs.rqsvalue),'')) as 'SystemName', r.rqdateadd, " +
+                "\nconcat(r.rqfname,' ',r.rqlname,ifnull(concat(' (',r.rqpost,')'),'')) as 'ReqForName', " +
                 "\nconcat(ifnull(fu.userpname,''),fu.userfname,' ',fu.userlname) as 'UserReqName', " +
                 "\nconcat(ifnull(apu.userpname,''),apu.userfname,' ',apu.userlname) as 'UserApprove', " +
                 "\nr.rqdepartment, d.deptname, concat(r.rqdepartment,' ',d.deptname) as 'UserReqDeptName', al.aplname " +

@@ -6,6 +6,20 @@
 
         <asp:ScriptManager ID="ScriptManager1" runat="server"></asp:ScriptManager>
 
+        <!-- Import Excel to Grid  -->
+    <div class="row col-12 mx-auto" hidden="hidden">
+        <div class="col-6 mx-auto text-right">
+            <asp:FileUpload ID="FileUpload1" runat="server" />
+        </div>
+        <div class="col-6 mx-auto text-left">
+            <a id="btnUpload" class="btn btn-outline-primary" onserverclick="btnUpload_ServerClick" runat="server"> Import template </a>
+        </div>
+        <div class="col-12 mx-auto">
+            <asp:Label ID="Label1" Text="" runat="server"></asp:Label>
+            <asp:GridView ID="GridViewExcel" runat="server"></asp:GridView>
+        </div>
+    </div>
+
     <div class="row col-12 mx-auto">
         <div class="col-6 mx-auto">
             <asp:DropDownList ID="dd_Branch" CssClass="form-control" OnSelectedIndexChanged="dd_Branch_SelectedIndexChanged" AutoPostBack="true" runat="server"></asp:DropDownList>

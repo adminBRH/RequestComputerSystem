@@ -178,6 +178,11 @@
                         <asp:ListItem Value="" Text="Please select HIS."></asp:ListItem>
                     </asp:DropDownList>
                 </div>
+                <div class="input-group">
+                    <label id="lblCb_Role" for="Cb_Role" style="color:red; font-size: x-large;" runat="server" visible="false">*</label>
+                    <asp:CheckBox ID="Cb_Role" CssClass="btn btn-circle" runat="server" />&nbsp;
+                    <label for="Cb_Role" class="badge badge-secondary form-control" style="font-size:medium">Role Permission</label>
+                </div>
                 <%--<div class="input-group">
                     <label id="lblCb_Bconnect" for="cb_Bconnect" style="color:red; font-size: x-large;" runat="server" visible="false">*</label>
                     <asp:CheckBox ID="Cb_Bconnect" CssClass="btn btn-circle" runat="server" />
